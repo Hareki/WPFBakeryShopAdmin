@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFBakeryShopAdmin", "WPFBakeryShopAdmin\WPFBakeryShopAdmin.csproj", "{1008E914-9A5D-4796-8818-36E2F20F142F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1008E914-9A5D-4796-8818-36E2F20F142F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1008E914-9A5D-4796-8818-36E2F20F142F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1008E914-9A5D-4796-8818-36E2F20F142F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1008E914-9A5D-4796-8818-36E2F20F142F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F23AA44B-7E3A-4BCE-972C-14FCD733DA7D}
+	EndGlobalSection
+EndGlobal

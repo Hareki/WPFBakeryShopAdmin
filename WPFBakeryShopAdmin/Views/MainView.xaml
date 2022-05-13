@@ -1,0 +1,163 @@
+﻿<Window x:Class="WPFBakeryShopAdmin.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFBakeryShopAdmin.Views"
+        mc:Ignorable="d"
+        Title="MainView"
+        Height="700"
+        Width="882"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Background="#F5F5FA"
+        TextElement.FontSize="15"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Images/favicon.ico"
+        WindowState="Maximized">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0"
+              Grid.Row="1"
+              Panel.ZIndex="3"
+              Background="White" />
+        <Grid  Grid.Column="1"
+               Grid.Row="1"
+               Panel.ZIndex="3">
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                 UniformCornerRadius="12"
+                                 Background="#fd9935">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0"
+                            Padding="10"
+                            Margin="0 0 0 15">
+                        <Image RenderOptions.BitmapScalingMode="HighQuality"
+                               RenderOptions.EdgeMode="Aliased"
+                               Source="/Images/logo-light.png"
+                               Width="200" />
+                    </Border>
+
+
+                    <Border Grid.Row="1"
+                            Padding="10 0"
+                            Margin="0 15 0 15">
+
+                        <RadioButton Style="{StaticResource CustomMenuItemAccount}"
+                                     GroupName="MenuGroup"
+                                     x:Name="LoadPersonalAccount">
+                            <DockPanel>
+                                <materialDesign:PackIcon Width="50"
+                                                         Height="50"
+                                                         Kind="AccountCircleOutline"
+                                                         DockPanel.Dock="Left" />
+                                <Grid DockPanel.Dock="Right">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Nguyễn Ngọc Minh Tú"
+                                                   DockPanel.Dock="Top"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0 0 0 5" />
+                                        <TextBlock Text="minhtu1392000@gmail.com"
+                                                   HorizontalAlignment="Center"
+                                                   FontSize="12"
+                                                   FontWeight="Medium" />
+                                    </StackPanel>
+
+                                </Grid>
+
+                            </DockPanel>
+                        </RadioButton>
+
+                    </Border>
+
+                    <Border Grid.Row="2"
+                            Padding="10">
+                        <StackPanel>
+                            <RadioButton Style="{StaticResource CustomMenuItem}"
+                                         GroupName="MenuGroup"
+                                         x:Name="LoadDashboard">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           Source="/Images/dashboard-icon-512.png" />
+                                    <TextBlock Margin="15 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="Bảng thống kê" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource CustomMenuItem}"
+                                         GroupName="MenuGroup"
+                                         x:Name="LoadProduct">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           Source="/Images/product-icon-512.png" />
+                                    <TextBlock Margin="15 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="Sản phẩm" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource CustomMenuItem}"
+                                         GroupName="MenuGroup"
+                                         x:Name="LoadBill">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           Source="/Images/bill-icon-512.png" />
+                                    <TextBlock Margin="15 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="Đơn hàng" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Style="{StaticResource CustomMenuItem}"
+                                         GroupName="MenuGroup"
+                                         x:Name="LoadAccount">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           Source="/Images/account-icon-512.png" />
+                                    <TextBlock Margin="15 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="Tài khoản" />
+                                </StackPanel>
+                            </RadioButton>
+
+                        </StackPanel>
+
+                    </Border>
+                    <Border Grid.Row="3">
+                        <Button Style="{StaticResource CustomPrimaryButton}"
+                                Content="ĐĂNG XUẤT"
+                                VerticalAlignment="Bottom"
+                                Background="#E63946"
+                                Margin="20" />
+                    </Border>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+
+        <ContentControl x:Name="ActiveItem"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="30 0 0 0" />
+
+
+    </Grid>
+</Window>

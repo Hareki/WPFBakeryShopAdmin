@@ -1,0 +1,278 @@
+﻿<UserControl x:Class="WPFBakeryShopAdmin.Views.BillView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:WPFBakeryShopAdmin.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="#F5F5FA"
+             TextElement.FontSize="15"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+    <Grid>
+        <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
+                                             OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.3}">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                           Grid.Row="0"
+                           Grid.ColumnSpan="12"
+                           FontWeight="SemiBold"
+                           Margin="{StaticResource TitleMargin}"
+                           Text="Hóa đơn" />
+
+                <Border CornerRadius="12"
+                        Background="White"
+                        Padding="10"
+                        Grid.Row="1">
+                    <ScrollViewer>
+                        <Border Background="White"
+                                Padding="10"
+                                CornerRadius="12"
+                                Grid.Row="1">
+                            <DataGrid CanUserAddRows="False"
+                                      IsReadOnly="True"
+                                      AutoGenerateColumns="False"
+                                      Background="White">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Mã"
+                                                        Width="*" />
+                                    <DataGridTextColumn Header="Tên sản phẩm"
+                                                        Width="3*" />
+                                    <DataGridTextColumn Header="Danh mục"
+                                                        Width="2*" />
+                                    <DataGridTextColumn Header="Nguyên liệu"
+                                                        Width="5*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </ScrollViewer>
+                </Border>
+
+
+
+                <Border HorizontalAlignment="Stretch"
+                        Margin="0 30 0 0"
+                        Grid.Row="2"
+                        CornerRadius="12"
+                        Background="White"
+                        Padding="10">
+                    <Expander Header="CHI TIẾT THÔNG TIN HÓA ĐƠN"
+                              FontWeight="SemiBold"
+                              Background="White"
+                              ExpandDirection="Up">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Border Background="White"
+                                    CornerRadius="12"
+                                    Padding="2"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="12"
+                                    Margin="0 0 0 30">
+                                <DataGrid CanUserAddRows="False"
+                                          IsReadOnly="True"
+                                          AutoGenerateColumns="False"
+                                          Background="White">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Tên sản phẩm"
+                                                            Width="4*" />
+                                        <DataGridTextColumn Header="Danh mục"
+                                                            Width="3*" />
+                                        <DataGridTextColumn Header="Số lượng"
+                                                            Width="3*" />
+                                        <DataGridTextColumn Header="Đơn giá"
+                                                            Width="4*" />
+                                        <DataGridTextColumn Header="Thành tiền"
+                                                            Width="4*" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+
+
+                            <TextBlock Text="Tên khách hàng:"
+                                       FontWeight="Bold"
+                                       Grid.Column="0"
+                                       Grid.Row="1"
+                                       Grid.ColumnSpan="3"
+                                       Margin="0 0 0 30" />
+                            <TextBlock Text="Nguyễn Ngọc Minh Tú"
+                                       Grid.Column="3"
+                                       FontWeight="Normal"
+                                       Grid.Row="1"
+                                       Grid.ColumnSpan="3"
+                                       Margin="0 0 0 30" />
+
+                            <TextBlock Text="Trạng thái:"
+                                       FontWeight="Bold"
+                                       Grid.Column="6"
+                                       Grid.Row="1"
+                                       Grid.ColumnSpan="3"
+                                       Margin="0 0 0 30" />
+                            <TextBlock Text="Đã hủy"
+                                       Grid.Column="9"
+                                       Grid.Row="1"
+                                       Grid.ColumnSpan="3"
+                                       FontWeight="Normal"
+                                       Margin="0 0 0 30" />
+
+                            <TextBlock Text="Ngày mua:"
+                                       FontWeight="Bold"
+                                       Grid.Column="0"
+                                       Grid.Row="2"
+                                       Grid.ColumnSpan="3"
+                                       Margin="0 0 0 30" />
+                            <TextBlock Text="12/05/2022 2:05 PM"
+                                       Grid.Column="3"
+                                       Grid.Row="2"
+                                       Grid.ColumnSpan="3"
+                                       FontWeight="Normal"
+                                       Margin="0 0 0 30" />
+
+                            <TextBlock Text="Phương thức thanh toán:"
+                                       FontWeight="Bold"
+                                       Grid.Column="6"
+                                       Grid.Row="2"
+                                       Grid.ColumnSpan="3"
+                                       Margin="0 0 0 30" />
+                            <TextBlock Text="Thẻ"
+                                       Grid.Column="9"
+                                       Grid.Row="2"
+                                       Grid.ColumnSpan="3"
+                                       FontWeight="Normal"
+                                       Margin="0 0 0 30" />
+
+                            <TextBlock Text="Thông tin giao hàng:"
+                                       FontWeight="Bold"
+                                       Grid.Column="0"
+                                       Grid.Row="3"
+                                       Grid.ColumnSpan="3"
+                                       Margin="0 0 0 30" />
+
+                            <Grid Grid.Column="0"
+                                  Grid.ColumnSpan="4"
+                                  Grid.Row="4"
+                                  Margin="0 0 10 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <materialDesign:PackIcon Kind="Location"
+                                                         Width="20"
+                                                         Height="20"
+                                                         VerticalAlignment="Center"
+                                                         Margin="0 0 5 0" />
+                                <TextBlock Grid.Column="1"
+                                           Text="Địa chỉ"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center" />
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           FontWeight="Normal"
+                                           TextWrapping="Wrap"
+                                           Text="Số 87 đường Trần Hưng Đạo, phường Trần Hưng Đạo, quận Hoàn Kiếm, thành phố Hà Nội." />
+                            </Grid>
+
+                            <Grid Grid.Column="4"
+                                  Grid.ColumnSpan="4"
+                                  Grid.Row="4"
+                                  Margin="10 0 10 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <materialDesign:PackIcon Kind="Phone"
+                                                         Width="20"
+                                                         Height="20"
+                                                         VerticalAlignment="Center"
+                                                         Margin="0 0 5 0" />
+                                <TextBlock Grid.Column="1"
+                                           Text="Số điện thoại"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center" />
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           FontWeight="Normal"
+                                           Text="0338758008" />
+                            </Grid>
+
+                            <Grid Grid.Column="8"
+                                  Grid.ColumnSpan="4"
+                                  Grid.Row="4"
+                                  Margin="10 0 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <materialDesign:PackIcon Kind="Note"
+                                                         Width="20"
+                                                         Height="20"
+                                                         VerticalAlignment="Center"
+                                                         Margin="0 0 5 0" />
+                                <TextBlock Grid.Column="1"
+                                           Text="Ghi chú"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center" />
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           FontWeight="Normal"
+                                           Text="haha note goes brrrrr" />
+                            </Grid>
+
+
+                        </Grid>
+                    </Expander>
+                </Border>
+            </Grid>
+
+        </materialDesign:TransitioningContent>
+    </Grid>
+</UserControl>
