@@ -8,21 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/account-icon-512-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/account-icon-512.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/bill-icon-512-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/bill-icon-512.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/cake-icon-512-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/cake-icon-512.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/cancelled-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/dashboard-icon-512-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/dashboard-icon-512.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/favicon.ico")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/logo-light.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/pending-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/product-icon-512-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/product-icon-512.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/shipped-brown.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/shipping-brown.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/cancelled-white.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/pending-white.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/shipped-white.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/shipping-white.png")]
 
 

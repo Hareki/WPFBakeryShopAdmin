@@ -221,5 +221,11 @@
     <Resource Include="Images\shipped-brown.png" />
     <Resource Include="Images\shipping-brown.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cancelled-white.png" />
+    <Resource Include="Images\pending-white.png" />
+    <Resource Include="Images\shipped-white.png" />
+    <Resource Include="Images\shipping-white.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

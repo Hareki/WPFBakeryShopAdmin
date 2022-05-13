@@ -128,7 +128,7 @@
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
                             <TextBlock Text="Nguyễn Ngọc Minh Tú"
-                                       Grid.Column="4"
+                                       Grid.Column="3"
                                        FontWeight="Normal"
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
@@ -140,12 +140,26 @@
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
-                            <TextBlock Text="Đã hủy"
-                                       Grid.Column="10"
-                                       Grid.Row="1"
-                                       Grid.ColumnSpan="3"
-                                       FontWeight="Normal"
-                                       Margin="0 0 0 30" />
+                            <Button  Grid.Column="10"
+                                     Grid.Row="1"
+                                     Grid.ColumnSpan="2"
+                                     Style="{StaticResource CustomPrimaryButton}"
+                                     Background="Red"
+                                     MinWidth="125"
+                                     VerticalAlignment="Top"
+                                     HorizontalAlignment="Left"
+                                     materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                                <StackPanel Orientation="Horizontal"
+                                            >
+                                    <Image Source="/Images/cancelled-white.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           Margin="0 0 7 0" />
+                                    <TextBlock Text="Đã hủy"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+
 
                             <TextBlock Text="Ngày mua:"
                                        FontWeight="Bold"
@@ -154,7 +168,7 @@
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
                             <TextBlock Text="12/05/2022 2:05 PM"
-                                       Grid.Column="4"
+                                       Grid.Column="3"
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
                                        FontWeight="Normal"
