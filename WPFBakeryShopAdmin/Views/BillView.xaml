@@ -64,13 +64,14 @@
                         Grid.Row="2"
                         CornerRadius="12"
                         Background="White"
-                        Padding="10">
+                        Padding="15">
                     <Expander Header="CHI TIẾT THÔNG TIN HÓA ĐƠN"
                               FontWeight="SemiBold"
                               Background="White"
                               ExpandDirection="Up">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="18" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -98,7 +99,7 @@
                                     Padding="2"
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="12"
+                                    Grid.ColumnSpan="13"
                                     Margin="0 0 0 30">
                                 <DataGrid CanUserAddRows="False"
                                           IsReadOnly="True"
@@ -122,12 +123,12 @@
 
                             <TextBlock Text="Tên khách hàng:"
                                        FontWeight="Bold"
-                                       Grid.Column="0"
+                                       Grid.Column="1"
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
                             <TextBlock Text="Nguyễn Ngọc Minh Tú"
-                                       Grid.Column="3"
+                                       Grid.Column="4"
                                        FontWeight="Normal"
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
@@ -135,12 +136,12 @@
 
                             <TextBlock Text="Trạng thái:"
                                        FontWeight="Bold"
-                                       Grid.Column="6"
+                                       Grid.Column="7"
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
                             <TextBlock Text="Đã hủy"
-                                       Grid.Column="9"
+                                       Grid.Column="10"
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
                                        FontWeight="Normal"
@@ -148,12 +149,12 @@
 
                             <TextBlock Text="Ngày mua:"
                                        FontWeight="Bold"
-                                       Grid.Column="0"
+                                       Grid.Column="1"
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
                             <TextBlock Text="12/05/2022 2:05 PM"
-                                       Grid.Column="3"
+                                       Grid.Column="4"
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
                                        FontWeight="Normal"
@@ -161,12 +162,12 @@
 
                             <TextBlock Text="Phương thức thanh toán:"
                                        FontWeight="Bold"
-                                       Grid.Column="6"
+                                       Grid.Column="7"
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
                             <TextBlock Text="Thẻ"
-                                       Grid.Column="9"
+                                       Grid.Column="10"
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
                                        FontWeight="Normal"
@@ -174,12 +175,12 @@
 
                             <TextBlock Text="Thông tin giao hàng:"
                                        FontWeight="Bold"
-                                       Grid.Column="0"
+                                       Grid.Column="1"
                                        Grid.Row="3"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
 
-                            <Grid Grid.Column="0"
+                            <Grid Grid.Column="1"
                                   Grid.ColumnSpan="4"
                                   Grid.Row="4"
                                   Margin="0 0 10 0">
@@ -197,19 +198,19 @@
                                                          Height="20"
                                                          VerticalAlignment="Center"
                                                          Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
+                                <TextBlock Grid.Column="2"
                                            Text="Địa chỉ"
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
                                 <TextBlock Grid.Row="1"
-                                           Grid.Column="1"
+                                           Grid.Column="2"
                                            FontWeight="Normal"
                                            TextWrapping="Wrap"
                                            Text="Số 87 đường Trần Hưng Đạo, phường Trần Hưng Đạo, quận Hoàn Kiếm, thành phố Hà Nội." />
                             </Grid>
 
-                            <Grid Grid.Column="4"
+                            <Grid Grid.Column="5"
                                   Grid.ColumnSpan="4"
                                   Grid.Row="4"
                                   Margin="10 0 10 0">
@@ -227,18 +228,18 @@
                                                          Height="20"
                                                          VerticalAlignment="Center"
                                                          Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
+                                <TextBlock Grid.Column="2"
                                            Text="Số điện thoại"
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
                                 <TextBlock Grid.Row="1"
-                                           Grid.Column="1"
+                                           Grid.Column="2"
                                            FontWeight="Normal"
                                            Text="0338758008" />
                             </Grid>
 
-                            <Grid Grid.Column="8"
+                            <Grid Grid.Column="9"
                                   Grid.ColumnSpan="4"
                                   Grid.Row="4"
                                   Margin="10 0 0 0">
@@ -256,13 +257,13 @@
                                                          Height="20"
                                                          VerticalAlignment="Center"
                                                          Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
+                                <TextBlock Grid.Column="2"
                                            Text="Ghi chú"
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
                                 <TextBlock Grid.Row="1"
-                                           Grid.Column="1"
+                                           Grid.Column="2"
                                            FontWeight="Normal"
                                            Text="haha note goes brrrrr" />
                             </Grid>
