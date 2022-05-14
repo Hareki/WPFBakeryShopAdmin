@@ -54,19 +54,26 @@
                         Padding="10"
                         Grid.Row="1"
                         Margin="0 0 0 0">
-                    <DataGrid CanUserAddRows="False"
+                    <DataGrid x:Name="RowItemProducts"
+                              CanUserAddRows="False"
                               IsReadOnly="True"
                               AutoGenerateColumns="False"
-                              Background="White">
+                              Background="White"
+                              SelectionUnit="FullRow"
+                              SelectionMode="Single">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Mã"
-                                                Width="*" />
+                                                Width="*"
+                                                Binding="{Binding Path=Id}" />
                             <DataGridTextColumn Header="Tên sản phẩm"
-                                                Width="3*" />
+                                                Width="3*"
+                                                Binding="{Binding Path=Name}" />
                             <DataGridTextColumn Header="Danh mục"
-                                                Width="2*" />
+                                                Width="2*"
+                                                Binding="{Binding Path=CategoryName}" />
                             <DataGridTextColumn Header="Nguyên liệu"
-                                                Width="5*" />
+                                                Width="5*"
+                                                Binding="{Binding Path=Ingredients}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

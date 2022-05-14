@@ -17,6 +17,24 @@
                                                  SecondaryColor="#E0E0E0" />
 
                 <ResourceDictionary>
+                    <Style x:Key="DataGrid"
+                           TargetType="DataGrid">
+                        <Setter Property="CellStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness"
+                                            Value="0" />
+                                    <Setter Property="Foreground"
+                                            Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Setter Property="Background"
+                                            Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
+
+                <ResourceDictionary>
                     <SolidColorBrush x:Key="SecondaryHueDarkBrush"
                                      Color="#FDF0E6" />
                 </ResourceDictionary>

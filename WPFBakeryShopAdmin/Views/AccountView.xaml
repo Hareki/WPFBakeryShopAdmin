@@ -8,6 +8,8 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:AccountViewModel}"
              Background="#F5F5FA"
              TextElement.FontSize="15"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
@@ -28,24 +30,78 @@
                            Margin="{StaticResource TitleMargin}" />
 
                 <Border Background="White"
-                        Padding="10"
+                        Padding="10 10 10 10"
                         Grid.Row="1"
                         CornerRadius="12">
-                    <DataGrid CanUserAddRows="False"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              Background="White">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mã"
-                                                Width="*" />
-                            <DataGridTextColumn Header="Tên sản phẩm"
-                                                Width="3*" />
-                            <DataGridTextColumn Header="Danh mục"
-                                                Width="2*" />
-                            <DataGridTextColumn Header="Nguyên liệu"
-                                                Width="5*" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="8*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <DataGrid x:Name="RowItemAccounts"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  AutoGenerateColumns="False"
+                                  Background="White"
+                                  SelectionUnit="FullRow"
+                                  SelectionMode="Single"
+                                  SelectedItem="{Binding Path=SelectedAccount, Mode=OneWayToSource}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã TK"
+                                                    Width="2*"
+                                                    Binding="{Binding Path=Id}" />
+                                <DataGridTextColumn Header="Họ tên KH"
+                                                    Width="4*"
+                                                    Binding="{Binding Path=FullName}" />
+                                <DataGridTextColumn Header="Email"
+                                                    Width="3*"
+                                                    Binding="{Binding Path=Email}" />
+                                <DataGridTextColumn Header="SDT"
+                                                    Width="3*"
+                                                    Binding="{Binding Path=Phone}" />
+                                <DataGridTextColumn Header="Kích hoạt"
+                                                    Width="3*"
+                                                    Binding="{Binding Path=ActivatedString}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel HorizontalAlignment="Right"
+                                    Orientation="Horizontal"
+                                    FlowDirection="RightToLeft"
+                                    Grid.Row="1">
+
+                            <Button  x:Name="LoadLastPage"
+                                     Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                     IsEnabled="{Binding Path=CouldLoadLastPage}">
+                                <materialDesign:PackIcon Kind="PageLast" />
+                            </Button>
+
+
+                            <Button x:Name="LoadNextPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=CouldLoadNextPage}">
+                                <materialDesign:PackIcon Kind="ChevronRight" />
+                            </Button>
+
+
+                            <Button x:Name="LoadPreviousPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=CouldLoadPreviousPage}">
+                                <materialDesign:PackIcon Kind="ChevronLeft" />
+                            </Button>
+
+
+                            <Button x:Name="LoadFirstPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=CouldLoadFirstPage}">
+                                <materialDesign:PackIcon Kind="PageFirst" />
+                            </Button>
+                            
+                            <TextBox x:Name="TestA"
+                                     MinWidth="100"/>
+
+                        </StackPanel>
+                    </Grid>
+
                 </Border>
 
                 <Border HorizontalAlignment="Stretch"
@@ -91,20 +147,13 @@
                                     <ColumnDefinition Width="4*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Ellipse x:Name="ellipse"
-                                         Grid.Column="1"
+
+                                <Ellipse Height="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
                                          Width="auto"
-                                         Height="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}">
+                                         x:Name="ellipse"
+                                         Grid.Column="1">
                                     <Ellipse.Fill>
-                                        <ImageBrush>
-                                            <ImageBrush.ImageSource>
-                                                <BitmapImage DecodePixelHeight="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
-                                                             DecodePixelWidth="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
-                                                             UriSource="D:\Study\CNTT\4th year\2nd semester\31602620.jpg"
-                                                             RenderOptions.BitmapScalingMode="HighQuality"
-                                                             RenderOptions.EdgeMode="Aliased" />
-                                            </ImageBrush.ImageSource>
-                                        </ImageBrush>
+                                        <ImageBrush ImageSource="{Binding SelectedAccount.ImageUrl}" />
                                     </Ellipse.Fill>
                                 </Ellipse>
                             </Grid>
@@ -130,11 +179,12 @@
                                            Text="Trạng thái tài khoản"
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedAccount_ActivatedString"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            Text="Đã kích hoạt"
                                            FontWeight="Normal"
-                                           Foreground="MediumSeaGreen" />
+                                           Foreground="{Binding SelectedAccount.ActivatedColor}" />
                             </Grid>
 
 
@@ -159,7 +209,8 @@
                                            Text="Mã tài khoản"
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedAccount_Id"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            FontWeight="Normal"
                                            Text="123" />
@@ -187,7 +238,8 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedAccount_FullName"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            FontWeight="Normal"
                                            Text="Nguyễn Ngọc Minh Tú" />
@@ -215,7 +267,8 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedAccount_Email"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            FontWeight="Normal"
                                            Text="minhtu1392000@gmail.com" />
@@ -243,7 +296,8 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedAccount_Phone"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            FontWeight="Normal"
                                            Text="0338758008" />
@@ -270,7 +324,8 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedAccount_Language"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            FontWeight="Normal"
                                            Text="English" />
@@ -298,10 +353,11 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedAccount_Roles"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            FontWeight="Normal"
-                                           Text="English" />
+                                           Text="Test" />
                             </Grid>
 
                             <Grid Grid.Column="8"
@@ -326,11 +382,12 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="SelectedPerson_Address"
+                                           Grid.Row="1"
                                            Grid.Column="1"
                                            FontWeight="Normal"
                                            TextWrapping="Wrap"
-                                           Text="Số 87 đường Trần Hưng Đạo, phường Trần Hưng Đạo, quận Hoàn Kiếm, thành phố Hà Nội." />
+                                           Text="ABC" />
                             </Grid>
                         </Grid>
                     </Expander>
