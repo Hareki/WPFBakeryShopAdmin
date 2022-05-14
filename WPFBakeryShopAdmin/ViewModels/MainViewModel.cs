@@ -28,6 +28,5 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             ActivateItemAsync(new PersonalAccountViewModel());
         }
-
     }
 }
