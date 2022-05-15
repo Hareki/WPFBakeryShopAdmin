@@ -120,7 +120,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     string value = header.Value.ToString();
                     if (value.Contains("next")) CouldLoadNextPage = true;
-                    else CouldLoadNextPage = true;
+                    else CouldLoadNextPage = false;
 
                     if (value.Contains("prev")) CouldLoadPreviousPage = true;
                     else CouldLoadPreviousPage = false;

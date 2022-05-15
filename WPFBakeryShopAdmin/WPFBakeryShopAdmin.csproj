@@ -122,6 +122,7 @@
     <Compile Include="Models\RowItemBill.cs" />
     <Compile Include="Models\RowItemProduct.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
+    <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\AddingProductViewModel.cs" />
     <Compile Include="ViewModels\BillViewModel.cs" />

@@ -33,7 +33,7 @@
                         Background="White"
                         Padding="10"
                         Grid.Row="1">
-                    <ScrollViewer>
+                    <ScrollViewer CanContentScroll="True">
                         <Border>
                             <Grid>
                                 <Grid.ColumnDefinitions>

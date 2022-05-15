@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.Models
 {
@@ -12,6 +13,21 @@ namespace WPFBakeryShopAdmin.Models
         public string TypeName { get; set; }
         public int Quantity { get; set; }
         public int UnitPrice { get; set; }
+        public string SubTotal
+        {
+            get
+            {
+                return StringUtils.FormatCurrency(Quantity * UnitPrice);
+            }
+        }
+
+        public string FormattedUnitPrice
+        {
+            get
+            {
+                return StringUtils.FormatCurrency(UnitPrice);
+            }
+        }
     }
 
     public class ReceiverInfo
@@ -45,6 +61,14 @@ namespace WPFBakeryShopAdmin.Models
             get
             {
                 return StatusId <= 2;
+            }
+        }
+
+        public string FormattedTotal
+        {
+            get
+            {
+                return StringUtils.FormatCurrency(Total);
             }
         }
     }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.Models
 {
@@ -13,7 +15,6 @@ namespace WPFBakeryShopAdmin.Models
         public int StatusId { get; set; }
         public int Total { get; set; }
         public string CustomerName { get; set; }
-
         public string StatusString
         {
             get
@@ -31,6 +32,13 @@ namespace WPFBakeryShopAdmin.Models
                         }
 
                 }
+            }
+        }
+        public string FormattedTotal
+        {
+            get
+            {
+                return StringUtils.FormatCurrency(Total);
             }
         }
     }

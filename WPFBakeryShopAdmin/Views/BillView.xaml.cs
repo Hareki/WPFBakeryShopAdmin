@@ -25,10 +25,6 @@ namespace WPFBakeryShopAdmin.Views
             InitializeComponent();
             expander.IsEnabled = expander.IsExpanded = false;
         }
-        private void RowItemBills_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            expander.IsEnabled = RowItemBills.SelectedIndex >= 0;
-            if (expander.IsEnabled == false) expander.IsExpanded = false;
-        }
+
     }
 }

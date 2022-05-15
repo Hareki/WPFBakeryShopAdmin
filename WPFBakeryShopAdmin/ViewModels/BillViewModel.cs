@@ -3,10 +3,13 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
+using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -18,6 +21,8 @@ namespace WPFBakeryShopAdmin.ViewModels
         private BindingButtonAppearance _bindingButton;
         private RowItemBill _selectedBill;
         private DetailItemBill _billDetails;
+        private bool _shouldCollapse;
+
         private readonly int _pageSize = 11;
         private int _currentPage = 0;
         private int _maxPage;
@@ -39,6 +44,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 
         private void LoadDetailItem(int id)
         {
+            Console.WriteLine("Load Detail Item!");
             new Thread(new ThreadStart(() =>
             {
                 var request = new RestRequest($"orders/{id}", Method.Get);
@@ -149,7 +155,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     string value = header.Value.ToString();
                     if (value.Contains("next")) CouldLoadNextPage = true;
-                    else CouldLoadNextPage = true;
+                    else CouldLoadNextPage = false;
 
                     if (value.Contains("prev")) CouldLoadPreviousPage = true;
                     else CouldLoadPreviousPage = false;
@@ -166,6 +172,14 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
 
+        private void ShowMessage(string message)
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                View.snackBar.MessageQueue?.Enqueue(message,
+                null, null, null, false, true, TimeSpan.FromSeconds(3));
+            });
+        }
         public void UpdateOrderStatus()
         {
             new Thread(new ThreadStart(() =>
@@ -175,9 +189,65 @@ namespace WPFBakeryShopAdmin.ViewModels
                 if ((int)respone.Result.StatusCode == 200)
                 {
                     BillDetails.StatusId++;
+                    _shouldCollapse = false;
+                    GridRefresh(BillDetails.StatusId);
+                    ShowMessage("Cập nhật trạng thái đơn hàng thành công");
+                    return;
                 }
+                ShowMessage("Xảy ra lỗi trong quá trình cập nhật");
             })).Start();
         }
+
+        private void GridRefresh(int newStatusId)
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                int selectedRow = Grid.SelectedIndex;
+
+                RowItemBills[selectedRow].StatusId = newStatusId;
+                Grid.Items.Refresh();
+                Grid.SelectedIndex = selectedRow;
+            });
+        }
+
+        public void RowItemBills_SelectionChanged()
+        {
+
+            View.Dispatcher.Invoke(() =>
+            {
+                if (_shouldCollapse)
+                {
+                    Expander.IsEnabled = Grid.SelectedIndex >= 0;
+                    if (Expander.IsEnabled == false)
+                        Expander.IsExpanded = false;
+                }
+                else
+                {
+                    Expander.IsEnabled = true;
+                }
+                _shouldCollapse = true;
+            });
+        }
+
+        public void Expander_Expanded()
+        {
+            if (SelectedBill != null)
+                LoadDetailItem(SelectedBill.Id);
+        }
+
+        public void PreviewStatus()
+        {
+            if (BillDetails.CanUpdateOrderStatus)
+            {
+                int previewId = BillDetails.StatusId + 1;
+                SetBindingButtonAppearance(previewId);
+            }
+        }
+        public void ClearPreview()
+        {
+            SetBindingButtonAppearance(BillDetails.StatusId);
+        }
+
         private void LoadPage()
         {
             new Thread(new ThreadStart(() =>
@@ -259,10 +329,34 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _selectedBill = value;
-                if (value != null)
+                if (value != null && Expander.IsExpanded)
                     LoadDetailItem(value.Id);
 
                 NotifyOfPropertyChange(() => SelectedBill);
+            }
+        }
+
+        public BillView View
+        {
+            get
+            {
+                return (BillView)this.GetView();
+            }
+        }
+
+        public DataGrid Grid
+        {
+            get
+            {
+                return View.RowItemBills;
+            }
+        }
+
+        public Expander Expander
+        {
+            get
+            {
+                return View.expander;
             }
         }
     }
