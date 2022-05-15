@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -17,6 +18,7 @@ namespace WPFBakeryShopAdmin.ViewModels
     {
         private readonly RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
+        private Visibility _loadingInfoVis = Visibility.Visible;
         private BindableCollection<RowItemBill> _rowItemBills;
         private BindingButtonAppearance _bindingButton;
         private RowItemBill _selectedBill;
@@ -47,6 +49,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             Console.WriteLine("Load Detail Item!");
             new Thread(new ThreadStart(() =>
             {
+                LoadingInfoVis = Visibility.Visible;    
                 var request = new RestRequest($"orders/{id}", Method.Get);
                 var respone = _restClient.ExecuteAsync(request);
                 if ((int)respone.Result.StatusCode == 200)
@@ -54,6 +57,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                     var billDetails = respone.Result.Content;
                     BillDetails = JsonConvert.DeserializeObject<DetailItemBill>(billDetails);
                 }
+                LoadingInfoVis = Visibility.Hidden;
             })).Start();
         }
 
@@ -99,6 +103,16 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 _loadingPageVis = value;
                 NotifyOfPropertyChange(() => LoadingPageVis);
+            }
+        }
+        
+        public Visibility LoadingInfoVis
+        {
+            get { return _loadingInfoVis; }
+            set
+            {
+                _loadingInfoVis = value;
+                NotifyOfPropertyChange(() => LoadingInfoVis);
             }
         }
         public bool CouldLoadFirstPage
@@ -172,14 +186,36 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
 
-        private void ShowMessage(string message)
+        private void ShowSuccessMessage()
         {
             View.Dispatcher.Invoke(() =>
             {
-                View.snackBar.MessageQueue?.Enqueue(message,
-                null, null, null, false, true, TimeSpan.FromSeconds(3));
+                GreenSB.MessageQueue?.Enqueue(
+                GreenSB.Message.Content,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
             });
         }
+
+        private void ShowFailMessage()
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                GreenSB.MessageQueue?.Enqueue(
+                GreenSB.Message.Content,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+        }
+
         public void UpdateOrderStatus()
         {
             new Thread(new ThreadStart(() =>
@@ -191,10 +227,10 @@ namespace WPFBakeryShopAdmin.ViewModels
                     BillDetails.StatusId++;
                     _shouldCollapse = false;
                     GridRefresh(BillDetails.StatusId);
-                    ShowMessage("Cập nhật trạng thái đơn hàng thành công");
+                    ShowSuccessMessage();
                     return;
                 }
-                ShowMessage("Xảy ra lỗi trong quá trình cập nhật");
+                ShowFailMessage();
             })).Start();
         }
 
@@ -356,9 +392,26 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             get
             {
-                return View.expander;
+                return View.DetailExpander;
             }
         }
+
+        public Snackbar GreenSB
+        {
+            get
+            {
+                return View.GreenSB;
+            }
+        }
+
+        public Snackbar RedSB
+        {
+            get
+            {
+                return View.RedSB;
+            }
+        }
+
     }
     public class BindingButtonAppearance : Screen
     {

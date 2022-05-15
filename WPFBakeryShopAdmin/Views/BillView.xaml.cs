@@ -23,7 +23,7 @@ namespace WPFBakeryShopAdmin.Views
         public BillView()
         {
             InitializeComponent();
-            expander.IsEnabled = expander.IsExpanded = false;
+            DetailExpander.IsEnabled = DetailExpander.IsExpanded = false;
         }
 
     }
