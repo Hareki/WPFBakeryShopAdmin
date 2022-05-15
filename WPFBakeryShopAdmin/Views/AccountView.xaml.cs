@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace WPFBakeryShopAdmin.Views
 {
@@ -23,7 +24,27 @@ namespace WPFBakeryShopAdmin.Views
         public AccountView()
         {
             InitializeComponent();
+            expander.IsEnabled = expander.IsExpanded = false;
+
+        }
+        private void RowItemAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            expander.IsEnabled = RowItemAccounts.SelectedIndex >= 0;
+            if (expander.IsEnabled == false) expander.IsExpanded = false;
+            PBImage.Visibility = Visibility.Visible;
+            Console.WriteLine("Vis");
+
         }
 
+        private void image_Changed(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() => HideLoading()), DispatcherPriority.ContextIdle, null);
+        }
+
+        private void HideLoading()
+        {
+            PBImage.Visibility = Visibility.Hidden;
+            Console.WriteLine("Hid");
+        }
     }
 }

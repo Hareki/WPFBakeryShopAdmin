@@ -30,13 +30,13 @@
                            Margin="{StaticResource TitleMargin}" />
 
                 <Border Background="White"
-                        Padding="10 10 10 10"
+                        Padding="10 10 10 0"
                         Grid.Row="1"
                         CornerRadius="12">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="8*" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="2*" />
                         </Grid.RowDefinitions>
                         <DataGrid x:Name="RowItemAccounts"
                                   CanUserAddRows="False"
@@ -45,7 +45,8 @@
                                   Background="White"
                                   SelectionUnit="FullRow"
                                   SelectionMode="Single"
-                                  SelectedItem="{Binding Path=SelectedAccount, Mode=OneWayToSource}">
+                                  SelectedItem="{Binding Path=SelectedAccount, Mode=OneWayToSource}"
+                                  SelectionChanged="RowItemAccounts_SelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Mã TK"
                                                     Width="2*"
@@ -64,6 +65,12 @@
                                                     Binding="{Binding Path=ActivatedString}" />
                             </DataGrid.Columns>
                         </DataGrid>
+
+                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                     Value="0"
+                                     Visibility="{Binding Path=LoadingVisibility}"
+                                     IsIndeterminate="True" />
+
                         <StackPanel HorizontalAlignment="Right"
                                     Orientation="Horizontal"
                                     FlowDirection="RightToLeft"
@@ -95,9 +102,6 @@
                                     IsEnabled="{Binding Path=CouldLoadFirstPage}">
                                 <materialDesign:PackIcon Kind="PageFirst" />
                             </Button>
-                            
-                            <TextBox x:Name="TestA"
-                                     MinWidth="100"/>
 
                         </StackPanel>
                     </Grid>
@@ -109,11 +113,13 @@
                         Grid.Row="2"
                         CornerRadius="12"
                         Background="White">
-                    <Expander Header="CHI TIẾT THÔNG TIN TÀI KHOẢN"
+                    <Expander x:Name="expander"
+                              Header="CHI TIẾT THÔNG TIN TÀI KHOẢN"
                               FontWeight="SemiBold"
                               Background="White"
                               ExpandDirection="Up"
-                              Padding="10 10 10 0">
+                              Padding="10 10 10 0"
+                              IsEnabled="{Binding Path=CanExpand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
@@ -151,11 +157,22 @@
                                 <Ellipse Height="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
                                          Width="auto"
                                          x:Name="ellipse"
-                                         Grid.Column="1">
+                                         Grid.Column="1"
+                                         Panel.ZIndex="2">
                                     <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{Binding SelectedAccount.ImageUrl}" />
+                                        <ImageBrush x:Name="image"
+                                                    ImageSource="{Binding SelectedAccount.ImageUrl}"
+                                                    Changed="image_Changed" />
                                     </Ellipse.Fill>
                                 </Ellipse>
+
+                                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                             Value="0"
+                                             x:Name="PBImage"
+                                             IsIndeterminate="True"
+                                             Grid.Column="1"
+                                             Panel.ZIndex="1" />
+
                             </Grid>
 
                             <Grid Grid.Column="4"

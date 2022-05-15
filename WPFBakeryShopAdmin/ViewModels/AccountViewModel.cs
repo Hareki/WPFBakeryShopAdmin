@@ -6,12 +6,15 @@ using Newtonsoft.Json;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Threading;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
     public class AccountViewModel : Screen
     {
         private RestClient RestClient;
+        private Visibility _loadingVisibility = Visibility.Visible;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
         public BindableCollection<RowItemAccount> RowItemAccounts
         {
@@ -26,9 +29,21 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
 
+
+
+        public Visibility LoadingVisibility
+        {
+            get { return _loadingVisibility; }
+            set
+            {
+                _loadingVisibility = value;
+                NotifyOfPropertyChange(() => LoadingVisibility);
+            }
+        }
+
         private RowItemAccount _selectedAccount;
         private readonly int _pageSize = 12;
-        private int _currentPage = 1;
+        private int _currentPage = 0;
         private int _maxPage;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
 
@@ -106,7 +121,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     string value = header.Value.ToString();
                     if (value.Contains("next")) CouldLoadNextPage = true;
-                    else CouldLoadNextPage = false;
+                    else CouldLoadNextPage = true;
 
                     if (value.Contains("prev")) CouldLoadPreviousPage = true;
                     else CouldLoadPreviousPage = false;
@@ -124,15 +139,25 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         private void LoadPage()
         {
-            var request = new RestRequest("accounts", Method.Get);
-            request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
-            var respone = RestClient.ExecuteAsync(request);
-            if ((int)respone.Result.StatusCode == 200)
+            new Thread(new ThreadStart(() =>
             {
-                var accounts = respone.Result.Content;
-                RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
-                UpdateStatus(respone.Result.Headers);
-            }
+                if (RowItemAccounts != null)
+                {
+                    RowItemAccounts.Clear();
+                }
+                LoadingVisibility = Visibility.Visible;
+                var request = new RestRequest("accounts", Method.Get);
+                request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
+                var respone = RestClient.ExecuteAsync(request);
+                if ((int)respone.Result.StatusCode == 200)
+                {
+                    var accounts = respone.Result.Content;
+                    RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
+                    UpdateStatus(respone.Result.Headers);
+                }
+                LoadingVisibility = Visibility.Hidden;
+            })).Start();
+
         }
         public void LoadFirstPage()
         {
