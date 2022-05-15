@@ -8,6 +8,8 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:BillViewModel}"
              Background="#F5F5FA"
              TextElement.FontSize="15"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
@@ -29,32 +31,83 @@
                            Margin="{StaticResource TitleMargin}"
                            Text="Hóa đơn" />
 
-                <Border CornerRadius="12"
-                        Background="White"
-                        Padding="10"
-                        Grid.Row="1">
-                    <ScrollViewer>
-                        <Border Background="White"
-                                Padding="10"
-                                CornerRadius="12"
-                                Grid.Row="1">
-                            <DataGrid CanUserAddRows="False"
-                                      IsReadOnly="True"
-                                      AutoGenerateColumns="False"
-                                      Background="White">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã"
-                                                        Width="*" />
-                                    <DataGridTextColumn Header="Tên sản phẩm"
-                                                        Width="3*" />
-                                    <DataGridTextColumn Header="Danh mục"
-                                                        Width="2*" />
-                                    <DataGridTextColumn Header="Nguyên liệu"
-                                                        Width="5*" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Border>
-                    </ScrollViewer>
+                <Border Background="White"
+                        Padding="10 0 10 0"
+                        Grid.Row="1"
+                        CornerRadius="12">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="8*" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+                        <DataGrid x:Name="RowItemBills"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  AutoGenerateColumns="False"
+                                  Background="White"
+                                  SelectionUnit="FullRow"
+                                  SelectionMode="Single"
+                                  SelectedItem="{Binding Path=SelectedBill, Mode=OneWayToSource}"
+                                  SelectionChanged="RowItemBills_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã HĐ"
+                                                    Width="2*"
+                                                    Binding="{Binding Path=Id}" />
+                                <DataGridTextColumn Header="Tên KH"
+                                                    Width="4*"
+                                                    Binding="{Binding Path=CustomerName}" />
+                                <DataGridTextColumn Header="Trạng thái"
+                                                    Width="3*"
+                                                    Binding="{Binding Path=StatusString}" />
+                                <DataGridTextColumn Header="Ngày mua"
+                                                    Width="4*"
+                                                    Binding="{Binding Path=CreatedAt}" />
+                                <DataGridTextColumn Header="Tổng tiền"
+                                                    Width="4*"
+                                                    Binding="{Binding Path=Total}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                     Value="0"
+                                     Visibility="{Binding Path=LoadingPageVis}"
+                                     IsIndeterminate="True" />
+
+                        <StackPanel HorizontalAlignment="Right"
+                                    Orientation="Horizontal"
+                                    FlowDirection="RightToLeft"
+                                    Grid.Row="1">
+
+                            <Button  x:Name="LoadLastPage"
+                                     Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                     IsEnabled="{Binding Path=CouldLoadLastPage}">
+                                <materialDesign:PackIcon Kind="PageLast" />
+                            </Button>
+
+
+                            <Button x:Name="LoadNextPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=CouldLoadNextPage}">
+                                <materialDesign:PackIcon Kind="ChevronRight" />
+                            </Button>
+
+
+                            <Button x:Name="LoadPreviousPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=CouldLoadPreviousPage}">
+                                <materialDesign:PackIcon Kind="ChevronLeft" />
+                            </Button>
+
+
+                            <Button x:Name="LoadFirstPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=CouldLoadFirstPage}">
+                                <materialDesign:PackIcon Kind="PageFirst" />
+                            </Button>
+
+                        </StackPanel>
+                    </Grid>
+
                 </Border>
 
 
@@ -68,7 +121,8 @@
                     <Expander Header="CHI TIẾT THÔNG TIN HÓA ĐƠN"
                               FontWeight="SemiBold"
                               Background="White"
-                              ExpandDirection="Up">
+                              ExpandDirection="Up"
+                              x:Name="expander">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="18" />
@@ -127,7 +181,8 @@
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
-                            <TextBlock Text="Nguyễn Ngọc Minh Tú"
+                            <TextBlock x:Name="BillDetails_CustomerName"
+                                       Text="Nguyễn Ngọc Minh Tú"
                                        Grid.Column="3"
                                        FontWeight="Normal"
                                        Grid.Row="1"
@@ -140,25 +195,41 @@
                                        Grid.Row="1"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
-                            <Button  Grid.Column="10"
-                                     Grid.Row="1"
-                                     Grid.ColumnSpan="2"
-                                     Style="{StaticResource CustomPrimaryButton}"
-                                     Background="Red"
-                                     MinWidth="125"
-                                     VerticalAlignment="Top"
-                                     HorizontalAlignment="Left"
-                                     materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                                <StackPanel Orientation="Horizontal"
-                                            >
-                                    <Image Source="/Images/cancelled-white.png"
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           Margin="0 0 7 0" />
-                                    <TextBlock Text="Đã hủy"
-                                               VerticalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="10"
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2">
+                                <Button Style="{StaticResource CustomPrimaryButton}"
+                                        BorderBrush="{Binding Path=BindingButton.BackgroundColor}"
+                                        Background="{Binding Path=BindingButton.BackgroundColor}"
+                                        MinWidth="125"
+                                        VerticalAlignment="Top"
+                                        HorizontalAlignment="Left"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Path=BindingButton.ImageUrl}"
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderOptions.EdgeMode="Aliased"
+                                               Margin="0 0 7 0" />
+                                        <TextBlock Text="{Binding Path=BindingButton.Text}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Style="{StaticResource MaterialDesignIconButton}"
+                                        x:Name="UpdateOrderStatus"
+                                        Margin="7 -7 0 0"
+                                        ToolTip="Cập nhật trạng thái lên "
+                                        VerticalAlignment="Top"
+                                        HorizontalAlignment="Left"
+                                        IsEnabled="{Binding Path=BillDetails.CanUpdateOrderStatus}">
+                                    <materialDesign:PackIcon Kind="Upload" />
+                                </Button>
+                            </StackPanel>
+
+
+                            
 
 
                             <TextBlock Text="Ngày mua:"
@@ -167,7 +238,9 @@
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
-                            <TextBlock Text="12/05/2022 2:05 PM"
+
+                            <TextBlock x:Name="BillDetails_CreatedAt"
+                                       Text="12/05/2022 2:05 PM"
                                        Grid.Column="3"
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
@@ -180,7 +253,8 @@
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
                                        Margin="0 0 0 30" />
-                            <TextBlock Text="Thẻ"
+                            <TextBlock x:Name="BillDetails_PaidMethodName"
+                                       Text="Thẻ"
                                        Grid.Column="10"
                                        Grid.Row="2"
                                        Grid.ColumnSpan="3"
@@ -217,9 +291,11 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="BillDetails_ReceiverInfo_Address"
+                                           Grid.Row="1"
                                            Grid.Column="2"
                                            FontWeight="Normal"
+                                           MinHeight="65"
                                            TextWrapping="Wrap"
                                            Text="Số 87 đường Trần Hưng Đạo, phường Trần Hưng Đạo, quận Hoàn Kiếm, thành phố Hà Nội." />
                             </Grid>
@@ -247,7 +323,8 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="BillDetails_ReceiverInfo_Phone"
+                                           Grid.Row="1"
                                            Grid.Column="2"
                                            FontWeight="Normal"
                                            Text="0338758008" />
@@ -276,7 +353,8 @@
                                            FontWeight="Bold"
                                            VerticalAlignment="Center" />
 
-                                <TextBlock Grid.Row="1"
+                                <TextBlock x:Name="BillDetails_ReceiverInfo_Note"
+                                           Grid.Row="1"
                                            Grid.Column="2"
                                            FontWeight="Normal"
                                            Text="haha note goes brrrrr" />

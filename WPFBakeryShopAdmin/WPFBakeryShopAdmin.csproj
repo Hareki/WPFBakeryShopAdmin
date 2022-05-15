@@ -117,7 +117,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\DetailItemBill.cs" />
     <Compile Include="Models\RowItemAccount.cs" />
+    <Compile Include="Models\RowItemBill.cs" />
     <Compile Include="Models\RowItemProduct.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />

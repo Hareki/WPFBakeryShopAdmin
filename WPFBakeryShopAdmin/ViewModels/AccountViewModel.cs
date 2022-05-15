@@ -13,8 +13,8 @@ namespace WPFBakeryShopAdmin.ViewModels
 {
     public class AccountViewModel : Screen
     {
-        private RestClient RestClient;
-        private Visibility _loadingVisibility = Visibility.Visible;
+        private RestClient _restClient;
+        private Visibility _loadingPageVis = Visibility.Visible;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
         public BindableCollection<RowItemAccount> RowItemAccounts
         {
@@ -31,18 +31,18 @@ namespace WPFBakeryShopAdmin.ViewModels
 
 
 
-        public Visibility LoadingVisibility
+        public Visibility LoadingPageVis
         {
-            get { return _loadingVisibility; }
+            get { return _loadingPageVis; }
             set
             {
-                _loadingVisibility = value;
-                NotifyOfPropertyChange(() => LoadingVisibility);
+                _loadingPageVis = value;
+                NotifyOfPropertyChange(() => LoadingPageVis);
             }
         }
 
         private RowItemAccount _selectedAccount;
-        private readonly int _pageSize = 12;
+        private readonly int _pageSize = 11;
         private int _currentPage = 0;
         private int _maxPage;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
@@ -101,8 +101,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 
         public AccountViewModel() : base()
         {
-            this.RestClient = new RestClient(RestConnection.BASE_CONNECTION_STRING);
-            this.RestClient.Authenticator = new JwtAuthenticator(RestConnection.BearerToken);
+            this._restClient = RestConnection.REST_CLIENT;
             LoadPage();
         }
 
@@ -145,17 +144,17 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     RowItemAccounts.Clear();
                 }
-                LoadingVisibility = Visibility.Visible;
+                LoadingPageVis = Visibility.Visible;
                 var request = new RestRequest("accounts", Method.Get);
                 request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
-                var respone = RestClient.ExecuteAsync(request);
+                var respone = _restClient.ExecuteAsync(request);
                 if ((int)respone.Result.StatusCode == 200)
                 {
                     var accounts = respone.Result.Content;
                     RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
                     UpdateStatus(respone.Result.Headers);
                 }
-                LoadingVisibility = Visibility.Hidden;
+                LoadingPageVis = Visibility.Hidden;
             })).Start();
 
         }
@@ -180,8 +179,5 @@ namespace WPFBakeryShopAdmin.ViewModels
             _currentPage = _maxPage;
             LoadPage();
         }
-
-
-
     }
 }

@@ -30,7 +30,7 @@
                            Margin="{StaticResource TitleMargin}" />
 
                 <Border Background="White"
-                        Padding="10 10 10 0"
+                        Padding="10 0 10 0"
                         Grid.Row="1"
                         CornerRadius="12">
                     <Grid>
@@ -68,7 +68,7 @@
 
                         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                      Value="0"
-                                     Visibility="{Binding Path=LoadingVisibility}"
+                                     Visibility="{Binding Path=LoadingPageVis}"
                                      IsIndeterminate="True" />
 
                         <StackPanel HorizontalAlignment="Right"
@@ -118,8 +118,7 @@
                               FontWeight="SemiBold"
                               Background="White"
                               ExpandDirection="Up"
-                              Padding="10 10 10 0"
-                              IsEnabled="{Binding Path=CanExpand}">
+                              Padding="10 10 10 0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
