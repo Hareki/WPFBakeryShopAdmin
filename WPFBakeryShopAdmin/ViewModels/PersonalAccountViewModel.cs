@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Threading;
+using Newtonsoft.Json.Serialization;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -41,6 +42,26 @@ namespace WPFBakeryShopAdmin.ViewModels
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
         }
+
+        public void UpdateInfo()
+        {
+            //new Thread(new ThreadStart(() =>
+            //{
+            //    var request = new RestRequest("account", Method.Put);
+            //    JsonConvert.SerializeObject
+            //    var respone = _restClient.ExecuteAsync(request);
+            //    if ((int)respone.Result.StatusCode == 200)
+            //    {
+            //        var personalAccount = respone.Result.Content;
+            //        PersonalAccount = JsonConvert.DeserializeObject<PersonalAccount>(personalAccount);
+            //    }
+            //})).Start();
+            string result = StringUtils.SerializeObject(PersonalAccount);
+            string result2 = JsonConvert.SerializeObject(PersonalAccount);
+            Console.WriteLine("result: " + result);
+            Console.WriteLine("result2: " + result2);
+        }
+
 
         public PersonalAccount PersonalAccount
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace WPFBakeryShopAdmin.Models
@@ -13,12 +14,18 @@ namespace WPFBakeryShopAdmin.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string ImageUrl { get; set; }
         public string Address { get; set; }
         public string LangKey { get; set; }
+
+
+        [JsonIgnore]
+        public string ImageUrl { get; set; }
+        [JsonIgnore]
         public bool Activated { get; set; }
+        [JsonIgnore]
         public List<string> Authorities { get; set; }
 
+        [JsonIgnore]
         public string LanguageName
         {
             get
@@ -31,6 +38,7 @@ namespace WPFBakeryShopAdmin.Models
                 }
             }
         }
+        [JsonIgnore]
         public int LanguageIndex
         {
             set

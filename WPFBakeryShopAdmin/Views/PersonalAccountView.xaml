@@ -84,7 +84,6 @@
                                                  Width="auto"
                                                  x:Name="ellipse"
                                                  Grid.Column="1"
-                                                 
                                                  Grid.Row="1">
                                             <Ellipse.Fill>
                                                 <ImageBrush x:Name="image"
@@ -95,7 +94,7 @@
                                         </Ellipse>
 
                                         <Button x:Name="UpdateImage"
-                                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                                Style="{StaticResource MaterialDesignFloatingActionButton}"
                                                 ToolTip="MaterialDesignIconButton"
                                                 Grid.Row="1"
                                                 VerticalAlignment="Bottom"
@@ -148,7 +147,7 @@
                                              Grid.ColumnSpan="8"
                                              Margin="0 15"
                                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="Địa chỉ*"
+                                             materialDesign:HintAssist.Hint="Địa chỉ"
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="True" />
 
@@ -201,7 +200,8 @@
                                                 Margin="0 0 10 0"
                                                 Width="{Binding ActualWidth, ElementName=RequestUpdate, Mode=OneWay}" />
 
-                                        <Button Style="{StaticResource CustomPrimaryButton}"
+                                        <Button x:Name="UpdateInfo"
+                                                Style="{StaticResource CustomPrimaryButton}"
                                                 Content="LƯU"
                                                 Grid.Column="10"
                                                 Grid.Row="5"
