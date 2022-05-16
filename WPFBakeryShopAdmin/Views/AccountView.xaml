@@ -103,6 +103,15 @@
                                 <materialDesign:PackIcon Kind="PageFirst" />
                             </Button>
 
+                            <StackPanel FlowDirection="LeftToRight"
+                                        Orientation="Horizontal"
+                                        Margin="10 0 0 0">
+                                <TextBlock x:Name="PageIndicator"
+                                           Text="1 - 11 của 44"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+
                         </StackPanel>
                     </Grid>
 

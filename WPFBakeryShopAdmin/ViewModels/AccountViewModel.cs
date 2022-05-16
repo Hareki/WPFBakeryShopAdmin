@@ -13,9 +13,16 @@ namespace WPFBakeryShopAdmin.ViewModels
 {
     public class AccountViewModel : Screen
     {
-        private RestClient _restClient;
+        private readonly RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
+        private string _pageIndicator;
+        private int _totalCount;
+        private RowItemAccount _selectedAccount;
+        private readonly int _pageSize = 11;
+        private int _currentPage = 0;
+        private int _maxPageIndex;
+        private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
         public BindableCollection<RowItemAccount> RowItemAccounts
         {
             get
@@ -28,9 +35,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => RowItemAccounts);
             }
         }
-
-
-
         public Visibility LoadingPageVis
         {
             get { return _loadingPageVis; }
@@ -40,13 +44,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => LoadingPageVis);
             }
         }
-
-        private RowItemAccount _selectedAccount;
-        private readonly int _pageSize = 11;
-        private int _currentPage = 0;
-        private int _maxPage;
-        private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
-
         public bool CouldLoadFirstPage
         {
             get { return _couldLoadFirstPage; }
@@ -112,7 +109,9 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 if (header.Name.Equals("X-Total-Count"))
                 {
-                    _maxPage = (Int32.Parse(header.Value.ToString()) / _pageSize);
+                    _totalCount = (Int32.Parse(header.Value.ToString()));
+                    _maxPageIndex = _totalCount / _pageSize;
+                    UpdatePageIndicator();
                     totalCountDone = true;
                 }
 
@@ -136,6 +135,14 @@ namespace WPFBakeryShopAdmin.ViewModels
                 if (totalCountDone && linkDone) return;
             }
         }
+
+        private void UpdatePageIndicator()
+        {
+            int start = _pageSize * _currentPage + 1;
+            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
+            PageIndicator = $"{start} - {end} của {_totalCount}";
+        }
+
         private void LoadPage()
         {
             new Thread(new ThreadStart(() =>
@@ -176,8 +183,19 @@ namespace WPFBakeryShopAdmin.ViewModels
 
         public void LoadLastPage()
         {
-            _currentPage = _maxPage;
+            _currentPage = _maxPageIndex;
             LoadPage();
+        }
+
+        public string PageIndicator
+        {
+            get { return _pageIndicator; }
+            set
+            {
+                _pageIndicator = value;
+                NotifyOfPropertyChange(() => PageIndicator);
+
+            }
         }
     }
 }

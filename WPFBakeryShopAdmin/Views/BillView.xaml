@@ -25,12 +25,23 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                           Grid.Row="0"
-                           Grid.ColumnSpan="12"
-                           FontWeight="SemiBold"
-                           Margin="{StaticResource TitleMargin}"
-                           Text="Đơn hàng" />
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="12">
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                               FontWeight="SemiBold"
+                               Margin="{StaticResource TitleMargin}"
+                               Text="Đơn hàng" />
+                    <Button x:Name="LoadPage"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            ToolTip="MaterialDesignIconForegroundButton"
+                            Foreground="{DynamicResource MaterialDesignBody}"
+                            VerticalAlignment="Top"
+                            Margin="5 0 0 0 ">
+                        <materialDesign:PackIcon Kind="Reload" />
+                    </Button>
+                </StackPanel>
+
 
                 <Border Background="White"
                         Padding="10 0 10 0"
@@ -105,6 +116,15 @@
                                     IsEnabled="{Binding Path=CouldLoadFirstPage}">
                                 <materialDesign:PackIcon Kind="PageFirst" />
                             </Button>
+
+                            <StackPanel FlowDirection="LeftToRight"
+                                        Orientation="Horizontal"
+                                        Margin="10 0 0 0">
+                                <TextBlock x:Name="PageIndicator"
+                                           Text="1 - 11 của 44"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
 
                         </StackPanel>
                     </Grid>

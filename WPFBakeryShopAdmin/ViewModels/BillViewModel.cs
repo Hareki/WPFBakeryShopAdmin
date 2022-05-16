@@ -24,10 +24,12 @@ namespace WPFBakeryShopAdmin.ViewModels
         private RowItemBill _selectedBill;
         private DetailItemBill _billDetails;
         private bool _shouldCollapse;
+        private string _pageIndicator;
 
+        private int _totalCount;
         private readonly int _pageSize = 11;
         private int _currentPage = 0;
-        private int _maxPage;
+        private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
         private string _pendingColor = "#0DA012";
         private string _shippingColor = "#4C82AF";
@@ -49,7 +51,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             Console.WriteLine("Load Detail Item!");
             new Thread(new ThreadStart(() =>
             {
-                LoadingInfoVis = Visibility.Visible;    
+                LoadingInfoVis = Visibility.Visible;
                 var request = new RestRequest($"orders/{id}", Method.Get);
                 var respone = _restClient.ExecuteAsync(request);
                 if ((int)respone.Result.StatusCode == 200)
@@ -105,7 +107,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => LoadingPageVis);
             }
         }
-        
+
         public Visibility LoadingInfoVis
         {
             get { return _loadingInfoVis; }
@@ -154,14 +156,16 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => CouldLoadLastPage);
             }
         }
-        private void UpdatePagingStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
+        private void UpdatePageStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
         {
             bool linkDone = false, totalCountDone = false;
             foreach (var header in headers)
             {
                 if (header.Name.Equals("X-Total-Count"))
                 {
-                    _maxPage = (Int32.Parse(header.Value.ToString()) / _pageSize);
+                    _totalCount = (Int32.Parse(header.Value.ToString()));
+                    _maxPageIndex = _totalCount / _pageSize;
+                    UpdatePageIndicator();
                     totalCountDone = true;
                 }
 
@@ -284,7 +288,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             SetBindingButtonAppearance(BillDetails.StatusId);
         }
 
-        private void LoadPage()
+        public void LoadPage()
         {
             new Thread(new ThreadStart(() =>
             {
@@ -300,11 +304,18 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     var bills = respone.Result.Content;
                     RowItemBills = JsonConvert.DeserializeObject<BindableCollection<RowItemBill>>(bills);
-                    UpdatePagingStatus(respone.Result.Headers);
+                    UpdatePageStatus(respone.Result.Headers);
                 }
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
 
+        }
+
+        private void UpdatePageIndicator()
+        {
+            int start = _pageSize * _currentPage + 1;
+            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
+            PageIndicator = $"{start} - {end} của {_totalCount}";
         }
         public void LoadFirstPage()
         {
@@ -323,7 +334,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public void LoadLastPage()
         {
-            _currentPage = _maxPage;
+            _currentPage = _maxPageIndex;
             LoadPage();
         }
         public BindingButtonAppearance BindingButton
@@ -409,6 +420,16 @@ namespace WPFBakeryShopAdmin.ViewModels
             get
             {
                 return View.RedSB;
+            }
+        }
+
+        public string PageIndicator
+        {
+            get { return _pageIndicator; }
+            set
+            {
+                _pageIndicator = value;
+                NotifyOfPropertyChange(() => PageIndicator);
             }
         }
 
