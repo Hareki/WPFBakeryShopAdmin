@@ -8,6 +8,8 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:DashboardViewModel}"
              Background="#F5F5FA"
              TextElement.FontSize="15"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
@@ -35,11 +37,36 @@
                     <RowDefinition Height="7*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                           FontWeight="SemiBold"
-                           Text="Bảng thống kê"
-                           Grid.ColumnSpan="12"
-                           Margin="{StaticResource TitleMargin}" />
+                <Border VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.ColumnSpan="12"
+                        Grid.RowSpan="6"
+                        Background="White"
+                        Panel.ZIndex="0"
+                        Visibility="{Binding Path=LoadingPageVis}">
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                 Value="0"
+                                 IsIndeterminate="True" />
+                </Border>
+
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="12">
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                               FontWeight="SemiBold"
+                               Margin="{StaticResource TitleMargin}"
+                               Text="Bảng thống kê" />
+                    <Button x:Name="LoadPage"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            ToolTip="MaterialDesignIconForegroundButton"
+                            Foreground="{DynamicResource MaterialDesignBody}"
+                            VerticalAlignment="Top"
+                            Margin="5 0 0 0 ">
+                        <materialDesign:PackIcon Kind="Reload" />
+                    </Button>
+                </StackPanel>
 
                 <Border Grid.Column="0"
                         Grid.Row="1"
@@ -60,7 +87,8 @@
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center"
                                        Text="Tổng số đơn hàng" />
-                            <TextBlock Text="30"
+                            <TextBlock x:Name="Dashboard_TotalOrdersNum"
+                                       Text="0"
                                        FontWeight="SemiBold" />
                         </StackPanel>
                     </StackPanel>
@@ -85,7 +113,8 @@
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center"
                                        Text="Tổng số sản phẩm bày bán" />
-                            <TextBlock Text="75"
+                            <TextBlock x:Name="Dashboard_TotalAvailableProductVariantsNum"
+                                       Text="0"
                                        FontWeight="SemiBold" />
                         </StackPanel>
                     </StackPanel>
@@ -110,7 +139,8 @@
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center"
                                        Text="Tổng số sản phẩm đã bán" />
-                            <TextBlock Text="2294"
+                            <TextBlock x:Name="Dashboard_TotalSoldProductVariantsNum"
+                                       Text="0"
                                        FontWeight="SemiBold" />
                         </StackPanel>
                     </StackPanel>
@@ -155,7 +185,8 @@
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
                                            Text="Chờ duyệt" />
-                                <ProgressBar Value="50"
+                                <ProgressBar x:Name="PendingPercent"
+                                             Value="50"
                                              Margin="15 0 0 0"
                                              materialDesign:TransitionAssist.DisableTransitions="True" />
                             </StackPanel>
@@ -177,7 +208,8 @@
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
                                            Text="Đang giao" />
-                                <ProgressBar Value="50"
+                                <ProgressBar x:Name="ShippingPercent"
+                                             Value="50"
                                              Margin="15 0 0 0"
                                              materialDesign:TransitionAssist.DisableTransitions="True" />
                             </StackPanel>
@@ -199,7 +231,8 @@
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
                                            Text="Đã giao" />
-                                <ProgressBar Value="50"
+                                <ProgressBar x:Name="ShippedPercent"
+                                             Value="50"
                                              Margin="15 0 0 0"
                                              materialDesign:TransitionAssist.DisableTransitions="True" />
                             </StackPanel>
@@ -221,7 +254,8 @@
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
                                            Text="Đã hủy" />
-                                <ProgressBar Value="50"
+                                <ProgressBar x:Name="CancelledPercent"
+                                             Value="50"
                                              Margin="15 0 0 0"
                                              materialDesign:TransitionAssist.DisableTransitions="True" />
                             </StackPanel>
@@ -242,7 +276,8 @@
                                         HorizontalAlignment="Center">
                                 <TextBlock Text="Chờ duyệt"
                                            Margin="0 0 0 5" />
-                                <TextBlock Text="15"
+                                <TextBlock x:Name="Dashboard_TodayProcessingOrdersNum"
+                                           Text="4"
                                            HorizontalAlignment="Center"
                                            FontWeight="Bold" />
                             </StackPanel>
@@ -253,7 +288,8 @@
                                 <StackPanel>
                                     <TextBlock Text="Đang giao"
                                                Margin="0 0 0 5" />
-                                    <TextBlock Text="15"
+                                    <TextBlock x:Name="Dashboard_TodayDispatchOrdersNum"
+                                               Text="5"
                                                HorizontalAlignment="Center"
                                                FontWeight="Bold" />
                                 </StackPanel>
@@ -265,7 +301,8 @@
                                 <StackPanel>
                                     <TextBlock Text="Đã giao"
                                                Margin="0 0 0 5" />
-                                    <TextBlock Text="15"
+                                    <TextBlock x:Name="Dashboard_TodayShippedOrdersNum"
+                                               Text="6"
                                                HorizontalAlignment="Center"
                                                FontWeight="Bold" />
                                 </StackPanel>
@@ -277,7 +314,8 @@
                                 <StackPanel>
                                     <TextBlock Text="Đã hủy"
                                                Margin="0 0 0 5" />
-                                    <TextBlock Text="15"
+                                    <TextBlock x:Name="Dashboard_TodayCancelOrdersNum"
+                                               Text="7"
                                                HorizontalAlignment="Center"
                                                FontWeight="Bold" />
                                 </StackPanel>
@@ -298,19 +336,26 @@
                         <TextBlock Text="5 đơn hàng gần nhất"
                                    Margin="0 0 0 15" />
 
-                        <DataGrid CanUserAddRows="False"
+                        <DataGrid x:Name="Dashboard_TopRecentOrders"
+                                  CanUserAddRows="False"
                                   IsReadOnly="True"
                                   AutoGenerateColumns="False"
-                                  Background="White">
+                                  Background="White"
+                                  SelectionUnit="FullRow"
+                                  SelectionMode="Single">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã HĐ"
-                                                    Width="2*" />
+                                <DataGridTextColumn Header="Mã đơn"
+                                                    Width="2*"
+                                                    Binding="{Binding Path=OrderId}" />
                                 <DataGridTextColumn Header="Họ tên KH"
-                                                    Width="3*" />
+                                                    Width="3*"
+                                                    Binding="{Binding Path=UserFullName}" />
                                 <DataGridTextColumn Header="Tổng tiền"
-                                                    Width="3*" />
+                                                    Width="3*"
+                                                    Binding="{Binding Path=FormattedOrderTotal}" />
                                 <DataGridTextColumn Header="Trạng thái"
-                                                    Width="2*" />
+                                                    Width="2*"
+                                                    Binding="{Binding Path=StatusName}" />
                             </DataGrid.Columns>
                         </DataGrid>
 

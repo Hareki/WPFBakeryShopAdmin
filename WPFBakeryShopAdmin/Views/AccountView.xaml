@@ -23,11 +23,22 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                           FontWeight="SemiBold"
-                           Text="Tài khoản"
-                           Grid.Row="0"
-                           Margin="{StaticResource TitleMargin}" />
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="12">
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                               FontWeight="SemiBold"
+                               Margin="{StaticResource TitleMargin}"
+                               Text="Tài khoản" />
+                    <Button x:Name="LoadPage"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            ToolTip="MaterialDesignIconForegroundButton"
+                            Foreground="{DynamicResource MaterialDesignBody}"
+                            VerticalAlignment="Top"
+                            Margin="5 0 0 0 ">
+                        <materialDesign:PackIcon Kind="Reload" />
+                    </Button>
+                </StackPanel>
 
                 <Border Background="White"
                         Padding="10 0 10 0"

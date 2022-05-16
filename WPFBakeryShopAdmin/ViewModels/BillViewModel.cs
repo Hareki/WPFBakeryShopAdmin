@@ -298,7 +298,32 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
                 LoadingPageVis = Visibility.Visible;
                 var request = new RestRequest("orders", Method.Get);
+
+                if (_currentPage > _maxPageIndex) _currentPage = 0;
                 request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
+                var respone = _restClient.ExecuteAsync(request);
+                if ((int)respone.Result.StatusCode == 200)
+                {
+                    var bills = respone.Result.Content;
+                    RowItemBills = JsonConvert.DeserializeObject<BindableCollection<RowItemBill>>(bills);
+                    UpdatePageStatus(respone.Result.Headers);
+                }
+                LoadingPageVis = Visibility.Hidden;
+            })).Start();
+
+        }
+
+        public void LoadPage(int page)
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                if (RowItemBills != null)
+                {
+                    RowItemBills.Clear();
+                }
+                LoadingPageVis = Visibility.Visible;
+                var request = new RestRequest("orders", Method.Get);
+                request.AddParameter("page", page).AddParameter("size", _pageSize);
                 var respone = _restClient.ExecuteAsync(request);
                 if ((int)respone.Result.StatusCode == 200)
                 {

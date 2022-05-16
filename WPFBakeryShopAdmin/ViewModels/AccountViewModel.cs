@@ -23,6 +23,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         private int _currentPage = 0;
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
+        public AccountViewModel() : base()
+        {
+            this._restClient = RestConnection.REST_CLIENT;
+            LoadPage();
+        }
         public BindableCollection<RowItemAccount> RowItemAccounts
         {
             get
@@ -96,11 +101,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
 
-        public AccountViewModel() : base()
-        {
-            this._restClient = RestConnection.REST_CLIENT;
-            LoadPage();
-        }
 
         private void UpdateStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
         {
@@ -143,7 +143,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             PageIndicator = $"{start} - {end} của {_totalCount}";
         }
 
-        private void LoadPage()
+        public void LoadPage()
         {
             new Thread(new ThreadStart(() =>
             {
@@ -153,6 +153,8 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
                 LoadingPageVis = Visibility.Visible;
                 var request = new RestRequest("accounts", Method.Get);
+
+                if (_currentPage > _maxPageIndex) _currentPage = 0;
                 request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
                 var respone = _restClient.ExecuteAsync(request);
                 if ((int)respone.Result.StatusCode == 200)
