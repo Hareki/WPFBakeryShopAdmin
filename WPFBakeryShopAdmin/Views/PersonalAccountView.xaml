@@ -72,14 +72,20 @@
 
                                     <Grid Grid.Column="0"
                                           Grid.Row="1"
-                                          Grid.ColumnSpan="4"
+                                          Grid.ColumnSpan="3"
                                           Grid.RowSpan="5"
-                                          Margin="0 0 30 0">
+                                          Margin="0 0 0 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
                                         <Ellipse Height="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
                                                  Width="auto"
                                                  x:Name="ellipse"
                                                  Grid.Column="1"
-                                                 Panel.ZIndex="2">
+                                                 
+                                                 Grid.Row="1">
                                             <Ellipse.Fill>
                                                 <ImageBrush x:Name="image"
                                                             ImageSource="D:\Study\CNTT\4th year\2nd semester\31602620.jpg"
@@ -87,7 +93,21 @@
                                                             RenderOptions.EdgeMode="Aliased" />
                                             </Ellipse.Fill>
                                         </Ellipse>
+
+                                        <Button x:Name="UpdateImage"
+                                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                                ToolTip="MaterialDesignIconButton"
+                                                Grid.Row="1"
+                                                VerticalAlignment="Bottom"
+                                                Panel.ZIndex="2"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                MaxWidth="40"
+                                                MaxHeight="{Binding ActualWidth, ElementName=UpdateImage, Mode=OneWay}">
+                                            <materialDesign:PackIcon Kind="Camera" />
+                                        </Button>
                                     </Grid>
+
 
 
                                     <TextBox x:Name="PersonalAccount_FirstName"
@@ -143,13 +163,27 @@
                                              materialDesign:TextFieldAssist.HasClearButton="True" />
 
 
-                                    <ComboBox x:Name="PersonalAccount_LanguageName"
-                                        Grid.Column="9"
+                                    <ComboBox x:Name="LanguageList"
+                                              SelectedIndex="{Binding Path=PersonalAccount.LanguageIndex}"
+                                              Grid.Column="9"
                                               Grid.Row="4"
                                               Grid.ColumnSpan="3"
                                               Margin="15 15 0 15"
                                               Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                              materialDesign:HintAssist.Hint="Ngôn ngữ" />
+                                              materialDesign:HintAssist.Hint="Ngôn ngữ">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{Binding LanguageFlagURL}"
+                                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                                           RenderOptions.EdgeMode="Aliased"
+                                                           MaxWidth="25"
+                                                           Margin="0 0 7 0" />
+                                                    <TextBlock Text="{Binding LanguageName}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
 
                                     <StackPanel Margin="0 15"
                                                 Grid.Column="7"
@@ -186,7 +220,7 @@
                                                 Visibility="Hidden">
 
                                         <Button x:Name="RequestUpdate"
-                                            Style="{StaticResource CustomBorderButton}"
+                                                Style="{StaticResource CustomBorderButton}"
                                                 Content="CẬP NHẬT"
                                                 Grid.Column="10"
                                                 Grid.Row="5"

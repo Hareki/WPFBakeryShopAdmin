@@ -16,13 +16,16 @@ namespace WPFBakeryShopAdmin.ViewModels
         private readonly RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private PersonalAccount _personalAccount;
+        private List<ItemLanguage> _languageList;
 
         public PersonalAccountViewModel() : base()
         {
             _restClient = new RestClient(RestConnection.ACCOUNT_BASE_CONNECTION_STRING);
             _restClient.Authenticator = new JwtAuthenticator(RestConnection.BearerToken);
+            LanguageList = Utilities.LanguageList.LIST;
             LoadPage();
         }
+
         public void LoadPage()
         {
             new Thread(new ThreadStart(() =>
@@ -55,6 +58,15 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 _loadingPageVis = value;
                 NotifyOfPropertyChange(() => LoadingPageVis);
+            }
+        }
+        public List<ItemLanguage> LanguageList
+        {
+            get { return _languageList; }
+            set
+            {
+                _languageList = value;
+                NotifyOfPropertyChange(() => LanguageList);
             }
         }
 

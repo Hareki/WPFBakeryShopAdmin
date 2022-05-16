@@ -79,7 +79,6 @@
                                                     Binding="{Binding Path=FormattedTotal}" />
                             </DataGrid.Columns>
                         </DataGrid>
-
                         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                      Value="0"
                                      Visibility="{Binding Path=LoadingPageVis}"
@@ -123,7 +122,7 @@
                                 <TextBlock x:Name="PageIndicator"
                                            Text="1 - 11 của 44"
                                            FontWeight="SemiBold"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center" />
                             </StackPanel>
 
                         </StackPanel>

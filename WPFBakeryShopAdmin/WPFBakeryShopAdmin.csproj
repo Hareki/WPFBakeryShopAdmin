@@ -117,12 +117,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AttachedProperties\MoreProps.cs" />
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\DetailItemBill.cs" />
+    <Compile Include="Models\ItemLanguage.cs" />
     <Compile Include="Models\PersonalAccount.cs" />
     <Compile Include="Models\RowItemAccount.cs" />
     <Compile Include="Models\RowItemBill.cs" />
     <Compile Include="Models\RowItemProduct.cs" />
+    <Compile Include="Utilities\LanguageList.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
@@ -265,6 +268,10 @@
     <Resource Include="Images\pending-white.png" />
     <Resource Include="Images\shipped-white.png" />
     <Resource Include="Images\shipping-white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\uk-flag.png" />
+    <Resource Include="Images\vn-flag.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

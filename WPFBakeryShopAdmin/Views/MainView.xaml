@@ -9,6 +9,8 @@
         Height="700"
         Width="882"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:BillViewModel}"
         Background="#F5F5FA"
         TextElement.FontSize="15"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -57,11 +59,13 @@
                         <Border Background="White"
                                 CornerRadius="4"
                                 HorizontalAlignment="Center"
-                                Padding="15 0 15 5">
+                                Padding="15 0 15 5"
+                                MinWidth="140">
                             <Grid>
-                                <ComboBox materialDesign:HintAssist.Hint="Language"
+                                <ComboBox x:Name="LanguageList"
+                                          materialDesign:HintAssist.Hint="Language"
                                           VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"
+                                          HorizontalAlignment="Stretch"
                                           Grid.Column="0"
                                           FontSize="12"
                                           materialDesign:ComboBoxAssist.ClassicMode="False"
@@ -70,8 +74,18 @@
                                           materialDesign:TextFieldAssist.UnderlineCornerRadius="10"
                                           FontWeight="Bold"
                                           Grid.Row="1">
-                                    <ComboBoxItem Content="English" />
-                                    <ComboBoxItem Content="Tiếng Việt" />
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding LanguageFlagURL}"
+                                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                                       RenderOptions.EdgeMode="Aliased"
+                                                       MaxWidth="25"
+                                                       Margin="0 0 7 0"/>
+                                                <TextBlock Text="{Binding LanguageName}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </Grid>
 

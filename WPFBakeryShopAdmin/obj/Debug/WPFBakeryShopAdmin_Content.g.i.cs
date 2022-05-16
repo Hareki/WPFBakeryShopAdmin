@@ -8,9 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/cancelled-white.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/pending-white.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/shipped-white.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/shipping-white.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/uk-flag.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/vn-flag.png")]
 
 

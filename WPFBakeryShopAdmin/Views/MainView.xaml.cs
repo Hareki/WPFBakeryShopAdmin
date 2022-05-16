@@ -22,6 +22,7 @@ namespace WPFBakeryShopAdmin.Views
         public MainView()
         {
             InitializeComponent();
+
         }
     }
 }
