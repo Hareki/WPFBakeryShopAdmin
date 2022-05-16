@@ -25,7 +25,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
         public AccountViewModel() : base()
         {
-            this._restClient = RestConnection.REST_CLIENT;
+            this._restClient = RestConnection.ADMIN_REST_CLIENT;
             LoadPage();
         }
         public BindableCollection<RowItemAccount> RowItemAccounts
@@ -165,7 +165,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
-
         }
         public void LoadFirstPage()
         {

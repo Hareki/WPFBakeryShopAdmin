@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\DetailItemBill.cs" />
+    <Compile Include="Models\PersonalAccount.cs" />
     <Compile Include="Models\RowItemAccount.cs" />
     <Compile Include="Models\RowItemBill.cs" />
     <Compile Include="Models\RowItemProduct.cs" />

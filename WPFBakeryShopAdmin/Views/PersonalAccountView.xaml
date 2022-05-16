@@ -8,6 +8,8 @@
              d:DesignHeight="1000"
              d:DesignWidth="800"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:PersonalAccountViewModel}"
              Background="#F5F5FA"
              TextElement.FontSize="15"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
@@ -82,13 +84,14 @@
                                                 <ImageBrush x:Name="image"
                                                             ImageSource="D:\Study\CNTT\4th year\2nd semester\31602620.jpg"
                                                             RenderOptions.BitmapScalingMode="HighQuality"
-                                                            RenderOptions.EdgeMode="Aliased"/>
+                                                            RenderOptions.EdgeMode="Aliased" />
                                             </Ellipse.Fill>
                                         </Ellipse>
                                     </Grid>
 
 
-                                    <TextBox Grid.Column="4"
+                                    <TextBox x:Name="PersonalAccount_FirstName"
+                                             Grid.Column="4"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="4"
                                              Margin="0 30 15 15"
@@ -99,7 +102,8 @@
 
                                     </TextBox>
 
-                                    <TextBox Grid.Column="8"
+                                    <TextBox x:Name="PersonalAccount_LastName"
+                                             Grid.Column="8"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="4"
                                              Margin="15 30 0 15"
@@ -108,7 +112,8 @@
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="True" />
 
-                                    <TextBox Grid.Column="4"
+                                    <TextBox x:Name="PersonalAccount_Email"
+                                             Grid.Column="4"
                                              Grid.Row="2"
                                              Grid.ColumnSpan="8"
                                              Margin="0 15"
@@ -117,7 +122,8 @@
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="True" />
 
-                                    <TextBox Grid.Column="4"
+                                    <TextBox x:Name="PersonalAccount_Address"
+                                             Grid.Column="4"
                                              Grid.Row="3"
                                              Grid.ColumnSpan="8"
                                              Margin="0 15"
@@ -126,7 +132,8 @@
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="True" />
 
-                                    <TextBox Grid.Column="4"
+                                    <TextBox x:Name="PersonalAccount_Phone"
+                                             Grid.Column="4"
                                              Grid.Row="4"
                                              Grid.ColumnSpan="5"
                                              Margin="0 15 15 15"
@@ -136,7 +143,8 @@
                                              materialDesign:TextFieldAssist.HasClearButton="True" />
 
 
-                                    <ComboBox Grid.Column="9"
+                                    <ComboBox x:Name="PersonalAccount_LanguageName"
+                                        Grid.Column="9"
                                               Grid.Row="4"
                                               Grid.ColumnSpan="3"
                                               Margin="15 15 0 15"
@@ -144,25 +152,46 @@
                                               materialDesign:HintAssist.Hint="Ngôn ngữ" />
 
                                     <StackPanel Margin="0 15"
-                                                Grid.Column="9"
-                                                Grid.ColumnSpan="3"
+                                                Grid.Column="7"
+                                                Grid.ColumnSpan="5"
                                                 Grid.Row="5"
                                                 Orientation="Horizontal"
-                                                FlowDirection="RightToLeft">
+                                                FlowDirection="RightToLeft"
+                                                Visibility="Visible">
 
                                         <Button Style="{StaticResource CustomSecondaryButton}"
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                                 Grid.Column="11"
                                                 Grid.Row="5"
                                                 Content="HỦY"
-                                                Margin="0 0 10 0" />
+                                                Margin="0 0 10 0"
+                                                Width="{Binding ActualWidth, ElementName=RequestUpdate, Mode=OneWay}" />
 
                                         <Button Style="{StaticResource CustomPrimaryButton}"
                                                 Content="LƯU"
                                                 Grid.Column="10"
                                                 Grid.Row="5"
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                                Margin="10 0 0 0" />
+                                                Margin="10 0 0 0"
+                                                Width="{Binding ActualWidth, ElementName=RequestUpdate, Mode=OneWay}" />
+
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0 15"
+                                                Grid.Column="7"
+                                                Grid.ColumnSpan="5"
+                                                Grid.Row="5"
+                                                Orientation="Horizontal"
+                                                FlowDirection="RightToLeft"
+                                                Visibility="Hidden">
+
+                                        <Button x:Name="RequestUpdate"
+                                            Style="{StaticResource CustomBorderButton}"
+                                                Content="CẬP NHẬT"
+                                                Grid.Column="10"
+                                                Grid.Row="5"
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                                Margin="0 0 0 0" />
 
                                     </StackPanel>
                                 </Grid>

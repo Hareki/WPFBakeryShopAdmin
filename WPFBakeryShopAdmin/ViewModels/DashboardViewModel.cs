@@ -67,7 +67,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public DashboardViewModel() : base()
         {
-            this._restClient = RestConnection.REST_CLIENT;
+            this._restClient = RestConnection.ADMIN_REST_CLIENT;
             LoadPage();
         }
         public Visibility LoadingPageVis

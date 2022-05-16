@@ -40,7 +40,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 
         public BillViewModel() : base()
         {
-            this._restClient = RestConnection.REST_CLIENT;
+            this._restClient = RestConnection.ADMIN_REST_CLIENT;
             LoadPage();
         }
 
