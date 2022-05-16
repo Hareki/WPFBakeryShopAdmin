@@ -39,20 +39,45 @@
                                  Background="#fd9935">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="100" />
+                        <RowDefinition Height="140" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0"
-                            Padding="10"
-                            Margin="0 0 0 15">
-                        <Image RenderOptions.BitmapScalingMode="HighQuality"
-                               RenderOptions.EdgeMode="Aliased"
-                               Source="/Images/logo-light.png"
-                               Width="200" />
-                    </Border>
+                    <StackPanel Grid.Row="0">
+                        <Border Padding="10"
+                                Margin="0 0 0 0">
+                            <Image RenderOptions.BitmapScalingMode="HighQuality"
+                                   RenderOptions.EdgeMode="Aliased"
+                                   Source="/Images/logo-light.png"
+                                   Width="200" />
+                        </Border>
+
+                        <Border Background="White"
+                                CornerRadius="4"
+                                HorizontalAlignment="Center"
+                                Padding="15 0 15 5">
+                            <Grid>
+                                <ComboBox materialDesign:HintAssist.Hint="Language"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          Grid.Column="0"
+                                          FontSize="12"
+                                          materialDesign:ComboBoxAssist.ClassicMode="False"
+                                          Foreground="#fd9935"
+                                          materialDesign:TextFieldAssist.UnderlineBrush="#fd9935"
+                                          materialDesign:TextFieldAssist.UnderlineCornerRadius="10"
+                                          FontWeight="Bold"
+                                          Grid.Row="1">
+                                    <ComboBoxItem Content="English" />
+                                    <ComboBoxItem Content="Tiếng Việt" />
+                                </ComboBox>
+                            </Grid>
+
+                        </Border>
+
+                    </StackPanel>
 
 
                     <Border Grid.Row="1"

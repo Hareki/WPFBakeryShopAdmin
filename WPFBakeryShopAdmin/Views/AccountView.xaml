@@ -181,7 +181,9 @@
                                     <Ellipse.Fill>
                                         <ImageBrush x:Name="image"
                                                     ImageSource="{Binding SelectedAccount.ImageUrl}"
-                                                    Changed="image_Changed" />
+                                                    Changed="image_Changed"
+                                                    RenderOptions.BitmapScalingMode="HighQuality"
+                                                    RenderOptions.EdgeMode="Aliased" />
                                     </Ellipse.Fill>
                                 </Ellipse>
 
