@@ -127,6 +127,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AttachedProperties\MoreProps.cs" />
+    <Compile Include="Converters\ImagCacheConverter.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />
@@ -212,9 +213,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\AccountView.xaml">
       <SubType>Designer</SubType>

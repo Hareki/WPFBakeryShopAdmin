@@ -19,6 +19,8 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Threading.Tasks;
+using System.Net.Cache;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -30,6 +32,17 @@ namespace WPFBakeryShopAdmin.ViewModels
         private PersonalAccount _savedPersonalAccount;
         private List<ItemLanguage> _languageList;
         public ItemLanguage SelectedItemLanguage { get; set; }
+        private string _userImageUrl;
+
+        public string UserImageUrl
+        {
+            get { return _userImageUrl; }
+            set
+            {
+                _userImageUrl = value;
+                NotifyOfPropertyChange(() => UserImageUrl);
+            }
+        }
 
         public PersonalAccountViewModel() : base()
         {
@@ -100,14 +113,13 @@ namespace WPFBakeryShopAdmin.ViewModels
                        }
                        ));
 
-
                 Thread thread2 =
                        new Thread(new ThreadStart(() =>
                        {
-                           if (!PersonalAccount.ImageUrl.Contains("http"))
+                           if (!UserImageUrl.Contains("http"))
                            {
                                var request = new RestRequest("image", Method.Put);
-                               request.AddFile("image", PersonalAccount.ImageUrl, "multipart/form-data");
+                               request.AddFile("image", UserImageUrl, "multipart/form-data");
                                var response = _restClient.ExecuteAsync(request);
                                int statusCode = (int)response.Result.StatusCode;
                                if (statusCode == 200)
@@ -137,15 +149,8 @@ namespace WPFBakeryShopAdmin.ViewModels
                     ShowSuccessMessage("Cập nhật thông tin thành công");
 
                 Editing = false;
-                PersonalAccount = new PersonalAccount(PersonalAccount);
                 LoadingPageVis = Visibility.Hidden;
             }
-
-
-
-
-
-
         }
 
         public void UpdatePreviewImage()
@@ -159,16 +164,15 @@ namespace WPFBakeryShopAdmin.ViewModels
                 float fileSizeInMb = (float)fi.Length / 1000000;
                 if (fileSizeInMb <= 1)
                 {
-                    PersonalAccount.ImageUrl = open.FileName;
-                    View.PreviewUserImage.ImageSource = new BitmapImage(new Uri(open.FileName, UriKind.Absolute));
+                    UserImageUrl = open.FileName;
                 }
                 else
                 {
                     ShowFailMessage("Vui lòng chọn file có kích thước nhỏ hơn");
                 }
-
             }
         }
+
         private bool HasError()
         {
             return !StringUtils.IsValidEmail(PersonalAccount.Email) ||
@@ -218,7 +222,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             Editing = true;
             _savedPersonalAccount = new PersonalAccount(PersonalAccount);
-            View.PreviewUserImage.ImageSource = new BitmapImage(new Uri(PersonalAccount.ImageUrl, UriKind.Absolute));
         }
 
         public void CancelUpdate()
@@ -233,6 +236,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
+                UserImageUrl = value.ImageUrl;
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
         }
@@ -244,6 +248,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 _loadingPageVis = value;
                 NotifyOfPropertyChange(() => LoadingPageVis);
             }
+
         }
         public List<ItemLanguage> LanguageList
         {
@@ -278,6 +283,5 @@ namespace WPFBakeryShopAdmin.ViewModels
             get { return View.RedMessage; }
         }
 
-        public object DialogResult { get; private set; }
     }
 }

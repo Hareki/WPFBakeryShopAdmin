@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WPFBakeryShopAdmin.Views"
              xmlns:validation="clr-namespace:WPFBakeryShopAdmin.LocalValidationRules"
+             xmlns:converter="clr-namespace:WPFBakeryShopAdmin.Converters"
              mc:Ignorable="d"
              d:DesignHeight="1000"
              d:DesignWidth="800"
@@ -14,6 +15,9 @@
              Background="#F5F5FA"
              TextElement.FontSize="15"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+    <UserControl.Resources>
+        <converter:ImagCacheConverter x:Key="imageConverter"></converter:ImagCacheConverter>
+    </UserControl.Resources>
     <Grid>
         <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
                                              OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.3}">
@@ -119,32 +123,22 @@
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
+
                                         <Ellipse Height="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
                                                  Width="auto"
                                                  x:Name="ellipse"
                                                  Grid.Column="1"
-                                                 Grid.Row="1">
+                                                 Grid.Row="1"
+                                                 Panel.ZIndex="1">
                                             <Ellipse.Fill>
-                                                <ImageBrush x:Name="UserImage"
-                                                            ImageSource="{Binding PersonalAccount.ImageUrl}"
+                                                <ImageBrush x:Name="UserImageUrl"
+                                                            ImageSource="{Binding UserImageUrl, Converter={StaticResource imageConverter}}"
                                                             RenderOptions.BitmapScalingMode="HighQuality"
-                                                            RenderOptions.EdgeMode="Aliased" />
+                                                            RenderOptions.EdgeMode="Aliased">
+                                                </ImageBrush>
                                             </Ellipse.Fill>
                                         </Ellipse>
 
-                                        <Ellipse Height="{Binding ActualWidth, ElementName=ellipse2, Mode=OneWay}"
-                                                 Width="auto"
-                                                 x:Name="ellipse2"
-                                                 Grid.Column="1"
-                                                 Grid.Row="1"
-                                                 Panel.ZIndex="2"
-                                                 Visibility="{Binding Editing, Converter={StaticResource BoolToVis}}">
-                                            <Ellipse.Fill>
-                                                <ImageBrush x:Name="PreviewUserImage"
-                                                            RenderOptions.BitmapScalingMode="HighQuality"
-                                                            RenderOptions.EdgeMode="Aliased" />
-                                            </Ellipse.Fill>
-                                        </Ellipse>
 
                                         <Button x:Name="UpdatePreviewImage"
                                                 Height="{Binding ActualWidth, ElementName=UpdatePreviewImage, Mode=OneWay}"
