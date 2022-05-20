@@ -9,15 +9,21 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Threading;
 using Newtonsoft.Json.Serialization;
+using System.ComponentModel;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System.Collections;
+using System.Linq;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class PersonalAccountViewModel : Screen
+    public class PersonalAccountViewModel : Screen, INotifyDataErrorInfo
     {
         private readonly RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private PersonalAccount _personalAccount;
         private List<ItemLanguage> _languageList;
+
+        public string Test { get; set; }
 
         public PersonalAccountViewModel() : base()
         {
@@ -56,10 +62,13 @@ namespace WPFBakeryShopAdmin.ViewModels
             //        PersonalAccount = JsonConvert.DeserializeObject<PersonalAccount>(personalAccount);
             //    }
             //})).Start();
-            string result = StringUtils.SerializeObject(PersonalAccount);
-            string result2 = JsonConvert.SerializeObject(PersonalAccount);
-            Console.WriteLine("result: " + result);
-            Console.WriteLine("result2: " + result2);
+
+            //string result = StringUtils.SerializeObject(PersonalAccount);
+            //string result2 = JsonConvert.SerializeObject(PersonalAccount);
+            //Console.WriteLine("result: " + result);
+            //Console.WriteLine("result2: " + result2);
+
+            Validate("Test", false, "Email không được để trống");
         }
 
 
@@ -91,5 +100,32 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
 
+        #region Validation
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        private readonly Dictionary<string, List<object>> _ValidationErrorsByProperty =
+            new Dictionary<string, List<object>>();
+        public bool HasErrors => _ValidationErrorsByProperty.Any();
+        public IEnumerable GetErrors(string propertyName)
+        {
+            if (_ValidationErrorsByProperty.TryGetValue(propertyName, out List<object> errors))
+            {
+                return errors;
+            }
+            return Array.Empty<object>();
+        }
+
+        private void Validate(string changedPropertyName, bool valid, string notValidError)
+        {
+            if (valid && _ValidationErrorsByProperty.Remove(changedPropertyName))
+            {
+                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(changedPropertyName));
+            }
+            else
+            {
+                _ValidationErrorsByProperty[changedPropertyName] = new List<object> { notValidError };
+                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(changedPropertyName));
+            }
+        }
+        #endregion
     }
 }

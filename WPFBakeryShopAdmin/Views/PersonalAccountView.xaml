@@ -109,7 +109,7 @@
 
 
 
-                                    <TextBox x:Name="PersonalAccount_FirstName"
+                                    <TextBox Text="{Binding Path=Test}"
                                              Grid.Column="4"
                                              Grid.Row="1"
                                              Grid.ColumnSpan="4"
