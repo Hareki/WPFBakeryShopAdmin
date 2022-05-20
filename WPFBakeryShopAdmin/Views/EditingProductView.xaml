@@ -20,8 +20,7 @@
                 <TabItem Header="Thông tin">
                     <Border CornerRadius="12"
                             Padding="5">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                      CanContentScroll="True">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <Border Background="White"
                                     Padding="20">
                                 <Grid>
@@ -133,8 +132,7 @@
                 <TabItem Header="Các loại của sản phẩm">
                     <Border Padding="5"
                             CornerRadius="12">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                      CanContentScroll="True">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <Border Background="White"
                                     Padding="20">
                                 <Grid>
@@ -198,8 +196,7 @@
                 <TabItem Header="Hình ảnh">
                     <Border Padding="5"
                             CornerRadius="12">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                      CanContentScroll="True">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <Border Background="White"
                                     Padding="20">
                                 <Grid>

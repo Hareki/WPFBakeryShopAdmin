@@ -19,7 +19,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private string _pageIndicator;
         private int _totalCount;
         private RowItemAccount _selectedAccount;
-        private readonly int _pageSize = 11;
+        private readonly int _pageSize = 10;
         private int _currentPage = 0;
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;

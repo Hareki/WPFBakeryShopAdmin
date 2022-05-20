@@ -13,8 +13,8 @@ namespace WPFBakeryShopAdmin.Utilities
         static LanguageList()
         {
             LIST = new List<ItemLanguage>();
-            LIST.Add(new ItemLanguage("Tiếng Việt", "/Images/vn-flag.png"));
-            LIST.Add(new ItemLanguage("English", "/Images/uk-flag.png"));
+            LIST.Add(new ItemLanguage("Tiếng Việt", "/Images/vn-flag.png", "vi"));
+            LIST.Add(new ItemLanguage("English", "/Images/uk-flag.png", "en"));
         }
     }
 }

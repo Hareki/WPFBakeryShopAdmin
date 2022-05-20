@@ -27,7 +27,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private string _pageIndicator;
 
         private int _totalCount;
-        private readonly int _pageSize = 11;
+        private readonly int _pageSize = 10;
         private int _currentPage = 0;
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
@@ -190,12 +190,14 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
 
-        private void ShowSuccessMessage()
+        private void ShowSuccessMessage(string message)
         {
             View.Dispatcher.Invoke(() =>
             {
+                View.GreenMessage.Text = message;
+
                 GreenSB.MessageQueue?.Enqueue(
-                GreenSB.Message.Content,
+                View.GreenContent,
                 null,
                 null,
                 null,
@@ -205,12 +207,14 @@ namespace WPFBakeryShopAdmin.ViewModels
             });
         }
 
-        private void ShowFailMessage()
+        private void ShowFailMessage(string message)
         {
             View.Dispatcher.Invoke(() =>
             {
-                GreenSB.MessageQueue?.Enqueue(
-                GreenSB.Message.Content,
+                View.RedMessage.Text = message;
+
+                RedSB.MessageQueue?.Enqueue(
+                RedSB.Message.Content,
                 null,
                 null,
                 null,
@@ -229,12 +233,12 @@ namespace WPFBakeryShopAdmin.ViewModels
                 if ((int)respone.Result.StatusCode == 200)
                 {
                     BillDetails.StatusId++;
-                    _shouldCollapse = false;
+                    //_shouldCollapse = false;
                     GridRefresh(BillDetails.StatusId);
-                    ShowSuccessMessage();
+                    ShowSuccessMessage("Cập nhật trạng thái đơn hàng thành công");
                     return;
                 }
-                ShowFailMessage();
+                ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
             })).Start();
         }
 

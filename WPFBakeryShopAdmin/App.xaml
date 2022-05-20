@@ -47,7 +47,8 @@
                        Left="0"
                        Top="0"
                        Right="0"
-                       Bottom="15" />
+                       Bottom="30" />
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

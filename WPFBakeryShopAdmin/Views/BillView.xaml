@@ -25,26 +25,64 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="0"
-                            Grid.ColumnSpan="12">
-                    <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                               FontWeight="SemiBold"
-                               Margin="{StaticResource TitleMargin}"
-                               Text="Đơn hàng" />
-                    <Button x:Name="LoadPage"
-                            Style="{StaticResource MaterialDesignIconForegroundButton}"
-                            ToolTip="MaterialDesignIconForegroundButton"
-                            Foreground="{DynamicResource MaterialDesignBody}"
-                            VerticalAlignment="Top"
-                            Margin="5 0 0 0 ">
-                        <materialDesign:PackIcon Kind="Reload" />
-                    </Button>
-                </StackPanel>
+                <Grid Grid.Row="0"
+                      Grid.ColumnSpan="12">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                                   FontWeight="SemiBold"
+                                   Margin="{StaticResource TitleMargin}"
+                                   Text="Đơn hàng" />
+                        <Button x:Name="LoadPage"
+                                Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                ToolTip="MaterialDesignIconForegroundButton"
+                                Foreground="{DynamicResource MaterialDesignBody}"
+                                VerticalAlignment="Top"
+                                Margin="5 0 0 0 ">
+                            <materialDesign:PackIcon Kind="Reload" />
+                        </Button>
+                    </StackPanel>
+                    <materialDesign:Snackbar HorizontalAlignment="Center"
+                                             VerticalAlignment="Top"
+                                             Grid.ColumnSpan="12"
+                                             x:Name="GreenSB"
+                                             Background="MediumSeaGreen"
+                                             MessageQueue="{materialDesign:MessageQueue}">
+                        <materialDesign:SnackbarMessage>
+                            <StackPanel Orientation="Horizontal"
+                                        x:Name="GreenContent">
+                                <materialDesign:PackIcon Kind="CheckCircle"
+                                                         Margin="0 3 10 0"
+                                                         VerticalAlignment="Center" />
+                                <TextBlock Text="Cập nhật trạng thái thành công"
+                                           FontWeight="SemiBold"
+                                           x:Name="GreenMessage" />
+                            </StackPanel>
+                        </materialDesign:SnackbarMessage>
+                    </materialDesign:Snackbar>
+
+                    <materialDesign:Snackbar HorizontalAlignment="Center"
+                                             VerticalAlignment="Top"
+                                             Grid.ColumnSpan="12"
+                                             x:Name="RedSB"
+                                             Background="Red"
+                                             MessageQueue="{materialDesign:MessageQueue}">
+                        <materialDesign:SnackbarMessage>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CheckCircle"
+                                                         Margin="0 3 10 0"
+                                                         VerticalAlignment="Center" />
+                                <TextBlock Text="Xảy ra lỗi khi cập nhật"
+                                           FontWeight="Bold"
+                                           x:Name="RedMessage" />
+                            </StackPanel>
+                        </materialDesign:SnackbarMessage>
+                    </materialDesign:Snackbar>
+                </Grid>
+
 
 
                 <Border Background="White"
-                        Padding="10 0 10 0"
+                        Padding="15 0"
                         Grid.Row="1"
                         CornerRadius="12">
                     <Grid>
@@ -54,6 +92,7 @@
                         </Grid.RowDefinitions>
                         <DataGrid x:Name="RowItemBills"
                                   CanUserAddRows="False"
+                                  ScrollViewer.CanContentScroll="False"
                                   IsReadOnly="True"
                                   AutoGenerateColumns="False"
                                   Background="White"
@@ -79,12 +118,14 @@
                                                     Binding="{Binding Path=FormattedTotal}" />
                             </DataGrid.Columns>
                         </DataGrid>
+
                         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                      Value="0"
                                      Visibility="{Binding Path=LoadingPageVis}"
                                      IsIndeterminate="True" />
 
                         <StackPanel HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
                                     Orientation="Horizontal"
                                     FlowDirection="RightToLeft"
                                     Grid.Row="1">
@@ -137,69 +178,71 @@
                         CornerRadius="12"
                         Background="White"
                         Padding="15"
-                        MaxHeight="460">
-                    <ScrollViewer CanContentScroll="True">
-                        <Expander Header="CHI TIẾT THÔNG TIN ĐƠN HÀNG"
-                                  FontWeight="SemiBold"
-                                  Background="White"
-                                  ExpandDirection="Up"
-                                  x:Name="DetailExpander"
-                                  cal:Message.Attach="[Event Expanded] = [Action Expander_Expanded]">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="18" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                        MaxHeight="350">
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
+                    <Expander Header="   CHI TIẾT THÔNG TIN ĐƠN HÀNG"
+                              FontWeight="SemiBold"
+                              Background="White"
+                              ExpandDirection="Up"
+                              x:Name="DetailExpander"
+                              cal:Message.Attach="[Event Expanded] = [Action Expander_Expanded]">
+                        <ScrollViewer>
+                            <Border Padding="15 0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Border VerticalAlignment="Stretch"
-                                        HorizontalAlignment="Stretch"
-                                        Grid.Column="0"
-                                        Grid.Row="0"
-                                        Grid.ColumnSpan="14"
-                                        Grid.RowSpan="6"
-                                        Background="White"
-                                        Panel.ZIndex="3"
-                                        Visibility="{Binding Path=LoadingInfoVis}">
-                                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                                 Value="0"
-                                                 IsIndeterminate="True" />
-                                </Border>
-                                <Border Background="White"
-                                        CornerRadius="12"
-                                        Padding="2"
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="13"
-                                        Margin="0 0 0 30">
-                                    <StackPanel>
-                                        <DataGrid x:Name="BillDetails_Details"
-                                                  CanUserAddRows="False"
-                                                  IsReadOnly="True"
-                                                  AutoGenerateColumns="False"
-                                                  Background="White"
-                                                  SelectionUnit="FullRow"
-                                                  SelectionMode="Single">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
 
-                                            <!--<DataGrid.Resources>
+                                    <Border VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Stretch"
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            Grid.ColumnSpan="14"
+                                            Grid.RowSpan="6"
+                                            Background="White"
+                                            Panel.ZIndex="3"
+                                            Visibility="{Binding Path=LoadingInfoVis}">
+                                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                                     Value="0"
+                                                     IsIndeterminate="True" />
+                                    </Border>
+                                    <Border Background="White"
+                                            CornerRadius="12"
+                                            Padding="2"
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="13"
+                                            Margin="0 0 0 30">
+                                        <StackPanel>
+                                            <DataGrid x:Name="BillDetails_Details"
+                                                      CanUserAddRows="False"
+                                                      IsReadOnly="True"
+                                                      AutoGenerateColumns="False"
+                                                      Background="White"
+                                                      SelectionUnit="FullRow"
+                                                      SelectionMode="Single">
+
+                                                <!--<DataGrid.Resources>
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Setter Property="FontWeight"
                                                     Value="Normal" />
@@ -208,258 +251,231 @@
                                     mất luôn style của material, tuy vậy vẫn giữ lại dưới dạng
                                     comment để tham khảo sau này-->
 
-                                            <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Tên sản phẩm"
-                                                                    FontWeight="Normal"
-                                                                    Width="4*"
-                                                                    Binding="{Binding Path=ProductName}" />
-                                                <DataGridTextColumn Header="Danh mục"
-                                                                    FontWeight="Normal"
-                                                                    Width="3*"
-                                                                    Binding="{Binding Path=TypeName}" />
-                                                <DataGridTextColumn Header="Số lượng"
-                                                                    Width="3*"
-                                                                    FontWeight="Normal"
-                                                                    Binding="{Binding Path=Quantity}" />
-                                                <DataGridTextColumn Header="Đơn giá"
-                                                                    FontWeight="Normal"
-                                                                    Width="4*"
-                                                                    Binding="{Binding Path=FormattedUnitPrice}" />
-                                                <DataGridTextColumn Header="Thành tiền"
-                                                                    FontWeight="Normal"
-                                                                    Width="4*"
-                                                                    Binding="{Binding Path=SubTotal}" />
-                                            </DataGrid.Columns>
-                                        </DataGrid>
-                                        <StackPanel Margin="0 10 0 0"
-                                                    Orientation="Horizontal"
-                                                    HorizontalAlignment="Right">
-                                            <TextBlock Text="Tổng tiền: "
-                                                       FontWeight="Bold" />
-                                            <TextBlock x:Name="BillDetails_FormattedTotal"
-                                                       Text="200,000 đ"
-                                                       FontWeight="Bold" />
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Tên sản phẩm"
+                                                                        FontWeight="Normal"
+                                                                        Width="4*"
+                                                                        Binding="{Binding Path=ProductName}" />
+                                                    <DataGridTextColumn Header="Danh mục"
+                                                                        FontWeight="Normal"
+                                                                        Width="3*"
+                                                                        Binding="{Binding Path=TypeName}" />
+                                                    <DataGridTextColumn Header="Số lượng"
+                                                                        Width="3*"
+                                                                        FontWeight="Normal"
+                                                                        Binding="{Binding Path=Quantity}" />
+                                                    <DataGridTextColumn Header="Đơn giá"
+                                                                        FontWeight="Normal"
+                                                                        Width="4*"
+                                                                        Binding="{Binding Path=FormattedUnitPrice}" />
+                                                    <DataGridTextColumn Header="Thành tiền"
+                                                                        FontWeight="Normal"
+                                                                        Width="4*"
+                                                                        Binding="{Binding Path=SubTotal}" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <StackPanel Margin="0 10 0 0"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+                                                <TextBlock Text="Tổng tiền: "
+                                                           FontWeight="Bold" />
+                                                <TextBlock x:Name="BillDetails_FormattedTotal"
+                                                           Text="200,000 đ"
+                                                           FontWeight="Bold" />
+                                            </StackPanel>
                                         </StackPanel>
+
+                                    </Border>
+
+
+                                    <TextBlock Text="Tên khách hàng:"
+                                               FontWeight="Bold"
+                                               Grid.Column="1"
+                                               Grid.Row="1"
+                                               Grid.ColumnSpan="3"
+                                               Margin="0 0 0 30" />
+                                    <TextBlock x:Name="BillDetails_CustomerName"
+                                               Text="Nguyễn Ngọc Minh Tú"
+                                               Grid.Column="3"
+                                               FontWeight="Normal"
+                                               Grid.Row="1"
+                                               Grid.ColumnSpan="3"
+                                               Margin="0 0 0 30" />
+
+                                    <TextBlock Text="Trạng thái:"
+                                               FontWeight="Bold"
+                                               Grid.Column="7"
+                                               Grid.Row="1"
+                                               Grid.ColumnSpan="3"
+                                               Margin="0 0 0 30" />
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Grid.Column="10"
+                                                Grid.Row="1"
+                                                Grid.ColumnSpan="2">
+                                        <Button Style="{StaticResource CustomPrimaryButton}"
+                                                BorderBrush="{Binding Path=BindingButton.BackgroundColor}"
+                                                Background="{Binding Path=BindingButton.BackgroundColor}"
+                                                MinWidth="125"
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Left"
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding Path=BindingButton.ImageUrl}"
+                                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                                       RenderOptions.EdgeMode="Aliased"
+                                                       Margin="0 0 7 0" />
+                                                <TextBlock Text="{Binding Path=BindingButton.Text}"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                Margin="7 -7 0 0"
+                                                ToolTip="Cập nhật trạng thái"
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Left"
+                                                IsEnabled="{Binding Path=BillDetails.CanUpdateOrderStatus}"
+                                                cal:Message.Attach="[Event MouseEnter] = [Action PreviewStatus];[Event MouseLeave]=[Action ClearPreview];[Event Click] = [Action UpdateOrderStatus]">
+                                            <materialDesign:PackIcon Kind="Upload" />
+                                        </Button>
                                     </StackPanel>
 
-                                </Border>
-
-
-                                <TextBlock Text="Tên khách hàng:"
-                                           FontWeight="Bold"
-                                           Grid.Column="1"
-                                           Grid.Row="1"
-                                           Grid.ColumnSpan="3"
-                                           Margin="0 0 0 30" />
-                                <TextBlock x:Name="BillDetails_CustomerName"
-                                           Text="Nguyễn Ngọc Minh Tú"
-                                           Grid.Column="3"
-                                           FontWeight="Normal"
-                                           Grid.Row="1"
-                                           Grid.ColumnSpan="3"
-                                           Margin="0 0 0 30" />
-
-                                <TextBlock Text="Trạng thái:"
-                                           FontWeight="Bold"
-                                           Grid.Column="7"
-                                           Grid.Row="1"
-                                           Grid.ColumnSpan="3"
-                                           Margin="0 0 0 30" />
-
-                                <StackPanel Orientation="Horizontal"
-                                            Grid.Column="10"
-                                            Grid.Row="1"
-                                            Grid.ColumnSpan="2">
-                                    <Button Style="{StaticResource CustomPrimaryButton}"
-                                            BorderBrush="{Binding Path=BindingButton.BackgroundColor}"
-                                            Background="{Binding Path=BindingButton.BackgroundColor}"
-                                            MinWidth="125"
-                                            VerticalAlignment="Top"
-                                            HorizontalAlignment="Left"
-                                            materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{Binding Path=BindingButton.ImageUrl}"
-                                                   RenderOptions.BitmapScalingMode="HighQuality"
-                                                   RenderOptions.EdgeMode="Aliased"
-                                                   Margin="0 0 7 0" />
-                                            <TextBlock Text="{Binding Path=BindingButton.Text}"
-                                                       VerticalAlignment="Center" />
-                                        </StackPanel>
-                                    </Button>
-
-                                    <Button Style="{StaticResource MaterialDesignIconButton}"
-                                            Margin="7 -7 0 0"
-                                            ToolTip="Cập nhật trạng thái"
-                                            VerticalAlignment="Top"
-                                            HorizontalAlignment="Left"
-                                            IsEnabled="{Binding Path=BillDetails.CanUpdateOrderStatus}"
-                                            cal:Message.Attach="[Event MouseEnter] = [Action PreviewStatus];[Event MouseLeave]=[Action ClearPreview];[Event Click] = [Action UpdateOrderStatus]">
-                                        <materialDesign:PackIcon Kind="Upload" />
-                                    </Button>
-                                </StackPanel>
-
-                                <TextBlock Text="Ngày mua:"
-                                           FontWeight="Bold"
-                                           Grid.Column="1"
-                                           Grid.Row="2"
-                                           Grid.ColumnSpan="3"
-                                           Margin="0 0 0 30" />
-
-                                <TextBlock x:Name="BillDetails_CreatedAt"
-                                           Text="12/05/2022 2:05 PM"
-                                           Grid.Column="3"
-                                           Grid.Row="2"
-                                           Grid.ColumnSpan="3"
-                                           FontWeight="Normal"
-                                           Margin="0 0 0 30" />
-
-                                <TextBlock Text="Phương thức thanh toán:"
-                                           FontWeight="Bold"
-                                           Grid.Column="7"
-                                           Grid.Row="2"
-                                           Grid.ColumnSpan="3"
-                                           Margin="0 0 0 30" />
-                                <TextBlock x:Name="BillDetails_PaidMethodName"
-                                           Text="Thẻ"
-                                           Grid.Column="10"
-                                           Grid.Row="2"
-                                           Grid.ColumnSpan="3"
-                                           FontWeight="Normal"
-                                           Margin="0 0 0 30" />
-
-                                <TextBlock Text="Thông tin giao hàng:"
-                                           FontWeight="Bold"
-                                           Grid.Column="1"
-                                           Grid.Row="3"
-                                           Grid.ColumnSpan="3"
-                                           Margin="0 0 0 30" />
-
-                                <Grid Grid.Column="1"
-                                      Grid.ColumnSpan="4"
-                                      Grid.Row="4"
-                                      Margin="0 0 10 0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <materialDesign:PackIcon Kind="Location"
-                                                             Width="20"
-                                                             Height="20"
-                                                             VerticalAlignment="Center"
-                                                             Margin="0 0 5 0" />
-                                    <TextBlock Grid.Column="2"
-                                               Text="Địa chỉ"
+                                    <TextBlock Text="Ngày mua:"
                                                FontWeight="Bold"
-                                               VerticalAlignment="Center" />
+                                               Grid.Column="1"
+                                               Grid.Row="2"
+                                               Grid.ColumnSpan="3"
+                                               Margin="0 0 0 30" />
 
-                                    <TextBlock x:Name="BillDetails_ReceiverInfo_Address"
-                                               Grid.Row="1"
-                                               Grid.Column="2"
+                                    <TextBlock x:Name="BillDetails_CreatedAt"
+                                               Text="12/05/2022 2:05 PM"
+                                               Grid.Column="3"
+                                               Grid.Row="2"
+                                               Grid.ColumnSpan="3"
                                                FontWeight="Normal"
-                                               MinHeight="40"
-                                               TextWrapping="Wrap"
-                                               Text="Số 87 đường Trần Hưng Đạo, phường Trần Hưng Đạo, quận Hoàn Kiếm, thành phố Hà Nội." />
-                                </Grid>
+                                               Margin="0 0 0 30" />
 
-                                <Grid Grid.Column="5"
-                                      Grid.ColumnSpan="4"
-                                      Grid.Row="4"
-                                      Margin="10 0 10 0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <materialDesign:PackIcon Kind="Phone"
-                                                             Width="20"
-                                                             Height="20"
-                                                             VerticalAlignment="Center"
-                                                             Margin="0 0 5 0" />
-                                    <TextBlock Grid.Column="2"
-                                               Text="Số điện thoại"
+                                    <TextBlock Text="Phương thức thanh toán:"
                                                FontWeight="Bold"
-                                               VerticalAlignment="Center" />
-
-                                    <TextBlock x:Name="BillDetails_ReceiverInfo_Phone"
-                                               Grid.Row="1"
-                                               Grid.Column="2"
+                                               Grid.Column="7"
+                                               Grid.Row="2"
+                                               Grid.ColumnSpan="3"
+                                               Margin="0 0 0 30" />
+                                    <TextBlock x:Name="BillDetails_PaidMethodName"
+                                               Text="Thẻ"
+                                               Grid.Column="10"
+                                               Grid.Row="2"
+                                               Grid.ColumnSpan="3"
                                                FontWeight="Normal"
-                                               Text="0338758008" />
-                                </Grid>
+                                               Margin="0 0 0 30" />
 
-                                <Grid Grid.Column="9"
-                                      Grid.ColumnSpan="4"
-                                      Grid.Row="4"
-                                      Margin="10 0 0 0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <materialDesign:PackIcon Kind="Note"
-                                                             Width="20"
-                                                             Height="20"
-                                                             VerticalAlignment="Center"
-                                                             Margin="0 0 5 0" />
-                                    <TextBlock Grid.Column="2"
-                                               Text="Ghi chú"
+                                    <TextBlock Text="Thông tin giao hàng:"
                                                FontWeight="Bold"
-                                               VerticalAlignment="Center" />
+                                               Grid.Column="1"
+                                               Grid.Row="3"
+                                               Grid.ColumnSpan="3"
+                                               Margin="0 0 0 30" />
 
-                                    <TextBlock x:Name="BillDetails_ReceiverInfo_Note"
-                                               Grid.Row="1"
-                                               Grid.Column="2"
-                                               FontWeight="Normal"
-                                               Text="haha note goes brrrrr" />
+                                    <Grid Grid.Column="1"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="4"
+                                          Margin="0 0 10 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon Kind="Location"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="2"
+                                                   Text="Địa chỉ"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
+
+                                        <TextBlock x:Name="BillDetails_ReceiverInfo_Address"
+                                                   Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   FontWeight="Normal"
+                                                   MinHeight="40"
+                                                   TextWrapping="Wrap"
+                                                   Text="Số 87 đường Trần Hưng Đạo, phường Trần Hưng Đạo, quận Hoàn Kiếm, thành phố Hà Nội." />
+                                    </Grid>
+
+                                    <Grid Grid.Column="5"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="4"
+                                          Margin="10 0 10 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon Kind="Phone"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="2"
+                                                   Text="Số điện thoại"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
+
+                                        <TextBlock x:Name="BillDetails_ReceiverInfo_Phone"
+                                                   Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   FontWeight="Normal"
+                                                   Text="0338758008" />
+                                    </Grid>
+
+                                    <Grid Grid.Column="9"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="4"
+                                          Margin="10 0 0 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon Kind="Note"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="2"
+                                                   Text="Ghi chú"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
+
+                                        <TextBlock x:Name="BillDetails_ReceiverInfo_Note"
+                                                   Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   FontWeight="Normal"
+                                                   Text="haha note goes brrrrr" />
+                                    </Grid>
+
+                                    <!--MessageQueue="{materialDesign:MessageQueue}"-->
                                 </Grid>
-                                <materialDesign:Snackbar Grid.Row="3"
-                                                         Grid.Column="0"
-                                                         Grid.ColumnSpan="12"
-                                                         x:Name="GreenSB"
-                                                         Background="MediumSeaGreen"
-                                                         MessageQueue="{materialDesign:MessageQueue}">
-                                    <materialDesign:SnackbarMessage>
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="CheckCircle"
-                                                                     Margin="0 3 5 0"
-                                                                     VerticalAlignment="Center" />
-                                            <TextBlock Text="Cập nhật trạng thái thành công" />
-                                        </StackPanel>
-                                    </materialDesign:SnackbarMessage>
-                                </materialDesign:Snackbar>
+                            </Border>
 
-                                <materialDesign:Snackbar Grid.Row="3"
-                                                         Grid.Column="0"
-                                                         Grid.ColumnSpan="12"
-                                                         x:Name="RedSB"
-                                                         Background="Red"
-                                                         MessageQueue="{materialDesign:MessageQueue}">
-                                    <materialDesign:SnackbarMessage>
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="CheckCircle"
-                                                                     Margin="0 3 5 0"
-                                                                     VerticalAlignment="Center" />
-                                            <TextBlock Text="Xảy ra lỗi khi cập nhật" />
-                                        </StackPanel>
-                                    </materialDesign:SnackbarMessage>
-                                </materialDesign:Snackbar>
-                                <!--MessageQueue="{materialDesign:MessageQueue}"-->
-                            </Grid>
-                        </Expander>
-                    </ScrollViewer>
+                        </ScrollViewer>
+                    </Expander>
+
                 </Border>
 
             </Grid>

@@ -127,6 +127,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AttachedProperties\MoreProps.cs" />
+    <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
+    <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
+    <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\DetailItemBill.cs" />
     <Compile Include="Models\ItemLanguage.cs" />

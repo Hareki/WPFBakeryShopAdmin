@@ -5,11 +5,26 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.Models
 {
     public class PersonalAccount
     {
+        public PersonalAccount()
+        { }
+        public PersonalAccount(PersonalAccount another)
+        {
+            this.FirstName = another.FirstName;
+            this.LastName = another.LastName;
+            this.Email = another.Email;
+            this.Phone = another.Phone;
+            this.Authorities = another.Authorities;
+            this.ImageUrl = another.ImageUrl;
+            this.Address = another.Address;
+            this.LangKey = another.LangKey;
+            this.Activated = another.Activated;
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -18,12 +33,12 @@ namespace WPFBakeryShopAdmin.Models
         public string LangKey { get; set; }
 
 
-        [JsonIgnore]
         public string ImageUrl { get; set; }
-        [JsonIgnore]
+        public bool ShouldSerializeImageUrl() { return false; }
         public bool Activated { get; set; }
-        [JsonIgnore]
+        public bool ShouldSerializeActivated() { return false; }
         public List<string> Authorities { get; set; }
+        public bool ShouldSerializeAuthorities() { return false; }
 
         [JsonIgnore]
         public string LanguageName
@@ -45,7 +60,7 @@ namespace WPFBakeryShopAdmin.Models
             {
                 switch (value)
                 {
-                    case 0: LangKey = "vn"; break;
+                    case 0: LangKey = "vi"; break;
                     case 1: LangKey = "en"; break;
                     default: Debug.Assert(false); break;
                 }
@@ -56,7 +71,7 @@ namespace WPFBakeryShopAdmin.Models
                 {
                     case "vi": return 0;
                     case "en": return 1;
-                    default: return -1;
+                    default: Debug.Assert(false); return -1;
                 }
             }
         }

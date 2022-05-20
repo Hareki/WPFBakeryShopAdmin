@@ -41,7 +41,7 @@
                 </StackPanel>
 
                 <Border Background="White"
-                        Padding="10 0 10 0"
+                        Padding="15 0"
                         Grid.Row="1"
                         CornerRadius="12">
                     <Grid>
@@ -50,6 +50,7 @@
                             <RowDefinition Height="2*" />
                         </Grid.RowDefinitions>
                         <DataGrid x:Name="RowItemAccounts"
+                                  ScrollViewer.CanContentScroll="False"
                                   CanUserAddRows="False"
                                   IsReadOnly="True"
                                   AutoGenerateColumns="False"
@@ -132,302 +133,308 @@
                         Margin="0 30 0 0"
                         Grid.Row="2"
                         CornerRadius="12"
-                        Background="White">
+                        Background="White"
+                        MaxHeight="350">
                     <Expander x:Name="expander"
-                              Header="CHI TIẾT THÔNG TIN TÀI KHOẢN"
+                              Header="   CHI TIẾT THÔNG TIN TÀI KHOẢN"
                               FontWeight="SemiBold"
                               Background="White"
                               ExpandDirection="Up"
                               Padding="10 10 10 0">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                        <ScrollViewer>
+                            <Border Padding="20 0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Column="0"
-                                  Grid.Row="0"
-                                  Grid.RowSpan="12"
-                                  Grid.ColumnSpan="4"
-                                  Margin="0 0 0 15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0"
+                                          Grid.Row="0"
+                                          Grid.RowSpan="12"
+                                          Grid.ColumnSpan="4"
+                                          Margin="0 0 0 15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="4*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <Ellipse Height="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
-                                         Width="auto"
-                                         x:Name="ellipse"
-                                         Grid.Column="1"
-                                         Panel.ZIndex="2">
-                                    <Ellipse.Fill>
-                                        <ImageBrush x:Name="image"
-                                                    ImageSource="{Binding SelectedAccount.ImageUrl}"
-                                                    Changed="image_Changed"
-                                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                                    RenderOptions.EdgeMode="Aliased" />
-                                    </Ellipse.Fill>
-                                </Ellipse>
+                                        <Ellipse Height="{Binding ActualWidth, ElementName=ellipse, Mode=OneWay}"
+                                                 Width="auto"
+                                                 x:Name="ellipse"
+                                                 Grid.Column="1"
+                                                 Panel.ZIndex="2">
+                                            <Ellipse.Fill>
+                                                <ImageBrush x:Name="image"
+                                                            ImageSource="{Binding SelectedAccount.ImageUrl}"
+                                                            Changed="image_Changed"
+                                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                                            RenderOptions.EdgeMode="Aliased" />
+                                            </Ellipse.Fill>
+                                        </Ellipse>
 
-                                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                             Value="0"
-                                             x:Name="PBImage"
-                                             IsIndeterminate="True"
-                                             Grid.Column="1"
-                                             Panel.ZIndex="1" />
+                                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                                     Value="0"
+                                                     x:Name="PBImage"
+                                                     IsIndeterminate="True"
+                                                     Grid.Column="1"
+                                                     Panel.ZIndex="1" />
 
-                            </Grid>
+                                    </Grid>
 
-                            <Grid Grid.Column="4"
-                                  Grid.ColumnSpan="4"
-                                  Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="4"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="CardAccountDetails"
-                                                         Width="15"
-                                                         Height="15"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 15 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Trạng thái tài khoản"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
-                                <TextBlock x:Name="SelectedAccount_ActivatedString"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           Text="Đã kích hoạt"
-                                           FontWeight="Normal"
-                                           Foreground="{Binding SelectedAccount.ActivatedColor}" />
-                            </Grid>
+                                        <materialDesign:PackIcon Kind="CardAccountDetails"
+                                                                 Width="15"
+                                                                 Height="15"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 15 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Trạng thái tài khoản"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock x:Name="SelectedAccount_ActivatedString"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Text="Đã kích hoạt"
+                                                   FontWeight="Normal"
+                                                   Foreground="{Binding SelectedAccount.ActivatedColor}" />
+                                    </Grid>
 
 
-                            <Grid Grid.Column="8"
-                                  Grid.ColumnSpan="12"
-                                  Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="8"
+                                          Grid.ColumnSpan="12"
+                                          Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="CodeTags"
-                                                         Width="15"
-                                                         Height="15"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 15 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Mã tài khoản"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
-                                <TextBlock x:Name="SelectedAccount_Id"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           FontWeight="Normal"
-                                           Text="123" />
-                            </Grid>
+                                        <materialDesign:PackIcon Kind="CodeTags"
+                                                                 Width="15"
+                                                                 Height="15"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 15 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Mã tài khoản"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock x:Name="SelectedAccount_Id"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   FontWeight="Normal"
+                                                   Text="123" />
+                                    </Grid>
 
-                            <Grid Grid.Column="4"
-                                  Grid.ColumnSpan="4"
-                                  Grid.Row="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="4"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="Account"
-                                                         Width="20"
-                                                         Height="20"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Họ và tên"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon Kind="Account"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Họ và tên"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
 
-                                <TextBlock x:Name="SelectedAccount_FullName"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           FontWeight="Normal"
-                                           Text="Nguyễn Ngọc Minh Tú" />
-                            </Grid>
+                                        <TextBlock x:Name="SelectedAccount_FullName"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   FontWeight="Normal"
+                                                   Text="Nguyễn Ngọc Minh Tú" />
+                                    </Grid>
 
-                            <Grid Grid.Column="8"
-                                  Grid.ColumnSpan="4"
-                                  Grid.Row="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="8"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="Email"
-                                                         Width="20"
-                                                         Height="20"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Email"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon Kind="Email"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Email"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
 
-                                <TextBlock x:Name="SelectedAccount_Email"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           FontWeight="Normal"
-                                           Text="minhtu1392000@gmail.com" />
-                            </Grid>
+                                        <TextBlock x:Name="SelectedAccount_Email"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   FontWeight="Normal"
+                                                   Text="minhtu1392000@gmail.com" />
+                                    </Grid>
 
-                            <Grid Grid.Column="4"
-                                  Grid.ColumnSpan="4"
-                                  Grid.Row="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="4"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="Phone"
-                                                         Width="20"
-                                                         Height="20"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Số điện thoại"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon Kind="Phone"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Số điện thoại"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
 
-                                <TextBlock x:Name="SelectedAccount_Phone"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           FontWeight="Normal"
-                                           Text="0338758008" />
-                            </Grid>
-                            <Grid Grid.Column="8"
-                                  Grid.ColumnSpan="4"
-                                  Grid.Row="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="SelectedAccount_Phone"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   FontWeight="Normal"
+                                                   Text="0338758008" />
+                                    </Grid>
+                                    <Grid Grid.Column="8"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="Language"
-                                                         Width="20"
-                                                         Height="20"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Ngôn ngữ"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon Kind="Language"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Ngôn ngữ"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
 
-                                <TextBlock x:Name="SelectedAccount_Language"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           FontWeight="Normal"
-                                           Text="English" />
-                            </Grid>
+                                        <TextBlock x:Name="SelectedAccount_Language"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   FontWeight="Normal"
+                                                   Text="English" />
+                                    </Grid>
 
-                            <Grid Grid.Column="4"
-                                  Grid.ColumnSpan="4"
-                                  Grid.Row="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="4"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="3">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="AccountGroup"
-                                                         Width="20"
-                                                         Height="20"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Nhóm quyền"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon Kind="AccountGroup"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Nhóm quyền"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
 
-                                <TextBlock x:Name="SelectedAccount_Roles"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           FontWeight="Normal"
-                                           Text="Test" />
-                            </Grid>
+                                        <TextBlock x:Name="SelectedAccount_Roles"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   FontWeight="Normal"
+                                                   Text="Test" />
+                                    </Grid>
 
-                            <Grid Grid.Column="8"
-                                  Grid.ColumnSpan="4"
-                                  Grid.Row="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="8"
+                                          Grid.ColumnSpan="4"
+                                          Grid.Row="3">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                                <materialDesign:PackIcon Kind="Location"
-                                                         Width="20"
-                                                         Height="20"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 5 0" />
-                                <TextBlock Grid.Column="1"
-                                           Text="Địa chỉ"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon Kind="Location"
+                                                                 Width="20"
+                                                                 Height="20"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Địa chỉ"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center" />
 
-                                <TextBlock x:Name="SelectedPerson_Address"
-                                           Grid.Row="1"
-                                           Grid.Column="1"
-                                           FontWeight="Normal"
-                                           TextWrapping="Wrap"
-                                           Text="ABC" />
-                            </Grid>
-                        </Grid>
+                                        <TextBlock x:Name="SelectedPerson_Address"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   FontWeight="Normal"
+                                                   TextWrapping="Wrap"
+                                                   Text="ABC" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </ScrollViewer>
+                        
                     </Expander>
                 </Border>
             </Grid>
