@@ -17,9 +17,13 @@ namespace WPFBakeryShopAdmin.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             string url = value as string;
-            BitmapImage source = new BitmapImage(new Uri(url, UriKind.RelativeOrAbsolute), new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore));
+            if (url == null) return null;
+            BitmapImage source = new BitmapImage();
+            source.BeginInit();
+            source.UriSource = new Uri(url,UriKind.RelativeOrAbsolute);
             source.CacheOption = BitmapCacheOption.None;
             source.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            source.EndInit();
             return source;
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
