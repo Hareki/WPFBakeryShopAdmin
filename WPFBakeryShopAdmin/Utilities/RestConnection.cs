@@ -7,14 +7,41 @@ namespace WPFBakeryShopAdmin.Utilities
     {
         public static readonly string ADMIN_BASE_CONNECTION_STRING = "http://localhost:8080/api/admin/";
         public static readonly string ACCOUNT_BASE_CONNECTION_STRING = "http://localhost:8080/api/account/";
-        public static string BearerToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTixST0xFX1VTRVIiLCJleHAiOjE2NTMxMzA5NzV9.LahrZlf8MeY1Ehv4g0Jh0OUWlPYm4JXWJ3FbSPmfQuL8VlMQ3cms-6TDRvXNiEeHp457TusVl79virTYUF6-Hg";
-        //TOKEN HEROKU eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTixST0xFX1VTRVIiLCJleHAiOjE2NTI3MTM3MDV9.xJY7fUzZbVuQOM-KF3iNE8S9brOLSdOlrQBECGb_p30k-oYB_jAOCrq25nSHwtcW_Atx8ZvsfW-IW6hp49pw6A
-        //TOKEN LOCAL eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTixST0xFX1VTRVIiLCJleHAiOjE2NTI3NTAyNjR9.H1YJOtQ0DzxNl1hfwXsWwRUT27fTTC1Rx4eHr2fwOYQHGAweVuTB0gX6mpiKko8G_0VXr-w_jf6dvPmJSSFRUw
-        public static readonly RestClient ADMIN_REST_CLIENT;
-        static RestConnection()
+        public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "http://localhost:8080/api/";
+
+        public static string BearerToken;
+        private static RestClient _managementRestClient;
+        private static RestClient _accountRestClient;
+
+        public static void EstablishConnection(string token)
         {
-            ADMIN_REST_CLIENT = new RestClient(RestConnection.ADMIN_BASE_CONNECTION_STRING);
-            ADMIN_REST_CLIENT.Authenticator = new JwtAuthenticator(RestConnection.BearerToken);
+            BearerToken = token;
+
+            ManagementRestClient = new RestClient(ADMIN_BASE_CONNECTION_STRING);
+            AccountRestClient = new RestClient(ACCOUNT_BASE_CONNECTION_STRING);
         }
+
+        #region Properties
+        public static RestClient AccountRestClient
+        {
+            get
+            { return _managementRestClient; }
+            set
+            {
+                _managementRestClient = value;
+                _managementRestClient.Authenticator = new JwtAuthenticator(BearerToken);
+            }
+        }
+        public static RestClient ManagementRestClient
+        {
+            get
+            { return _accountRestClient; }
+            set
+            {
+                _accountRestClient = value;
+                _accountRestClient.Authenticator = new JwtAuthenticator(BearerToken);
+            }
+        }
+        #endregion
     }
 }

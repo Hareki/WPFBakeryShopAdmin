@@ -37,7 +37,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region Base
         public BillViewModel() : base()
         {
-            this._restClient = RestConnection.ADMIN_REST_CLIENT;
+            this._restClient = RestConnection.ManagementRestClient;
             LoadPage();
         }
         private void UpdatePageStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)

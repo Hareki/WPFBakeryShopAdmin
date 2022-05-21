@@ -10,6 +10,7 @@
         Width="500"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+        xmlns:ph="clr-namespace:WPFBakeryShopAdmin.Utilities"
         d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
         TextElement.FontSize="15"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -36,18 +37,24 @@
                            FontWeight="SemiBold" />
                 <StackPanel Width="400"
                             Margin="0 20">
-                    <TextBox x:Name="txtUser"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             materialDesign:HintAssist.Hint="Email"
-                             Margin="4 12 4 12" />
-                    <PasswordBox Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
-                                 materialDesign:HintAssist.Hint="Password"
-                                 Margin="4 12 4 12" />
-                    <CheckBox IsChecked="True"
-                              Content="Ghi nhớ đăng nhập"
-                              materialDesign:CheckBoxAssist.CheckBoxSize="20"
+                    <TextBox  x:Name="LoginInfo_Email"
+                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                              FontWeight="SemiBold"
+                              materialDesign:HintAssist.Hint="Email"
                               Margin="4 12 4 12" />
-                    <Button Style="{StaticResource CustomPrimaryButton}"
+                    <PasswordBox ph:PasswordHelper.Attach="True"
+                                 ph:PasswordHelper.Password="{Binding LoginInfo.Password, Mode=TwoWay}"
+                                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
+                                 materialDesign:HintAssist.Hint="Password"
+                                 FontWeight="SemiBold"
+                                 Margin="4 12 4 12" />
+                    <CheckBox   x:Name="CheckRememberMe"
+                                IsChecked="True"
+                                Content="Ghi nhớ đăng nhập"
+                                materialDesign:CheckBoxAssist.CheckBoxSize="20"
+                                Margin="4 12 4 12" />
+                    <Button x:Name="Login"
+                            Style="{StaticResource CustomPrimaryButton}"
                             Content="ĐĂNG NHẬP"
                             Margin="4 12 4 12" />
                     <Button Style="{StaticResource CustomFlatButton}"
@@ -56,32 +63,78 @@
                 </StackPanel>
 
             </StackPanel>
-            <ComboBox x:Name="LanguageList"
-                      materialDesign:HintAssist.Hint="Language"
-                      VerticalAlignment="Center"
-                      HorizontalAlignment="Right"
-                      Margin="0 0 20 0"
-                      Grid.Column="0"
-                      FontSize="12"
-                      materialDesign:ComboBoxAssist.ClassicMode="False"
-                      Foreground="#fd9935"
-                      materialDesign:TextFieldAssist.UnderlineBrush="#fd9935"
-                      materialDesign:TextFieldAssist.UnderlineCornerRadius="10"
-                      FontWeight="Bold"
-                      Grid.Row="1">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding LanguageFlagURL}"
-                                   RenderOptions.BitmapScalingMode="HighQuality"
-                                   RenderOptions.EdgeMode="Aliased"
-                                   MaxWidth="25"
-                                   Margin="0 0 7 0" />
-                            <TextBlock Text="{Binding LanguageName}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+
+
+            <Border Background="White"
+                    CornerRadius="4"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Padding="15 0 15 5"
+                    MinWidth="150"
+                    Grid.Column="0"
+                    Grid.Row="1">
+                <ComboBox x:Name="LanguageList"
+                          materialDesign:HintAssist.Hint="Language"
+                          Margin="0 0 20 0"
+                          FontSize="12"
+                          materialDesign:ComboBoxAssist.ClassicMode="False"
+                          Foreground="#fd9935"
+                          materialDesign:TextFieldAssist.UnderlineBrush="#fd9935"
+                          materialDesign:TextFieldAssist.UnderlineCornerRadius="10"
+                          FontWeight="Bold">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding LanguageFlagURL}"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       RenderOptions.EdgeMode="Aliased"
+                                       MaxWidth="25"
+                                       Margin="0 0 7 0" />
+                                <TextBlock Text="{Binding LanguageName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Border>
+
+            <materialDesign:Snackbar  HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Grid.Column="0"
+                                      Grid.Row="1"
+                                      x:Name="GreenSB"
+                                      Background="MediumSeaGreen"
+                                      MessageQueue="{materialDesign:MessageQueue}">
+                <materialDesign:SnackbarMessage>
+                    <StackPanel Orientation="Horizontal"
+                                x:Name="GreenContent">
+                        <materialDesign:PackIcon Kind="CheckCircle"
+                                                 Margin="0 3 10 0"
+                                                 VerticalAlignment="Center" />
+                        <TextBlock Text="Cập nhật trạng thái thành công"
+                                   FontWeight="SemiBold"
+                                   x:Name="GreenMessage" />
+                    </StackPanel>
+                </materialDesign:SnackbarMessage>
+            </materialDesign:Snackbar>
+
+            <materialDesign:Snackbar HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Grid.Column="0"
+                                     Grid.Row="1"
+                                     x:Name="RedSB"
+                                     Background="Red"
+                                     MessageQueue="{materialDesign:MessageQueue}">
+                <materialDesign:SnackbarMessage>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CheckCircle"
+                                                 Margin="0 3 10 0"
+                                                 VerticalAlignment="Center" />
+                        <TextBlock Text="Xảy ra lỗi khi cập nhật"
+                                   FontWeight="Bold"
+                                   x:Name="RedMessage" />
+                    </StackPanel>
+                </materialDesign:SnackbarMessage>
+            </materialDesign:Snackbar>
         </Grid>
 
 

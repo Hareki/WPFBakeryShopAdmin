@@ -23,10 +23,10 @@ namespace WPFBakeryShopAdmin.ViewModels
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
 
-        #region
+        #region Base
         public AccountViewModel() : base()
         {
-            this._restClient = RestConnection.ADMIN_REST_CLIENT;
+            this._restClient = RestConnection.ManagementRestClient;
             LoadPage();
         }
         public void LoadPage()

@@ -126,7 +126,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AttachedProperties\MoreProps.cs" />
     <Compile Include="Converters\ImagCacheConverter.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
@@ -134,11 +133,14 @@
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\DetailItemBill.cs" />
     <Compile Include="Models\ItemLanguage.cs" />
+    <Compile Include="Models\LoginRequestBody.cs" />
     <Compile Include="Models\PersonalAccount.cs" />
     <Compile Include="Models\RowItemAccount.cs" />
     <Compile Include="Models\RowItemBill.cs" />
     <Compile Include="Models\RowItemProduct.cs" />
+    <Compile Include="Models\Token.cs" />
     <Compile Include="Utilities\LanguageList.cs" />
+    <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
