@@ -47,9 +47,8 @@ namespace WPFBakeryShopAdmin.ViewModels
             //request.AddHeader("Content-type", "application/json");
 
             request.AddBody(requestBody, contentType: "application/json");
-            var task = client.ExecuteAsync(request);
-            var response = await task;
-            await Task.Delay(500);
+            var response = await client.ExecuteAsync(request);
+            await Task.Delay(5000);
 
             int statusCode = (int)response.StatusCode;
             if (statusCode == 200)
@@ -74,6 +73,43 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             //    LoadingPageVis = Visibility.Hidden;
         }
+
+        //public void Login()
+        //{
+        //    // LoadingPageVis = Visibility.Visible;
+        //    RestClient client = new RestClient(RestConnection.AUTHENTICATE_BASE_CONNECTION_STRING);
+        //    string requestBody = StringUtils.SerializeObject(LoginInfo);
+        //    var request = new RestRequest("authenticate", Method.Post);
+        //    //request.AddHeader("Content-type", "application/json");
+
+        //    request.AddBody(requestBody, contentType: "application/json");
+        //    //var task = client.ExecuteAsync(request);
+        //    //var response = await task;
+        //    var task = client.ExecuteAsync(request);
+
+        //    int statusCode = (int)task.Result.StatusCode;
+        //    if (statusCode == 200)
+        //    {
+        //        var tokenJSon = task.Result.Content;
+        //        Token token = JsonConvert.DeserializeObject<Token>(tokenJSon);
+        //        RestConnection.EstablishConnection(token.IdToken);
+
+        //        Properties.Settings.Default.token = token.IdToken;
+        //        this._windowManager.ShowWindowAsync(_mainViewModel);
+        //        this.DeactivateAsync(true);
+
+        //    }
+        //    else if (statusCode == 400 || statusCode == 401)
+        //    {
+        //        ShowFailMessage("Email hoặc mật khẩu không đúng");
+        //    }
+        //    else
+        //    {
+        //        ShowFailMessage("Xảy ra lỗi khi đăng nhập");
+
+        //    }
+        //    //    LoadingPageVis = Visibility.Hidden;
+        //}
         #endregion
 
         #region Showing Messages
