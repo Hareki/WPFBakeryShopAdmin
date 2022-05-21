@@ -5,6 +5,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WPFBakeryShopAdmin.Models;
@@ -15,7 +16,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 {
     public class BillViewModel : Screen
     {
-        private readonly RestClient _restClient;
+        private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private Visibility _loadingInfoVis = Visibility.Visible;
         private BindableCollection<RowItemBill> _rowItemBills;
@@ -35,10 +36,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         private readonly string _cancelledColor = "#E63946";
 
         #region Base
-        public BillViewModel() : base()
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             this._restClient = RestConnection.ManagementRestClient;
             LoadPage();
+            return Task.CompletedTask;
         }
         private void UpdatePageStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
         {

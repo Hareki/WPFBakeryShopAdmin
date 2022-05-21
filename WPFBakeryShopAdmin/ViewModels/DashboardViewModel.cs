@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RestSharp;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
@@ -10,7 +11,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 {
     public class DashboardViewModel : Screen
     {
-        private readonly RestClient _restClient;
+        private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private Dashboard _dashboard;
         private float _cancelledPercent;
@@ -19,10 +20,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         private float _shippingPercent;
 
         #region Base
-        public DashboardViewModel() : base()
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             this._restClient = RestConnection.ManagementRestClient;
             LoadPage();
+            return Task.CompletedTask;
         }
         private void UpdatePercent()
         {

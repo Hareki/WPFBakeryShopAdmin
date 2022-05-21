@@ -139,7 +139,6 @@
     <Compile Include="Models\RowItemBill.cs" />
     <Compile Include="Models\RowItemProduct.cs" />
     <Compile Include="Models\Token.cs" />
-    <Compile Include="Utilities\AES256.cs" />
     <Compile Include="Utilities\LanguageList.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\RestConnection.cs" />

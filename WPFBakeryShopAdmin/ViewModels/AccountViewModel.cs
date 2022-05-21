@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
@@ -12,7 +13,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 {
     public class AccountViewModel : Screen
     {
-        private readonly RestClient _restClient;
+        private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
         private string _pageIndicator;
@@ -24,10 +25,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
 
         #region Base
-        public AccountViewModel() : base()
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             this._restClient = RestConnection.ManagementRestClient;
             LoadPage();
+            return Task.CompletedTask;
         }
         public void LoadPage()
         {

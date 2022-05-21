@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
@@ -17,7 +18,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 {
     public class PersonalAccountViewModel : Screen
     {
-        private readonly RestClient _restClient;
+        private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private PersonalAccount _personalAccount;
         private PersonalAccount _savedPersonalAccount;
@@ -26,12 +27,13 @@ namespace WPFBakeryShopAdmin.ViewModels
         private string _userImageUrl;
 
         #region Base
-        public PersonalAccountViewModel() : base()
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = new RestClient(RestConnection.ACCOUNT_BASE_CONNECTION_STRING);
             _restClient.Authenticator = new JwtAuthenticator(RestConnection.BearerToken);
             LanguageList = Utilities.LanguageList.LIST;
             LoadPage();
+            return Task.CompletedTask;
         }
         public void LoadPage()
         {

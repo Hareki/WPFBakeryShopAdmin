@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using WPFBakeryShopAdmin.Models;
@@ -21,19 +22,29 @@ namespace WPFBakeryShopAdmin.ViewModels
         private Visibility _loadingPageVis = Visibility.Visible;
         private LoginRequestBody _loginInfo;
 
+        private MainViewModel _mainViewModel;
+        private IWindowManager _windowManager;
         #region Base
-        public LoginViewModel() : base()
+        public LoginViewModel(MainViewModel mainViewModel, IWindowManager windowManager)
+        {
+            _mainViewModel = mainViewModel;
+            _windowManager = windowManager;
+        }
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             LanguageList = Utilities.LanguageList.LIST;
             LoginInfo = new LoginRequestBody("admin@gmail.com", "123456", true);
+
+            return Task.CompletedTask;
         }
-        public void Login()
+        public  void Login()
         {
+            bool success = false;
+            Thread thread =
             new Thread(new ThreadStart(() =>
             {
-                LoadingPageVis = Visibility.Visible;
+                //     LoadingPageVis = Visibility.Visible;
                 RestClient client = new RestClient(RestConnection.AUTHENTICATE_BASE_CONNECTION_STRING);
-
                 string requestBody = StringUtils.SerializeObject(LoginInfo);
                 var request = new RestRequest("authenticate", Method.Post);
                 //request.AddHeader("Content-type", "application/json");
@@ -49,6 +60,8 @@ namespace WPFBakeryShopAdmin.ViewModels
                     RestConnection.EstablishConnection(token.IdToken);
 
                     Properties.Settings.Default.token = token.IdToken;
+                    success = true;
+
                 }
                 else if (statusCode == 400 || statusCode == 401)
                 {
@@ -59,8 +72,16 @@ namespace WPFBakeryShopAdmin.ViewModels
                     ShowFailMessage("Xảy ra lỗi khi đăng nhập");
 
                 }
-                LoadingPageVis = Visibility.Hidden;
-            })).Start();
+                //    LoadingPageVis = Visibility.Hidden;
+            }));
+            thread.Start();
+            thread.Join();
+            if (success)
+            {
+                 this._windowManager.ShowWindowAsync(_mainViewModel);
+                 this.DeactivateAsync(true);
+               
+            }
 
 
         }
@@ -154,5 +175,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
         #endregion
+
     }
 }

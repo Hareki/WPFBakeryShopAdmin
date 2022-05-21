@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using WPFBakeryShopAdmin.Models;
 
 namespace WPFBakeryShopAdmin.ViewModels
@@ -15,11 +17,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         PersonalAccountViewModel _personalAccountViewModel;
 
         #region Base
-        public MainViewModel() : base()
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             ActivateItemAsync(new DashboardViewModel());
             LanguageList = Utilities.LanguageList.LIST;
-
+            return Task.CompletedTask;
         }
         #endregion
 
