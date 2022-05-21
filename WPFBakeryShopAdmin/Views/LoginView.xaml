@@ -53,7 +53,7 @@
                                 Content="Ghi nhớ đăng nhập"
                                 materialDesign:CheckBoxAssist.CheckBoxSize="20"
                                 Margin="4 12 4 12" />
-                    <Button x:Name="Login"
+                    <Button x:Name="LoginAsync"
                             Style="{StaticResource CustomPrimaryButton}"
                             Content="ĐĂNG NHẬP"
                             Margin="4 12 4 12" />
@@ -125,7 +125,8 @@
                                      Background="Red"
                                      MessageQueue="{materialDesign:MessageQueue}">
                 <materialDesign:SnackbarMessage>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal"
+                                x:Name="RedContent">
                         <materialDesign:PackIcon Kind="CheckCircle"
                                                  Margin="0 3 10 0"
                                                  VerticalAlignment="Center" />
