@@ -1,9 +1,9 @@
 ﻿using Caliburn.Micro;
-using RestSharp;
-using WPFBakeryShopAdmin.Utilities;
-using WPFBakeryShopAdmin.Models;
 using Newtonsoft.Json;
+using RestSharp;
 using RestSharp.Authenticators;
+using WPFBakeryShopAdmin.Models;
+using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -32,10 +32,10 @@ namespace WPFBakeryShopAdmin.ViewModels
             var request = new RestRequest("products", Method.Get);
             request.AddParameter("page", 0).AddParameter("size", 100);
             var respone = RestClient.ExecuteAsync(request);
-            if((int)respone.Result.StatusCode == 200)
+            if ((int)respone.Result.StatusCode == 200)
             {
                 var products = respone.Result.Content;
-                RowItemProducts = JsonConvert.DeserializeObject<BindableCollection<RowItemProduct>>(products);   
+                RowItemProducts = JsonConvert.DeserializeObject<BindableCollection<RowItemProduct>>(products);
             }
 
         }

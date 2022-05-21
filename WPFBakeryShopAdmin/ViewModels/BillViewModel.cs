@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,27 +24,101 @@ namespace WPFBakeryShopAdmin.ViewModels
         private DetailItemBill _billDetails;
         private bool _shouldCollapse;
         private string _pageIndicator;
-
         private int _totalCount;
         private readonly int _pageSize = 10;
         private int _currentPage = 0;
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
-        private string _pendingColor = "#0DA012";
-        private string _shippingColor = "#4C82AF";
-        private string _shippedColor = "#AF4C8E";
-        private string _cancelledColor = "#E63946";
+        private readonly string _pendingColor = "#0DA012";
+        private readonly string _shippingColor = "#4C82AF";
+        private readonly string _shippedColor = "#AF4C8E";
+        private readonly string _cancelledColor = "#E63946";
 
-
-
+        #region Base
         public BillViewModel() : base()
         {
             this._restClient = RestConnection.ADMIN_REST_CLIENT;
             LoadPage();
         }
+        private void UpdatePageStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
+        {
+            bool linkDone = false, totalCountDone = false;
+            foreach (var header in headers)
+            {
+                if (header.Name.Equals("X-Total-Count"))
+                {
+                    _totalCount = (Int32.Parse(header.Value.ToString()));
+                    _maxPageIndex = _totalCount / _pageSize;
+                    UpdatePageIndicator();
+                    totalCountDone = true;
+                }
 
+                if (header.Name.Equals("Link"))
+                {
+                    string value = header.Value.ToString();
+                    if (value.Contains("next")) CouldLoadNextPage = true;
+                    else CouldLoadNextPage = false;
 
+                    if (value.Contains("prev")) CouldLoadPreviousPage = true;
+                    else CouldLoadPreviousPage = false;
 
+                    if (value.Contains("first")) CouldLoadFirstPage = true;
+                    else CouldLoadFirstPage = false;
+
+                    if (value.Contains("last")) CouldLoadLastPage = true;
+                    else CouldLoadLastPage = false;
+
+                    linkDone = true;
+                }
+                if (totalCountDone && linkDone) return;
+            }
+        }
+        public void LoadPage()
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                if (RowItemBills != null)
+                {
+                    RowItemBills.Clear();
+                }
+                LoadingPageVis = Visibility.Visible;
+                var request = new RestRequest("orders", Method.Get);
+
+                if (_currentPage > _maxPageIndex) _currentPage = 0;
+                request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
+                var respone = _restClient.ExecuteAsync(request);
+                if ((int)respone.Result.StatusCode == 200)
+                {
+                    var bills = respone.Result.Content;
+                    RowItemBills = JsonConvert.DeserializeObject<BindableCollection<RowItemBill>>(bills);
+                    UpdatePageStatus(respone.Result.Headers);
+                }
+                LoadingPageVis = Visibility.Hidden;
+            })).Start();
+
+        }
+        public void LoadPage(int page)
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                if (RowItemBills != null)
+                {
+                    RowItemBills.Clear();
+                }
+                LoadingPageVis = Visibility.Visible;
+                var request = new RestRequest("orders", Method.Get);
+                request.AddParameter("page", page).AddParameter("size", _pageSize);
+                var respone = _restClient.ExecuteAsync(request);
+                if ((int)respone.Result.StatusCode == 200)
+                {
+                    var bills = respone.Result.Content;
+                    RowItemBills = JsonConvert.DeserializeObject<BindableCollection<RowItemBill>>(bills);
+                    UpdatePageStatus(respone.Result.Headers);
+                }
+                LoadingPageVis = Visibility.Hidden;
+            })).Start();
+
+        }
         private void LoadDetailItem(int id)
         {
             Console.WriteLine("Load Detail Item!");
@@ -62,7 +135,49 @@ namespace WPFBakeryShopAdmin.ViewModels
                 LoadingInfoVis = Visibility.Hidden;
             })).Start();
         }
+        public void UpdateOrderStatus()
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                var request = new RestRequest($"orders/{BillDetails.Id}/status/update", Method.Put);
+                var respone = _restClient.ExecuteAsync(request);
+                if ((int)respone.Result.StatusCode == 200)
+                {
+                    BillDetails.StatusId++;
+                    //_shouldCollapse = false;
+                    GridRefresh(BillDetails.StatusId);
+                    ShowSuccessMessage("Cập nhật trạng thái đơn hàng thành công");
+                    return;
+                }
+                ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
+            })).Start();
+        }
+        #endregion
 
+        #region Updating View Methods
+        private void GridRefresh(int newStatusId)
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                int selectedRow = Grid.SelectedIndex;
+
+                RowItemBills[selectedRow].StatusId = newStatusId;
+                Grid.Items.Refresh();
+                Grid.SelectedIndex = selectedRow;
+            });
+        }
+        public void PreviewStatus()
+        {
+            if (BillDetails.CanUpdateOrderStatus)
+            {
+                int previewId = BillDetails.StatusId + 1;
+                SetBindingButtonAppearance(previewId);
+            }
+        }
+        public void ClearPreview()
+        {
+            SetBindingButtonAppearance(BillDetails.StatusId);
+        }
         private void SetBindingButtonAppearance(int statusId)
         {
             string text, imageUrl, background;
@@ -98,162 +213,9 @@ namespace WPFBakeryShopAdmin.ViewModels
             Console.WriteLine(background);
             BindingButton = new BindingButtonAppearance(text, imageUrl, background);
         }
-        public Visibility LoadingPageVis
-        {
-            get { return _loadingPageVis; }
-            set
-            {
-                _loadingPageVis = value;
-                NotifyOfPropertyChange(() => LoadingPageVis);
-            }
-        }
+        #endregion
 
-        public Visibility LoadingInfoVis
-        {
-            get { return _loadingInfoVis; }
-            set
-            {
-                _loadingInfoVis = value;
-                NotifyOfPropertyChange(() => LoadingInfoVis);
-            }
-        }
-        public bool CouldLoadFirstPage
-        {
-            get { return _couldLoadFirstPage; }
-            set
-            {
-                _couldLoadFirstPage = value;
-                NotifyOfPropertyChange(() => CouldLoadFirstPage);
-            }
-        }
-
-        public bool CouldLoadPreviousPage
-        {
-            get { return _couldLoadPreviousPage; }
-            set
-            {
-                _couldLoadPreviousPage = value;
-                NotifyOfPropertyChange(() => CouldLoadPreviousPage);
-            }
-        }
-
-        public bool CouldLoadNextPage
-        {
-            get { return _couldLoadNextPage; }
-            set
-            {
-                _couldLoadNextPage = value;
-                NotifyOfPropertyChange(() => CouldLoadNextPage);
-            }
-        }
-
-        public bool CouldLoadLastPage
-        {
-            get { return _couldLoadLastPage; }
-            set
-            {
-                _couldLoadLastPage = value;
-                NotifyOfPropertyChange(() => CouldLoadLastPage);
-            }
-        }
-        private void UpdatePageStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
-        {
-            bool linkDone = false, totalCountDone = false;
-            foreach (var header in headers)
-            {
-                if (header.Name.Equals("X-Total-Count"))
-                {
-                    _totalCount = (Int32.Parse(header.Value.ToString()));
-                    _maxPageIndex = _totalCount / _pageSize;
-                    UpdatePageIndicator();
-                    totalCountDone = true;
-                }
-
-                if (header.Name.Equals("Link"))
-                {
-                    string value = header.Value.ToString();
-                    if (value.Contains("next")) CouldLoadNextPage = true;
-                    else CouldLoadNextPage = false;
-
-                    if (value.Contains("prev")) CouldLoadPreviousPage = true;
-                    else CouldLoadPreviousPage = false;
-
-                    if (value.Contains("first")) CouldLoadFirstPage = true;
-                    else CouldLoadFirstPage = false;
-
-                    if (value.Contains("last")) CouldLoadLastPage = true;
-                    else CouldLoadLastPage = false;
-
-                    linkDone = true;
-                }
-                if (totalCountDone && linkDone) return;
-            }
-        }
-
-        private void ShowSuccessMessage(string message)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.GreenMessage.Text = message;
-
-                GreenSB.MessageQueue?.Enqueue(
-                View.GreenContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
-        }
-
-        private void ShowFailMessage(string message)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.RedMessage.Text = message;
-
-                RedSB.MessageQueue?.Enqueue(
-                RedSB.Message.Content,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
-        }
-
-        public void UpdateOrderStatus()
-        {
-            new Thread(new ThreadStart(() =>
-            {
-                var request = new RestRequest($"orders/{BillDetails.Id}/status/update", Method.Put);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
-                {
-                    BillDetails.StatusId++;
-                    //_shouldCollapse = false;
-                    GridRefresh(BillDetails.StatusId);
-                    ShowSuccessMessage("Cập nhật trạng thái đơn hàng thành công");
-                    return;
-                }
-                ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
-            })).Start();
-        }
-
-        private void GridRefresh(int newStatusId)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                int selectedRow = Grid.SelectedIndex;
-
-                RowItemBills[selectedRow].StatusId = newStatusId;
-                Grid.Items.Refresh();
-                Grid.SelectedIndex = selectedRow;
-            });
-        }
-
+        #region View Events
         public void RowItemBills_SelectionChanged()
         {
 
@@ -272,79 +234,93 @@ namespace WPFBakeryShopAdmin.ViewModels
                 _shouldCollapse = true;
             });
         }
-
         public void Expander_Expanded()
         {
             if (SelectedBill != null)
                 LoadDetailItem(SelectedBill.Id);
         }
+        #endregion
 
-        public void PreviewStatus()
+        #region Showing Messages
+        private void ShowSuccessMessage(string message)
         {
-            if (BillDetails.CanUpdateOrderStatus)
+            View.Dispatcher.Invoke(() =>
             {
-                int previewId = BillDetails.StatusId + 1;
-                SetBindingButtonAppearance(previewId);
+                View.GreenMessage.Text = message;
+
+                GreenSB.MessageQueue?.Enqueue(
+                View.GreenContent,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+        }
+        private void ShowFailMessage(string message)
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                View.RedMessage.Text = message;
+
+                RedSB.MessageQueue?.Enqueue(
+                RedSB.Message.Content,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+        }
+        #endregion
+
+        #region Pagination
+        public bool CouldLoadFirstPage
+        {
+            get { return _couldLoadFirstPage; }
+            set
+            {
+                _couldLoadFirstPage = value;
+                NotifyOfPropertyChange(() => CouldLoadFirstPage);
             }
         }
-        public void ClearPreview()
+        public bool CouldLoadPreviousPage
         {
-            SetBindingButtonAppearance(BillDetails.StatusId);
-        }
-
-        public void LoadPage()
-        {
-            new Thread(new ThreadStart(() =>
+            get { return _couldLoadPreviousPage; }
+            set
             {
-                if (RowItemBills != null)
-                {
-                    RowItemBills.Clear();
-                }
-                LoadingPageVis = Visibility.Visible;
-                var request = new RestRequest("orders", Method.Get);
-
-                if (_currentPage > _maxPageIndex) _currentPage = 0;
-                request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
-                {
-                    var bills = respone.Result.Content;
-                    RowItemBills = JsonConvert.DeserializeObject<BindableCollection<RowItemBill>>(bills);
-                    UpdatePageStatus(respone.Result.Headers);
-                }
-                LoadingPageVis = Visibility.Hidden;
-            })).Start();
-
+                _couldLoadPreviousPage = value;
+                NotifyOfPropertyChange(() => CouldLoadPreviousPage);
+            }
         }
-
-        public void LoadPage(int page)
+        public bool CouldLoadNextPage
         {
-            new Thread(new ThreadStart(() =>
+            get { return _couldLoadNextPage; }
+            set
             {
-                if (RowItemBills != null)
-                {
-                    RowItemBills.Clear();
-                }
-                LoadingPageVis = Visibility.Visible;
-                var request = new RestRequest("orders", Method.Get);
-                request.AddParameter("page", page).AddParameter("size", _pageSize);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
-                {
-                    var bills = respone.Result.Content;
-                    RowItemBills = JsonConvert.DeserializeObject<BindableCollection<RowItemBill>>(bills);
-                    UpdatePageStatus(respone.Result.Headers);
-                }
-                LoadingPageVis = Visibility.Hidden;
-            })).Start();
-
+                _couldLoadNextPage = value;
+                NotifyOfPropertyChange(() => CouldLoadNextPage);
+            }
         }
-
-        private void UpdatePageIndicator()
+        public bool CouldLoadLastPage
         {
-            int start = _pageSize * _currentPage + 1;
-            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
-            PageIndicator = $"{start} - {end} của {_totalCount}";
+            get { return _couldLoadLastPage; }
+            set
+            {
+                _couldLoadLastPage = value;
+                NotifyOfPropertyChange(() => CouldLoadLastPage);
+            }
+        }
+        public string PageIndicator
+        {
+            get { return _pageIndicator; }
+            set
+            {
+                _pageIndicator = value;
+                NotifyOfPropertyChange(() => PageIndicator);
+            }
         }
         public void LoadFirstPage()
         {
@@ -366,6 +342,15 @@ namespace WPFBakeryShopAdmin.ViewModels
             _currentPage = _maxPageIndex;
             LoadPage();
         }
+        private void UpdatePageIndicator()
+        {
+            int start = _pageSize * _currentPage + 1;
+            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
+            PageIndicator = $"{start} - {end} của {_totalCount}";
+        }
+        #endregion
+
+        #region Binding Properties
         public BindingButtonAppearance BindingButton
         {
             get { return _bindingButton; }
@@ -375,7 +360,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => BindingButton);
             }
         }
-
         public BindableCollection<RowItemBill> RowItemBills
         {
             get
@@ -388,7 +372,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => RowItemBills);
             }
         }
-
         public DetailItemBill BillDetails
         {
             get { return _billDetails; }
@@ -411,7 +394,27 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => SelectedBill);
             }
         }
+        public Visibility LoadingPageVis
+        {
+            get { return _loadingPageVis; }
+            set
+            {
+                _loadingPageVis = value;
+                NotifyOfPropertyChange(() => LoadingPageVis);
+            }
+        }
+        public Visibility LoadingInfoVis
+        {
+            get { return _loadingInfoVis; }
+            set
+            {
+                _loadingInfoVis = value;
+                NotifyOfPropertyChange(() => LoadingInfoVis);
+            }
+        }
+        #endregion
 
+        #region View Mapping Properties
         public BillView View
         {
             get
@@ -419,7 +422,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 return (BillView)this.GetView();
             }
         }
-
         public DataGrid Grid
         {
             get
@@ -427,7 +429,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 return View.RowItemBills;
             }
         }
-
         public Expander Expander
         {
             get
@@ -435,7 +436,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 return View.DetailExpander;
             }
         }
-
         public Snackbar GreenSB
         {
             get
@@ -443,7 +443,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 return View.GreenSB;
             }
         }
-
         public Snackbar RedSB
         {
             get
@@ -451,17 +450,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 return View.RedSB;
             }
         }
-
-        public string PageIndicator
-        {
-            get { return _pageIndicator; }
-            set
-            {
-                _pageIndicator = value;
-                NotifyOfPropertyChange(() => PageIndicator);
-            }
-        }
-
+        #endregion
     }
     public class BindingButtonAppearance : Screen
     {

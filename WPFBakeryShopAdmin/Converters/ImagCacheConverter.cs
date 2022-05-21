@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Cache;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 
@@ -20,7 +13,7 @@ namespace WPFBakeryShopAdmin.Converters
             if (url == null) return null;
             BitmapImage source = new BitmapImage();
             source.BeginInit();
-            source.UriSource = new Uri(url,UriKind.RelativeOrAbsolute);
+            source.UriSource = new Uri(url, UriKind.RelativeOrAbsolute);
             source.CacheOption = BitmapCacheOption.None;
             source.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             source.EndInit();

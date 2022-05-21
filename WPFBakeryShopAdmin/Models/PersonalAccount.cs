@@ -1,11 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
-using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.Models
 {

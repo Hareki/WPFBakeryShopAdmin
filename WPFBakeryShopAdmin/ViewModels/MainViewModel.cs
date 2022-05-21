@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using System.Collections.Generic;
 using WPFBakeryShopAdmin.Models;
-using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -14,22 +13,17 @@ namespace WPFBakeryShopAdmin.ViewModels
         BillViewModel _billViewModel;
         ProductViewModel _productViewModel;
         PersonalAccountViewModel _personalAccountViewModel;
-        public List<ItemLanguage> LanguageList
-        {
-            get { return _languageList; }
-            set
-            {
-                _languageList = value;
-                NotifyOfPropertyChange(() => LanguageList);
-            }
-        }
 
+        #region Base
         public MainViewModel() : base()
         {
             ActivateItemAsync(new DashboardViewModel());
             LanguageList = Utilities.LanguageList.LIST;
 
         }
+        #endregion
+
+        #region Loading Pages
         public void LoadDashboard()
         {
             if (ActiveItem != _dashboardViewModel)
@@ -74,5 +68,18 @@ namespace WPFBakeryShopAdmin.ViewModels
                 ActivateItemAsync(_personalAccountViewModel);
             }
         }
+        #endregion
+
+        #region Properties
+        public List<ItemLanguage> LanguageList
+        {
+            get { return _languageList; }
+            set
+            {
+                _languageList = value;
+                NotifyOfPropertyChange(() => LanguageList);
+            }
+        }
+        #endregion
     }
 }

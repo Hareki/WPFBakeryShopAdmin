@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace WPFBakeryShopAdmin.AttachedProperties
 {
@@ -32,8 +31,8 @@ namespace WPFBakeryShopAdmin.AttachedProperties
                 if (Int32.TryParse((string)args.NewValue, out value))
                 {
                     var margin = element.Margin;
-                    margin.Top = value/2;
-                    margin.Left = value/2;
+                    margin.Top = value / 2;
+                    margin.Left = value / 2;
                     element.Margin = margin;
                 }
             }

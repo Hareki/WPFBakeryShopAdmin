@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
-using RestSharp;
-using WPFBakeryShopAdmin.Utilities;
-using WPFBakeryShopAdmin.Models;
 using Newtonsoft.Json;
-using RestSharp.Authenticators;
+using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Threading;
+using System.Windows;
+using WPFBakeryShopAdmin.Models;
+using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -23,85 +22,36 @@ namespace WPFBakeryShopAdmin.ViewModels
         private int _currentPage = 0;
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
+
+        #region
         public AccountViewModel() : base()
         {
             this._restClient = RestConnection.ADMIN_REST_CLIENT;
             LoadPage();
         }
-        public BindableCollection<RowItemAccount> RowItemAccounts
+        public void LoadPage()
         {
-            get
+            new Thread(new ThreadStart(() =>
             {
-                return _rowItemAccounts;
-            }
-            set
-            {
-                _rowItemAccounts = value;
-                NotifyOfPropertyChange(() => RowItemAccounts);
-            }
+                if (RowItemAccounts != null)
+                {
+                    RowItemAccounts.Clear();
+                }
+                LoadingPageVis = Visibility.Visible;
+                var request = new RestRequest("accounts", Method.Get);
+
+                if (_currentPage > _maxPageIndex) _currentPage = 0;
+                request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
+                var respone = _restClient.ExecuteAsync(request);
+                if ((int)respone.Result.StatusCode == 200)
+                {
+                    var accounts = respone.Result.Content;
+                    RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
+                    UpdateStatus(respone.Result.Headers);
+                }
+                LoadingPageVis = Visibility.Hidden;
+            })).Start();
         }
-        public Visibility LoadingPageVis
-        {
-            get { return _loadingPageVis; }
-            set
-            {
-                _loadingPageVis = value;
-                NotifyOfPropertyChange(() => LoadingPageVis);
-            }
-        }
-        public bool CouldLoadFirstPage
-        {
-            get { return _couldLoadFirstPage; }
-            set
-            {
-                _couldLoadFirstPage = value;
-                NotifyOfPropertyChange(() => CouldLoadFirstPage);
-            }
-        }
-
-        public bool CouldLoadPreviousPage
-        {
-            get { return _couldLoadPreviousPage; }
-            set
-            {
-                _couldLoadPreviousPage = value;
-                NotifyOfPropertyChange(() => CouldLoadPreviousPage);
-            }
-        }
-
-        public bool CouldLoadNextPage
-        {
-            get { return _couldLoadNextPage; }
-            set
-            {
-                _couldLoadNextPage = value;
-                NotifyOfPropertyChange(() => CouldLoadNextPage);
-            }
-        }
-
-        public bool CouldLoadLastPage
-        {
-            get { return _couldLoadLastPage; }
-            set
-            {
-                _couldLoadLastPage = value;
-                NotifyOfPropertyChange(() => CouldLoadLastPage);
-            }
-        }
-
-
-
-        public RowItemAccount SelectedAccount
-        {
-            get { return _selectedAccount; }
-            set
-            {
-                _selectedAccount = value;
-                NotifyOfPropertyChange(() => SelectedAccount);
-            }
-        }
-
-
         private void UpdateStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
         {
             bool linkDone = false, totalCountDone = false;
@@ -135,36 +85,54 @@ namespace WPFBakeryShopAdmin.ViewModels
                 if (totalCountDone && linkDone) return;
             }
         }
+        #endregion
 
-        private void UpdatePageIndicator()
+        #region Pagination
+        public bool CouldLoadFirstPage
         {
-            int start = _pageSize * _currentPage + 1;
-            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
-            PageIndicator = $"{start} - {end} của {_totalCount}";
-        }
-
-        public void LoadPage()
-        {
-            new Thread(new ThreadStart(() =>
+            get { return _couldLoadFirstPage; }
+            set
             {
-                if (RowItemAccounts != null)
-                {
-                    RowItemAccounts.Clear();
-                }
-                LoadingPageVis = Visibility.Visible;
-                var request = new RestRequest("accounts", Method.Get);
+                _couldLoadFirstPage = value;
+                NotifyOfPropertyChange(() => CouldLoadFirstPage);
+            }
+        }
+        public bool CouldLoadPreviousPage
+        {
+            get { return _couldLoadPreviousPage; }
+            set
+            {
+                _couldLoadPreviousPage = value;
+                NotifyOfPropertyChange(() => CouldLoadPreviousPage);
+            }
+        }
+        public bool CouldLoadNextPage
+        {
+            get { return _couldLoadNextPage; }
+            set
+            {
+                _couldLoadNextPage = value;
+                NotifyOfPropertyChange(() => CouldLoadNextPage);
+            }
+        }
+        public bool CouldLoadLastPage
+        {
+            get { return _couldLoadLastPage; }
+            set
+            {
+                _couldLoadLastPage = value;
+                NotifyOfPropertyChange(() => CouldLoadLastPage);
+            }
+        }
+        public string PageIndicator
+        {
+            get { return _pageIndicator; }
+            set
+            {
+                _pageIndicator = value;
+                NotifyOfPropertyChange(() => PageIndicator);
 
-                if (_currentPage > _maxPageIndex) _currentPage = 0;
-                request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
-                {
-                    var accounts = respone.Result.Content;
-                    RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
-                    UpdateStatus(respone.Result.Headers);
-                }
-                LoadingPageVis = Visibility.Hidden;
-            })).Start();
+            }
         }
         public void LoadFirstPage()
         {
@@ -181,22 +149,54 @@ namespace WPFBakeryShopAdmin.ViewModels
             _currentPage++;
             LoadPage();
         }
-
         public void LoadLastPage()
         {
             _currentPage = _maxPageIndex;
             LoadPage();
         }
-
-        public string PageIndicator
+        private void UpdatePageIndicator()
         {
-            get { return _pageIndicator; }
+            int start = _pageSize * _currentPage + 1;
+            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
+            PageIndicator = $"{start} - {end} của {_totalCount}";
+        }
+
+        #endregion
+
+        #region Binding Properties
+        public RowItemAccount SelectedAccount
+        {
+            get { return _selectedAccount; }
             set
             {
-                _pageIndicator = value;
-                NotifyOfPropertyChange(() => PageIndicator);
-
+                _selectedAccount = value;
+                NotifyOfPropertyChange(() => SelectedAccount);
             }
         }
+        public BindableCollection<RowItemAccount> RowItemAccounts
+        {
+            get
+            {
+                return _rowItemAccounts;
+            }
+            set
+            {
+                _rowItemAccounts = value;
+                NotifyOfPropertyChange(() => RowItemAccounts);
+            }
+        }
+        public Visibility LoadingPageVis
+        {
+            get { return _loadingPageVis; }
+            set
+            {
+                _loadingPageVis = value;
+                NotifyOfPropertyChange(() => LoadingPageVis);
+            }
+        }
+        #endregion
+
+
+
     }
 }

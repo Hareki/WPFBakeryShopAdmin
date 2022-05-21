@@ -1,26 +1,17 @@
 ﻿using Caliburn.Micro;
-using RestSharp;
-using WPFBakeryShopAdmin.Utilities;
-using WPFBakeryShopAdmin.Models;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using Newtonsoft.Json;
+using RestSharp;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Threading;
-using Newtonsoft.Json.Serialization;
-using System.ComponentModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System.Collections;
-using System.Linq;
-using WPFBakeryShopAdmin.Views;
-using System.Windows.Controls;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
-using System.Windows.Media.Imaging;
 using System.IO;
-using System.Threading.Tasks;
-using System.Net.Cache;
+using System.Threading;
+using System.Windows;
+using WPFBakeryShopAdmin.Models;
+using WPFBakeryShopAdmin.Utilities;
+using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -31,19 +22,10 @@ namespace WPFBakeryShopAdmin.ViewModels
         private PersonalAccount _personalAccount;
         private PersonalAccount _savedPersonalAccount;
         private List<ItemLanguage> _languageList;
-        public ItemLanguage SelectedItemLanguage { get; set; }
+        private bool _editing = false;
         private string _userImageUrl;
 
-        public string UserImageUrl
-        {
-            get { return _userImageUrl; }
-            set
-            {
-                _userImageUrl = value;
-                NotifyOfPropertyChange(() => UserImageUrl);
-            }
-        }
-
+        #region Base
         public PersonalAccountViewModel() : base()
         {
             _restClient = new RestClient(RestConnection.ACCOUNT_BASE_CONNECTION_STRING);
@@ -51,24 +33,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             LanguageList = Utilities.LanguageList.LIST;
             LoadPage();
         }
-        private bool _editing = false;
-
-        public bool Editing
-        {
-            get { return _editing; }
-            set
-            {
-                _editing = value;
-                NotifyOfPropertyChange(() => Editing);
-                NotifyOfPropertyChange(() => NotEditing);
-            }
-        }
-
-        public bool NotEditing
-        {
-            get { return !Editing; }
-        }
-
         public void LoadPage()
         {
             new Thread(new ThreadStart(() =>
@@ -84,8 +48,16 @@ namespace WPFBakeryShopAdmin.ViewModels
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
         }
-
-
+        public void RequestUpdate()
+        {
+            Editing = true;
+            _savedPersonalAccount = new PersonalAccount(PersonalAccount);
+        }
+        public void CancelUpdate()
+        {
+            Editing = false;
+            PersonalAccount = new PersonalAccount(_savedPersonalAccount);
+        }
         public void UpdateInfo()
         {
             if (!HasError())
@@ -152,7 +124,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 LoadingPageVis = Visibility.Hidden;
             }
         }
-
         public void UpdatePreviewImage()
         {
             OpenFileDialog open = new OpenFileDialog();
@@ -172,7 +143,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
             }
         }
-
         private bool HasError()
         {
             return !StringUtils.IsValidEmail(PersonalAccount.Email) ||
@@ -182,13 +152,15 @@ namespace WPFBakeryShopAdmin.ViewModels
                    string.IsNullOrEmpty(PersonalAccount.Email) ||
                    string.IsNullOrEmpty(PersonalAccount.Phone);
         }
+        #endregion
 
+        #region Show Messages
         private void ShowSuccessMessage(string message)
         {
 
             View.Dispatcher.Invoke(() =>
             {
-                GreenMessage.Text = message;
+                View.GreenMessage.Text = message;
 
                 GreenSB.MessageQueue?.Enqueue(
                 View.GreenContent,
@@ -200,12 +172,11 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
-
         private void ShowFailMessage(string message)
         {
             View.Dispatcher.Invoke(() =>
             {
-                RedMessage.Text = message;
+                View.RedMessage.Text = message;
 
                 RedSB.MessageQueue?.Enqueue(
                 View.RedContent,
@@ -217,19 +188,25 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
+        #endregion
 
-        public void RequestUpdate()
+        #region View Mapping Properties
+        public PersonalAccountView View
         {
-            Editing = true;
-            _savedPersonalAccount = new PersonalAccount(PersonalAccount);
+            get
+            { return (PersonalAccountView)this.GetView(); }
         }
-
-        public void CancelUpdate()
+        public Snackbar GreenSB
         {
-            Editing = false;
-            PersonalAccount = new PersonalAccount(_savedPersonalAccount);
+            get { return View.GreenSB; }
         }
+        public Snackbar RedSB
+        {
+            get { return View.RedSB; }
+        }
+        #endregion
 
+        #region Binding Properties
         public PersonalAccount PersonalAccount
         {
             get { return _personalAccount; }
@@ -259,29 +236,30 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => LanguageList);
             }
         }
-        public PersonalAccountView View
+        public bool Editing
         {
-            get
-            { return (PersonalAccountView)this.GetView(); }
+            get { return _editing; }
+            set
+            {
+                _editing = value;
+                NotifyOfPropertyChange(() => Editing);
+                NotifyOfPropertyChange(() => NotEditing);
+            }
         }
-        public Snackbar GreenSB
+        public string UserImageUrl
         {
-            get { return View.GreenSB; }
+            get { return _userImageUrl; }
+            set
+            {
+                _userImageUrl = value;
+                NotifyOfPropertyChange(() => UserImageUrl);
+            }
         }
-
-        public Snackbar RedSB
+        public ItemLanguage SelectedItemLanguage { get; set; }
+        public bool NotEditing
         {
-            get { return View.RedSB; }
+            get { return !Editing; }
         }
-        public TextBlock GreenMessage
-        {
-            get { return View.GreenMessage; }
-        }
-
-        public TextBlock RedMessage
-        {
-            get { return View.RedMessage; }
-        }
-
+        #endregion
     }
 }
