@@ -1,10 +1,14 @@
 ﻿using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
 using WPFBakeryShopAdmin.Views;
@@ -40,12 +44,20 @@ namespace WPFBakeryShopAdmin.ViewModels
                 int statusCode = (int)respone.Result.StatusCode;
                 if (statusCode == 200)
                 {
-                    RestConnection.EstablishConnection(respone.Result.Content);
-                    ShowSuccessMessage("Đăng nhập thành công");
+                    var tokenJSon = respone.Result.Content;
+                    Token token = JsonConvert.DeserializeObject<Token>(tokenJSon);
+                    RestConnection.EstablishConnection(token.IdToken);
+
+                    Properties.Settings.Default.token = token.IdToken;
+                }
+                else if (statusCode == 400 || statusCode == 401)
+                {
+                    ShowFailMessage("Email hoặc mật khẩu không đúng");
                 }
                 else
                 {
-                    ShowFailMessage("Đăng nhập thất bại");
+                    ShowFailMessage("Xảy ra lỗi khi đăng nhập");
+
                 }
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
