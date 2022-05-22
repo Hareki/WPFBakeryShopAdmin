@@ -19,9 +19,10 @@ namespace WPFBakeryShopAdmin.ViewModels
     public class PersonalAccountViewModel : Screen, IHandle<PersonalAccount>
     {
         private RestClient _restClient;
-        private Visibility _loadingPageVis = Visibility.Visible;
+        private Visibility _loadingPageVis = Visibility.Hidden;
         private PersonalAccount _personalAccount;
-        private PersonalAccount _savedPersonalAccount;
+        private PersonalAccount _savedAccount = null; //Lưu lại để lần sau bấm vào ko cần load lại thông tin account nữa
+        private PersonalAccount _accountBeforeEditing = null;
         private List<ItemLanguage> _languageList;
         private bool _editing = false;
         private string _userImageUrl;
@@ -31,43 +32,48 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             _eventAggregator = eventAggregator;
         }
-        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.AccountRestClient;
             _eventAggregator.SubscribeOnPublishedThread(this);
             LanguageList = Utilities.LanguageList.LIST;
-            LoadPage();
-            return Task.CompletedTask;
+            if (_savedAccount == null)
+            {
+                LoadingPageVis = Visibility.Visible;
+                PersonalAccount = await GetPersonalAccountFromDBAsync();
+                _savedAccount = PersonalAccount;
+                LoadingPageVis = Visibility.Hidden;
+            }
+            else
+            {
+                PersonalAccount = _savedAccount;
+            }
+
         }
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
             _eventAggregator.Unsubscribe(this);
             return Task.CompletedTask;
         }
-        public void LoadPage()
+        public async Task<PersonalAccount> GetPersonalAccountFromDBAsync()
         {
-            new Thread(new ThreadStart(() =>
+            var response = await RestConnection.ExecuteRequestAsync(_restClient, Method.Get, "", null, null);
+            if ((int)response.StatusCode == 200)
             {
-                LoadingPageVis = Visibility.Visible;
-                var request = new RestRequest("", Method.Get);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
-                {
-                    var personalAccount = respone.Result.Content;
-                    PersonalAccount = JsonConvert.DeserializeObject<PersonalAccount>(personalAccount);
-                }
-                LoadingPageVis = Visibility.Hidden;
-            })).Start();
+                var personalAccount = response.Content;
+                return JsonConvert.DeserializeObject<PersonalAccount>(personalAccount);
+            }
+            return null;
         }
         public void RequestUpdate()
         {
             Editing = true;
-            _savedPersonalAccount = new PersonalAccount(PersonalAccount);
+            _accountBeforeEditing = new PersonalAccount(PersonalAccount);
         }
         public void CancelUpdate()
         {
             Editing = false;
-            PersonalAccount = new PersonalAccount(_savedPersonalAccount);
+            PersonalAccount = new PersonalAccount(_accountBeforeEditing);
         }
         private async Task<bool> UpdateAccountInfoAsync()
         {
@@ -123,13 +129,17 @@ namespace WPFBakeryShopAdmin.ViewModels
                 var result2 = await task2;
                 if (result1 == false || result2 == false)
                 {
-              //      PersonalAccount = await _mainViewModel.GetPersonalAccountFromDBAsync();
+                    PersonalAccount = await GetPersonalAccountFromDBAsync();
                 }
                 else
                 {
                     ShowSuccessMessage("Cập nhật thông tin thành công");
                 }
-                //  await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
+                //  UserImageUrl = PersonalAccount.ImageUrl;
+                //Không cần set lại vì ảnh không đổi, set lại sẽ dẫn đến HandleAsync trong MainViewModel bị lỗi theo, ko set dc hình
+                //Nhưng nếu không để thì ko lỗi
+                await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
+
                 Editing = false;
                 LoadingPageVis = Visibility.Hidden;
             }
@@ -230,9 +240,12 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
-                if (value != null) UserImageUrl = value.ImageUrl;
+                //Nếu có handleAsync thì ko đổi ảnh, vì sẽ dẫn đến lỗi, nhưng HandleAsync trong MainViewModel thì ko lỗi
+                //Trong MainViewModel sẽ lỗi nếu như có set lại UserImageUrl trong UpdatePersonalAccountAsync (dòng 138)
+                //Khó hiểu
+                if (value != null && !Environment.StackTrace.Contains("HandleAsync"))
+                    UserImageUrl = value.ImageUrl;
 
-                //     _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
         }
@@ -270,6 +283,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             get { return _userImageUrl; }
             set
             {
+                Console.WriteLine(Environment.StackTrace);
                 _userImageUrl = value;
                 NotifyOfPropertyChange(() => UserImageUrl);
             }

@@ -17,6 +17,7 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <UserControl.Resources>
         <converter:ImagCacheConverter x:Key="imageConverter"></converter:ImagCacheConverter>
+        <converter:ReverseVisibilityToBoolConverter x:Key="reverseVisConverter"></converter:ReverseVisibilityToBoolConverter>
     </UserControl.Resources>
     <Grid>
         <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
@@ -87,7 +88,8 @@
                                     <ColumnDefinition Width="4*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="1">
+                                <Grid Grid.Column="1"
+                                      IsEnabled="{Binding LoadingPageVis, Converter={StaticResource reverseVisConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -112,7 +114,14 @@
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
 
-
+                                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                                 Value="0"
+                                                 Visibility="{Binding Path=LoadingPageVis}"
+                                                 IsIndeterminate="True" 
+                                                 Grid.Column="0"
+                                                 Grid.ColumnSpan="13"
+                                                 Grid.Row="0"
+                                                 Grid.RowSpan="8"/>
                                     <Grid Grid.Column="0"
                                           Grid.Row="1"
                                           Grid.ColumnSpan="3"

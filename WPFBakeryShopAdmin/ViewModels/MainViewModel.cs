@@ -51,7 +51,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         protected override void OnViewReady(object view)
         {
-            
+
             ActivateItemAsync(_accountViewModel);
         }
         public async Task<PersonalAccount> GetPersonalAccountFromDBAsync()
@@ -101,9 +101,9 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public void LoadPersonalAccount()
         {
+            
             if (ActiveItem != _personalAccountViewModel)
             {
-                // _personalAccountViewModel = new PersonalAccountViewModel(null);
                 ActivateItemAsync(_personalAccountViewModel);
             }
         }
