@@ -45,7 +45,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                       new KeyValuePair<string, string>("page", _currentPage.ToString()),
                       new KeyValuePair<string, string>("size", _pageSize.ToString()),
                 };
-                var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Get, "accounts", list);
+                var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "accounts", list);
 
                 if ((int)response.Result.StatusCode == 200)
                 {

@@ -26,7 +26,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         private bool _editing = false;
         private string _userImageUrl;
         private IEventAggregator _eventAggregator;
-
         #region Base
         public PersonalAccountViewModel(IEventAggregator eventAggregator)
         {
@@ -70,70 +69,72 @@ namespace WPFBakeryShopAdmin.ViewModels
             Editing = false;
             PersonalAccount = new PersonalAccount(_savedPersonalAccount);
         }
-        public void UpdateInfo()
+        private async Task<bool> UpdateAccountInfoAsync()
+        {
+            string JSonAccountInfo = StringUtils.SerializeObject(PersonalAccount);
+
+            var response = await RestConnection.ExecuteRequestAsync(_restClient, Method.Put, "info", JSonAccountInfo, "application/json");
+            int statusCode = (int)response.StatusCode;
+            if (statusCode == 200)
+            {
+                return true;
+            }
+            else if (statusCode == 400)
+            {
+                ShowFailMessage("Địa chỉ email đã được sử dụng");
+                return false;
+            }
+            return false;
+        }
+        private async Task<bool> UpdateAccountImageAsync()
+        {
+            if (!UserImageUrl.Contains("http"))
+            {
+                var images = new List<KeyValuePair<string, string>>() {
+                      new KeyValuePair<string, string>("image", UserImageUrl)
+                };
+                var response = await RestConnection.ExecuteFileRequestAsync(_restClient, Method.Put, "image", images);
+                int statusCode = (int)response.StatusCode;
+                if (statusCode == 200)
+                {
+                    return true;
+                }
+                else if (statusCode == 400)
+                {
+                    ShowFailMessage("Cập nhật ảnh thất bại");
+                    return false;
+                }
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        public async Task UpdatePersonalAccountAsync()
         {
             if (!HasError())
             {
-                bool thread1Success = false;
-                bool thread2Success = false;
-                Thread thread1 =
-                       new Thread(new ThreadStart(() =>
-                       {
-                           string result = StringUtils.SerializeObject(PersonalAccount);
-
-                           var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Put, "info", result, "application/json");
-                           int statusCode = (int)response.Result.StatusCode;
-                           if (statusCode == 200)
-                           {
-                               thread1Success = true;
-                           }
-                           else if (statusCode == 400)
-                           {
-                               ShowFailMessage("Địa chỉ email đã được sử dụng");
-                               LoadPage();
-                           }
-                       }
-                       ));
-
-                Thread thread2 =
-                       new Thread(new ThreadStart(() =>
-                       {
-                           if (!UserImageUrl.Contains("http"))
-                           {
-                               var request = new RestRequest("image", Method.Put);
-                               request.AddFile("image", UserImageUrl, "multipart/form-data");
-                               var response = _restClient.ExecuteAsync(request);
-                               int statusCode = (int)response.Result.StatusCode;
-                               if (statusCode == 200)
-                               {
-                                   thread2Success = true;
-                               }
-                               else if (statusCode == 400)
-                               {
-                                   ShowFailMessage("Cập nhật ảnh thất bại");
-                                   LoadPage();
-                               }
-                           }
-                           else
-                           {
-                               thread2Success = true;
-                           }
-                       }
-                       ));
-
-                thread1.Start();
-                thread2.Start();
-
                 LoadingPageVis = Visibility.Visible;
-                thread1.Join();
-                thread2.Join();
-                if (thread1Success && thread2Success)
-                    ShowSuccessMessage("Cập nhật thông tin thành công");
+                var task1 = UpdateAccountInfoAsync();
+                var task2 = UpdateAccountImageAsync();
 
+                var result1 = await task1;
+                var result2 = await task2;
+                if (result1 == false || result2 == false)
+                {
+              //      PersonalAccount = await _mainViewModel.GetPersonalAccountFromDBAsync();
+                }
+                else
+                {
+                    ShowSuccessMessage("Cập nhật thông tin thành công");
+                }
+                //  await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
                 Editing = false;
                 LoadingPageVis = Visibility.Hidden;
             }
         }
+
         public void UpdatePreviewImage()
         {
             OpenFileDialog open = new OpenFileDialog();

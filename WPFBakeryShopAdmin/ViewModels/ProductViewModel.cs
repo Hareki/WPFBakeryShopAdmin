@@ -7,7 +7,7 @@ using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class ProductViewModel : Conductor<object>
+    public class ProductViewModel : Conductor<Screen>.Collection.OneActive
     {
         //private RestClient RestClient;
         //public BindableCollection<RowItemProduct> RowItemProducts { get; set; }

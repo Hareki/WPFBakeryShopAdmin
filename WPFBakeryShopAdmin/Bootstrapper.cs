@@ -17,13 +17,14 @@ namespace WPFBakeryShopAdmin
 
         protected override void Configure()
         {
+            
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
 
             _container.Singleton<LoginViewModel>();
             _container.Singleton<MainViewModel>();
 
-            _container.Singleton<PersonalAccountViewModel>();
+
             _container.Singleton<DashboardViewModel>();
 
             _container.Singleton<ProductViewModel>();
@@ -33,6 +34,9 @@ namespace WPFBakeryShopAdmin
 
             _container.Singleton<BillViewModel>();
             _container.Singleton<AccountViewModel>();
+            _container.Singleton<PersonalAccountViewModel>();
+
+
 
             //_container.Singleton<PersonalAccount>();
         }

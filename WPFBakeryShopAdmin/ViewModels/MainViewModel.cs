@@ -37,12 +37,12 @@ namespace WPFBakeryShopAdmin.ViewModels
             _eventAggregator = eventAggregator;
             Items.AddRange(new Screen[] { _dashboardViewModel, _accountViewModel, _billViewModel, _productViewModel, _personalAccountViewModel });
         }
-        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
             LanguageList = Utilities.LanguageList.LIST;
             _restClient = RestConnection.AccountRestClient;
             _eventAggregator.SubscribeOnPublishedThread(this);
-            return Task.CompletedTask;
+            PersonalAccount = await GetPersonalAccountFromDBAsync();
         }
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
@@ -51,20 +51,18 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         protected override void OnViewReady(object view)
         {
-            RefreshAccountInfo();
+            
             ActivateItemAsync(_accountViewModel);
         }
-        public void RefreshAccountInfo()
+        public async Task<PersonalAccount> GetPersonalAccountFromDBAsync()
         {
-            new Thread(new ThreadStart(() =>
+            var response = await RestConnection.ExecuteRequestAsync(_restClient, Method.Get, "", null, null);
+            if ((int)response.StatusCode == 200)
             {
-                var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Get, "", null, null);
-                if ((int)response.Result.StatusCode == 200)
-                {
-                    var personalAccount = response.Result.Content;
-                    PersonalAccount = JsonConvert.DeserializeObject<PersonalAccount>(personalAccount);
-                }
-            })).Start();
+                var personalAccount = response.Content;
+                return JsonConvert.DeserializeObject<PersonalAccount>(personalAccount);
+            }
+            return null;
         }
         #endregion
 

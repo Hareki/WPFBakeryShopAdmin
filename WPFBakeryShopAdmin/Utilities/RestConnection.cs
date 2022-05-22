@@ -33,7 +33,7 @@ namespace WPFBakeryShopAdmin.Utilities
                 request.AddBody(requestBody, contentType);
             return restClient.ExecuteAsync(request);
         }
-        public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, List<KeyValuePair<string, string>> parameters)
+        public static Task<RestResponse> ExecuteParameterRequestAsync(RestClient restClient, Method method, string requestURl, List<KeyValuePair<string, string>> parameters)
         {
             var request = new RestRequest(requestURl, method);
             if (parameters != null && parameters.Count > 0)
@@ -43,6 +43,16 @@ namespace WPFBakeryShopAdmin.Utilities
                     request.AddParameter(element.Key, element.Value);
                 }
             }
+            return restClient.ExecuteAsync(request);
+        }
+        public static Task<RestResponse> ExecuteFileRequestAsync(RestClient restClient, Method method, string requestUrl, List<KeyValuePair<string, string>> images)
+        {
+            var request = new RestRequest(requestUrl, Method.Put);
+            foreach (KeyValuePair<string, string> image in images)
+            {
+                request.AddFile(image.Key, image.Value, "multipart/form-data");
+            }
+
             return restClient.ExecuteAsync(request);
         }
         #endregion

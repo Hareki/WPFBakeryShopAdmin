@@ -129,7 +129,7 @@
                                                    Margin="0 0 0 5" />
                                         <TextBlock x:Name="PersonalAccount_Email"
                                                    Text="minhtu1392000@gmail.com"
-                                                   HorizontalAlignment="Center"
+                                                   HorizontalAlignment="Left"
                                                    FontSize="12"
                                                    FontWeight="Medium" />
                                     </StackPanel>
