@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Newtonsoft.Json;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +44,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             _restClient = RestConnection.AccountRestClient;
             _eventAggregator.SubscribeOnPublishedThread(this);
             PersonalAccount = await GetPersonalAccountFromDBAsync();
+            Console.WriteLine("Main View Model Activated");
         }
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
@@ -51,7 +53,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         protected override void OnViewReady(object view)
         {
-
             ActivateItemAsync(_accountViewModel);
         }
         public async Task<PersonalAccount> GetPersonalAccountFromDBAsync()
@@ -101,7 +102,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public void LoadPersonalAccount()
         {
-            
+
             if (ActiveItem != _personalAccountViewModel)
             {
                 ActivateItemAsync(_personalAccountViewModel);
@@ -135,7 +136,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region Singleton handler
         public Task HandleAsync(PersonalAccount account, CancellationToken cancellationToken)
         {
-            PersonalAccount = account;
+            PersonalAccount = account.Copy();
             return Task.CompletedTask;
         }
         #endregion

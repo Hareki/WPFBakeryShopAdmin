@@ -7,18 +7,28 @@ namespace WPFBakeryShopAdmin.Models
     public class PersonalAccount
     {
         public PersonalAccount()
-        { }
-        public PersonalAccount(PersonalAccount another)
         {
-            this.FirstName = another.FirstName;
-            this.LastName = another.LastName;
-            this.Email = another.Email;
-            this.Phone = another.Phone;
-            this.Authorities = another.Authorities;
-            this.ImageUrl = another.ImageUrl;
-            this.Address = another.Address;
-            this.LangKey = another.LangKey;
-            this.Activated = another.Activated;
+
+        }
+        public PersonalAccount(string firstName, string lastName, string email, string phone, List<string> authorities,
+            string imageUrl, string address, string langKey, bool activated)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Email = email;
+            this.Phone = phone;
+            this.Authorities = authorities;
+            this.ImageUrl = imageUrl;
+            this.Address = address;
+            this.LangKey = langKey;
+            this.Activated = activated;
+        }
+
+        public PersonalAccount Copy()
+        {
+            PersonalAccount account = new PersonalAccount(this.FirstName, this.LastName, this.Email, this.Phone, this.Authorities,
+                this.ImageUrl, this.Address, this.LangKey, this.Activated);
+            return account;
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
