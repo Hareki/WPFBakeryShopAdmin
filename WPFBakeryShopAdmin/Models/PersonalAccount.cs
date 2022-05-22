@@ -27,7 +27,6 @@ namespace WPFBakeryShopAdmin.Models
         public string Address { get; set; }
         public string LangKey { get; set; }
 
-
         public string ImageUrl { get; set; }
         public bool ShouldSerializeImageUrl() { return false; }
         public bool Activated { get; set; }
@@ -48,6 +47,7 @@ namespace WPFBakeryShopAdmin.Models
                 }
             }
         }
+
         [JsonIgnore]
         public int LanguageIndex
         {
@@ -68,6 +68,15 @@ namespace WPFBakeryShopAdmin.Models
                     case "en": return 1;
                     default: Debug.Assert(false); return -1;
                 }
+            }
+        }
+
+        [JsonIgnore]
+        public string FullName
+        {
+            get
+            {
+                return $"{FirstName} {LastName}";
             }
         }
     }

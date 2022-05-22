@@ -68,7 +68,6 @@ namespace WPFBakeryShopAdmin.ViewModels
 
             return false;
         }
-
         public async Task LoginAsync()
         {
             LoadingPageVis = Visibility.Visible;

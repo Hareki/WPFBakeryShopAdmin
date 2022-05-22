@@ -16,7 +16,7 @@ using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class PersonalAccountViewModel : Screen
+    public class PersonalAccountViewModel : Screen, IHandle<PersonalAccount>
     {
         private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Visible;
@@ -25,13 +25,24 @@ namespace WPFBakeryShopAdmin.ViewModels
         private List<ItemLanguage> _languageList;
         private bool _editing = false;
         private string _userImageUrl;
+        private IEventAggregator _eventAggregator;
 
         #region Base
+        public PersonalAccountViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+        }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.AccountRestClient;
+            _eventAggregator.SubscribeOnPublishedThread(this);
             LanguageList = Utilities.LanguageList.LIST;
             LoadPage();
+            return Task.CompletedTask;
+        }
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            _eventAggregator.Unsubscribe(this);
             return Task.CompletedTask;
         }
         public void LoadPage()
@@ -187,6 +198,12 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
+
+        public Task HandleAsync(PersonalAccount account, CancellationToken cancellationToken)
+        {
+            PersonalAccount = account;
+            return Task.CompletedTask;
+        }
         #endregion
 
         #region View Mapping Properties
@@ -212,7 +229,9 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
-                UserImageUrl = value.ImageUrl;
+                if (value != null) UserImageUrl = value.ImageUrl;
+
+           //     _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
         }
@@ -256,6 +275,9 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
 
         private ItemLanguage _selectedItemLanguage;
+
+
+
         public ItemLanguage SelectedItemLanguage
         {
             get

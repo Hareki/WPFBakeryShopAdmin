@@ -10,13 +10,17 @@
         Width="882"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
-        d:DataContext="{d:DesignInstance Type=viewmodels:BillViewModel}"
+        xmlns:converter="clr-namespace:WPFBakeryShopAdmin.Converters"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         Background="#F5F5FA"
         TextElement.FontSize="15"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         WindowStartupLocation="CenterScreen"
         Icon="/Images/favicon.ico"
         WindowState="Maximized">
+    <Window.Resources>
+        <converter:ImagCacheConverter x:Key="imageConverter"></converter:ImagCacheConverter>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />
@@ -81,7 +85,7 @@
                                                        RenderOptions.BitmapScalingMode="HighQuality"
                                                        RenderOptions.EdgeMode="Aliased"
                                                        MaxWidth="25"
-                                                       Margin="0 0 7 0"/>
+                                                       Margin="0 0 7 0" />
                                                 <TextBlock Text="{Binding LanguageName}" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -93,7 +97,7 @@
 
                     </StackPanel>
 
-
+                    <!--ImageSource="D:\Images\Genshin\paimap.jpg"-->
                     <Border Grid.Row="1"
                             Padding="10 0"
                             Margin="0 15 0 15">
@@ -102,18 +106,29 @@
                                      GroupName="MenuGroup"
                                      x:Name="LoadPersonalAccount">
                             <DockPanel>
-                                <materialDesign:PackIcon Width="50"
-                                                         Height="50"
-                                                         Kind="AccountCircleOutline"
-                                                         DockPanel.Dock="Left" />
+                                <Ellipse  Width="50"
+                                          Height="50"
+                                          x:Name="ellipse"
+                                          DockPanel.Dock="Left"
+                                          Margin="0 0 10 0">
+                                    <Ellipse.Fill>
+                                        <ImageBrush x:Name="UserImageUrl"
+                                                    ImageSource="{Binding PersonalAccount.ImageUrl, Converter={StaticResource imageConverter}, ConverterParameter=80}"
+                                                    RenderOptions.BitmapScalingMode="HighQuality"
+                                                    RenderOptions.EdgeMode="Unspecified">
+                                        </ImageBrush>
+                                    </Ellipse.Fill>
+                                </Ellipse>
                                 <Grid DockPanel.Dock="Right">
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Nguyễn Ngọc Minh Tú"
+                                        <TextBlock x:Name="PersonalAccount_FullName"
+                                                   Text="Nguyễn Ngọc Minh Tú"
                                                    DockPanel.Dock="Top"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Center"
+                                                   HorizontalAlignment="Left"
                                                    Margin="0 0 0 5" />
-                                        <TextBlock Text="minhtu1392000@gmail.com"
+                                        <TextBlock x:Name="PersonalAccount_Email"
+                                                   Text="minhtu1392000@gmail.com"
                                                    HorizontalAlignment="Center"
                                                    FontSize="12"
                                                    FontWeight="Medium" />

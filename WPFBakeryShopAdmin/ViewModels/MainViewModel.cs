@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Newtonsoft.Json;
 using RestSharp;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,47 +9,64 @@ using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class MainViewModel : Conductor<object>
+    public class MainViewModel : Conductor<object>, IHandle<PersonalAccount>
     {
         private List<ItemLanguage> _languageList;
 
-        DashboardViewModel _dashboardViewModel;
-        AccountViewModel _accountViewModel;
-        BillViewModel _billViewModel;
-        ProductViewModel _productViewModel;
-        PersonalAccountViewModel _personalAccountViewModel;
+        private DashboardViewModel _dashboardViewModel;
+        private AccountViewModel _accountViewModel;
+        private BillViewModel _billViewModel;
+        private ProductViewModel _productViewModel;
+        private PersonalAccountViewModel _personalAccountViewModel;
+        private IEventAggregator _eventAggregator;
 
-        PersonalAccount _account;
-        RestClient _restClient = RestConnection.AccountRestClient;
+        private PersonalAccount _personalAccount;
+        private RestClient _restClient;
 
         #region Base
-        public MainViewModel(DashboardViewModel dashboardViewModel, AccountViewModel accountViewModel, BillViewModel billViewModel, ProductViewModel productViewModel, PersonalAccountViewModel personalAccountViewModel)
+        public MainViewModel(DashboardViewModel dashboardViewModel, AccountViewModel accountViewModel,
+            BillViewModel billViewModel, ProductViewModel productViewModel,
+            PersonalAccountViewModel personalAccountViewModel, IEventAggregator eventAggregator)
         {
             _dashboardViewModel = dashboardViewModel;
             _accountViewModel = accountViewModel;
             _billViewModel = billViewModel;
             _productViewModel = productViewModel;
             _personalAccountViewModel = personalAccountViewModel;
-        }
 
+            _eventAggregator = eventAggregator;
+        }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             LanguageList = Utilities.LanguageList.LIST;
+            _restClient = RestConnection.AccountRestClient;
+            _eventAggregator.SubscribeOnPublishedThread(this);
+            return Task.CompletedTask;
+        }
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            _eventAggregator.Unsubscribe(this);
             return Task.CompletedTask;
         }
         protected override void OnViewReady(object view)
         {
+            RefreshAccountInfo();
             ActivateItemAsync(_accountViewModel);
         }
-        #endregion
-
-        public void RefreshAccount()
+        public void RefreshAccountInfo()
         {
             new Thread(new ThreadStart(() =>
             {
-
+                var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Get, "", null, null);
+                if ((int)response.Result.StatusCode == 200)
+                {
+                    var personalAccount = response.Result.Content;
+                    PersonalAccount = JsonConvert.DeserializeObject<PersonalAccount>(personalAccount);
+                }
             })).Start();
         }
+        #endregion
+
 
         #region Loading Pages
         public void LoadDashboard()
@@ -91,7 +109,12 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
         #endregion
-
+        
+        public Task HandleAsync(PersonalAccount account, CancellationToken cancellationToken)
+        {
+            PersonalAccount = account;
+            return Task.CompletedTask;
+        }
         #region Properties
         public List<ItemLanguage> LanguageList
         {
@@ -100,6 +123,17 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 _languageList = value;
                 NotifyOfPropertyChange(() => LanguageList);
+            }
+        }
+        public PersonalAccount PersonalAccount
+        {
+            get
+            { return _personalAccount; }
+            set
+            {
+                _personalAccount = value;
+          //      _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
+                NotifyOfPropertyChange(() => PersonalAccount);
             }
         }
         #endregion

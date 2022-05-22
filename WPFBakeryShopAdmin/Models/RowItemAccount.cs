@@ -15,7 +15,6 @@ namespace WPFBakeryShopAdmin.Models
         public bool Activated { get; set; }
         public string LangKey { get; set; }
         public List<string> Authorities { get; set; }
-
         public string FullName
         {
             get { return FirstName + " " + LastName; }
@@ -38,7 +37,6 @@ namespace WPFBakeryShopAdmin.Models
 
             }
         }
-
         public string Roles
         {
             get

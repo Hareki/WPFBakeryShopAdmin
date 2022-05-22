@@ -17,6 +17,7 @@ namespace WPFBakeryShopAdmin.Utilities
         private static RestClient _accountRestClient;
         private static RestClient _authRestClient;
 
+        #region Base
         public static void EstablishConnection(string token)
         {
             BearerToken = token;
@@ -25,6 +26,26 @@ namespace WPFBakeryShopAdmin.Utilities
             AccountRestClient = new RestClient(ACCOUNT_BASE_CONNECTION_STRING);
             AuthRestClient = new RestClient(AUTHENTICATE_BASE_CONNECTION_STRING);
         }
+        public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, string requestBody, string contentType)
+        {
+            var request = new RestRequest(requestURl, method);
+            if (!string.IsNullOrEmpty(requestBody))
+                request.AddBody(requestBody, contentType);
+            return restClient.ExecuteAsync(request);
+        }
+        public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, List<KeyValuePair<string, string>> parameters)
+        {
+            var request = new RestRequest(requestURl, method);
+            if (parameters != null && parameters.Count > 0)
+            {
+                foreach (KeyValuePair<string, string> element in parameters)
+                {
+                    request.AddParameter(element.Key, element.Value);
+                }
+            }
+            return restClient.ExecuteAsync(request);
+        }
+        #endregion
 
         #region Properties
         public static RestClient AccountRestClient
@@ -56,29 +77,6 @@ namespace WPFBakeryShopAdmin.Utilities
                 _authRestClient = value;
                 _authRestClient.Authenticator = new JwtAuthenticator(BearerToken);
             }
-        }
-        #endregion
-
-        #region Utils
-        public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, string requestBody, string contentType)
-        {
-            var request = new RestRequest(requestURl, method);
-            if (!string.IsNullOrEmpty(requestBody))
-                request.AddBody(requestBody, contentType);
-            return restClient.ExecuteAsync(request);
-        }
-
-        public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, List<KeyValuePair<string, string>> parameters)
-        {
-            var request = new RestRequest(requestURl, method);
-            if (parameters.Count > 0)
-            {
-                foreach (KeyValuePair<string, string> element in parameters)
-                {
-                    request.AddParameter(element.Key, element.Value);
-                }
-            }
-            return restClient.ExecuteAsync(request);
         }
         #endregion
     }

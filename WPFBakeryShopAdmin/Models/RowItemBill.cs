@@ -25,16 +25,13 @@ namespace WPFBakeryShopAdmin.Models
                             Console.WriteLine("ID: " + StatusId);
                             return "Trạng thái không hợp lệ";
                         }
-
                 }
             }
         }
         public string FormattedTotal
         {
             get
-            {
-                return StringUtils.FormatCurrency(Total);
-            }
+            { return StringUtils.FormatCurrency(Total); }
         }
     }
 }

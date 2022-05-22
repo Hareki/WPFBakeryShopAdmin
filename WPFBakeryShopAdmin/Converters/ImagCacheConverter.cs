@@ -16,6 +16,11 @@ namespace WPFBakeryShopAdmin.Converters
             source.UriSource = new Uri(url, UriKind.RelativeOrAbsolute);
             source.CacheOption = BitmapCacheOption.None;
             source.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            if (parameter != null)
+            {
+                int pixel = int.Parse(parameter.ToString());
+                source.DecodePixelHeight = source.DecodePixelWidth = pixel;
+            }
             source.EndInit();
             return source;
         }

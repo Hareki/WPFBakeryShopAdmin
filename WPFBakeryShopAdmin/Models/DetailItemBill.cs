@@ -17,7 +17,6 @@ namespace WPFBakeryShopAdmin.Models
                 return StringUtils.FormatCurrency(Quantity * UnitPrice);
             }
         }
-
         public string FormattedUnitPrice
         {
             get
@@ -44,7 +43,6 @@ namespace WPFBakeryShopAdmin.Models
         public bool PaidByCash { get; set; }
         public ReceiverInfo ReceiverInfo { get; set; }
         public List<Detail> Details { get; set; }
-
         public string PaidMethodName
         {
             get
@@ -52,7 +50,6 @@ namespace WPFBakeryShopAdmin.Models
                 return PaidByCash ? "Thẻ" : "Tiền mặt";
             }
         }
-
         public bool CanUpdateOrderStatus
         {
             get
@@ -60,7 +57,6 @@ namespace WPFBakeryShopAdmin.Models
                 return StatusId <= 2;
             }
         }
-
         public string FormattedTotal
         {
             get
