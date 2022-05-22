@@ -9,7 +9,7 @@ using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class MainViewModel : Conductor<object>, IHandle<PersonalAccount>
+    public class MainViewModel : Conductor<Screen>.Collection.OneActive, IHandle<PersonalAccount>
     {
         private List<ItemLanguage> _languageList;
 
@@ -35,6 +35,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             _personalAccountViewModel = personalAccountViewModel;
 
             _eventAggregator = eventAggregator;
+            Items.AddRange(new Screen[] { _dashboardViewModel, _accountViewModel, _billViewModel, _productViewModel, _personalAccountViewModel });
         }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
@@ -104,11 +105,12 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             if (ActiveItem != _personalAccountViewModel)
             {
+                // _personalAccountViewModel = new PersonalAccountViewModel(null);
                 ActivateItemAsync(_personalAccountViewModel);
             }
         }
         #endregion
-         
+
         #region Properties
         public List<ItemLanguage> LanguageList
         {
@@ -126,7 +128,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
-          //      _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
+                //      _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
         }

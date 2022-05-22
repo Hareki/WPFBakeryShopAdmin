@@ -231,7 +231,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 _personalAccount = value;
                 if (value != null) UserImageUrl = value.ImageUrl;
 
-           //     _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
+                //     _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
         }
