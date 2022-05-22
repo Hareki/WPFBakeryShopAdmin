@@ -127,6 +127,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\ImagCacheConverter.cs" />
+    <Compile Include="Converters\ReverseVisibilityToBoolConverter.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />

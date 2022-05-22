@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 using RestSharp.Authenticators;
+using System.Threading.Tasks;
 
 namespace WPFBakeryShopAdmin.Utilities
 {
@@ -7,12 +8,13 @@ namespace WPFBakeryShopAdmin.Utilities
     {
         public static readonly string ADMIN_BASE_CONNECTION_STRING = "http://localhost:8080/api/admin/";
         public static readonly string ACCOUNT_BASE_CONNECTION_STRING = "http://localhost:8080/api/account/";
-        //public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "http://localhost:8080/api/";
-        public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "https://bakeryshop-web-service.herokuapp.com/api/";
+        public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "http://localhost:8080/api/";
+        //public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "https://bakeryshop-web-service.herokuapp.com/api/";
 
         public static string BearerToken;
         private static RestClient _managementRestClient;
         private static RestClient _accountRestClient;
+        private static RestClient _authRestClient;
 
         public static void EstablishConnection(string token)
         {
@@ -20,6 +22,7 @@ namespace WPFBakeryShopAdmin.Utilities
 
             ManagementRestClient = new RestClient(ADMIN_BASE_CONNECTION_STRING);
             AccountRestClient = new RestClient(ACCOUNT_BASE_CONNECTION_STRING);
+            AuthRestClient = new RestClient(AUTHENTICATE_BASE_CONNECTION_STRING);
         }
 
         #region Properties
@@ -42,6 +45,26 @@ namespace WPFBakeryShopAdmin.Utilities
                 _accountRestClient = value;
                 _accountRestClient.Authenticator = new JwtAuthenticator(BearerToken);
             }
+        }
+        public static RestClient AuthRestClient
+        {
+            get
+            { return _authRestClient; }
+            set
+            {
+                _authRestClient = value;
+                _authRestClient.Authenticator = new JwtAuthenticator(BearerToken);
+            }
+        }
+        #endregion
+
+        #region Utils
+        public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, string requestBody, string contentType)
+        {
+            var request = new RestRequest(requestURl, method);
+            if (!string.IsNullOrEmpty(requestBody))
+                request.AddBody(requestBody, contentType);
+            return restClient.ExecuteAsync(request);
         }
         #endregion
     }

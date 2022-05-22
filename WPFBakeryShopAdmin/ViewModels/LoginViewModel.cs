@@ -19,11 +19,12 @@ namespace WPFBakeryShopAdmin.ViewModels
     public class LoginViewModel : Screen
     {
         private List<ItemLanguage> _languageList;
-        private Visibility _loadingPageVis = Visibility.Visible;
+        private Visibility _loadingPageVis = Visibility.Hidden;
         private LoginRequestBody _loginInfo;
 
         private MainViewModel _mainViewModel;
         private IWindowManager _windowManager;
+
         #region Base
         public LoginViewModel(MainViewModel mainViewModel, IWindowManager windowManager)
         {
@@ -34,21 +35,52 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             LanguageList = Utilities.LanguageList.LIST;
             LoginInfo = new LoginRequestBody("admin@gmail.com", "123456", true);
-
+            _ = LoginWithSessionAsync();
             return Task.CompletedTask;
+        }
+        public async Task LoginWithSessionAsync()
+        {
+            if (!string.IsNullOrEmpty(BearerToken))
+            {
+                LoadingPageVis = Visibility.Visible;
+                var success = await FetchSession();
+                if (success)
+                {
+                    await this._windowManager.ShowWindowAsync(_mainViewModel);
+                    await this.TryCloseAsync();
+                }
+                else
+                {
+                    ShowFailMessage("Phiên đăng nhập quá hạn");
+                    LoadingPageVis = Visibility.Visible;
+                }
+                
+            }
+        }
+        public async Task<bool> FetchSession()
+        {
+            RestConnection.EstablishConnection(BearerToken);
+            RestClient auth = RestConnection.AuthRestClient;
+
+            var request = new RestRequest("authenticate", Method.Get);
+            var response = await auth.ExecuteAsync(request);
+            if (!string.IsNullOrEmpty(response.Content))
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task LoginAsync()
         {
-            // LoadingPageVis = Visibility.Visible;
+            LoadingPageVis = Visibility.Visible;
+
             RestClient client = new RestClient(RestConnection.AUTHENTICATE_BASE_CONNECTION_STRING);
             string requestBody = StringUtils.SerializeObject(LoginInfo);
             var request = new RestRequest("authenticate", Method.Post);
-            //request.AddHeader("Content-type", "application/json");
 
             request.AddBody(requestBody, contentType: "application/json");
             var response = await client.ExecuteAsync(request);
-            await Task.Delay(5000);
 
             int statusCode = (int)response.StatusCode;
             if (statusCode == 200)
@@ -56,11 +88,10 @@ namespace WPFBakeryShopAdmin.ViewModels
                 var tokenJSon = response.Content;
                 Token token = JsonConvert.DeserializeObject<Token>(tokenJSon);
                 RestConnection.EstablishConnection(token.IdToken);
+                BearerToken = token.IdToken;
 
-                Properties.Settings.Default.token = token.IdToken;
                 await this._windowManager.ShowWindowAsync(_mainViewModel);
-                await this.DeactivateAsync(true);
-
+                await this.TryCloseAsync();
             }
             else if (statusCode == 400 || statusCode == 401)
             {
@@ -71,45 +102,8 @@ namespace WPFBakeryShopAdmin.ViewModels
                 ShowFailMessage("Xảy ra lỗi khi đăng nhập");
 
             }
-            //    LoadingPageVis = Visibility.Hidden;
+            LoadingPageVis = Visibility.Hidden;
         }
-
-        //public void Login()
-        //{
-        //    // LoadingPageVis = Visibility.Visible;
-        //    RestClient client = new RestClient(RestConnection.AUTHENTICATE_BASE_CONNECTION_STRING);
-        //    string requestBody = StringUtils.SerializeObject(LoginInfo);
-        //    var request = new RestRequest("authenticate", Method.Post);
-        //    //request.AddHeader("Content-type", "application/json");
-
-        //    request.AddBody(requestBody, contentType: "application/json");
-        //    //var task = client.ExecuteAsync(request);
-        //    //var response = await task;
-        //    var task = client.ExecuteAsync(request);
-
-        //    int statusCode = (int)task.Result.StatusCode;
-        //    if (statusCode == 200)
-        //    {
-        //        var tokenJSon = task.Result.Content;
-        //        Token token = JsonConvert.DeserializeObject<Token>(tokenJSon);
-        //        RestConnection.EstablishConnection(token.IdToken);
-
-        //        Properties.Settings.Default.token = token.IdToken;
-        //        this._windowManager.ShowWindowAsync(_mainViewModel);
-        //        this.DeactivateAsync(true);
-
-        //    }
-        //    else if (statusCode == 400 || statusCode == 401)
-        //    {
-        //        ShowFailMessage("Email hoặc mật khẩu không đúng");
-        //    }
-        //    else
-        //    {
-        //        ShowFailMessage("Xảy ra lỗi khi đăng nhập");
-
-        //    }
-        //    //    LoadingPageVis = Visibility.Hidden;
-        //}
         #endregion
 
         #region Showing Messages
@@ -134,7 +128,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             View.Dispatcher.Invoke(() =>
             {
                 View.RedMessage.Text = message;
-
                 RedSB.MessageQueue?.Enqueue(
                 View.RedContent,
                 null,
@@ -197,6 +190,18 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 _loginInfo = value;
                 NotifyOfPropertyChange(() => LoginInfo);
+            }
+        }
+        public string BearerToken
+        {
+            get
+            {
+                return Properties.Settings.Default.token;
+            }
+            set
+            {
+                Properties.Settings.Default.token = value;
+                Properties.Settings.Default.Save();
             }
         }
         #endregion
