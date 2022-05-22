@@ -1,8 +1,10 @@
 ﻿using Caliburn.Micro;
+using RestSharp;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using WPFBakeryShopAdmin.Models;
+using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -16,21 +18,43 @@ namespace WPFBakeryShopAdmin.ViewModels
         ProductViewModel _productViewModel;
         PersonalAccountViewModel _personalAccountViewModel;
 
+        PersonalAccount _account;
+        RestClient _restClient = RestConnection.AccountRestClient;
+
         #region Base
+        public MainViewModel(DashboardViewModel dashboardViewModel, AccountViewModel accountViewModel, BillViewModel billViewModel, ProductViewModel productViewModel, PersonalAccountViewModel personalAccountViewModel)
+        {
+            _dashboardViewModel = dashboardViewModel;
+            _accountViewModel = accountViewModel;
+            _billViewModel = billViewModel;
+            _productViewModel = productViewModel;
+            _personalAccountViewModel = personalAccountViewModel;
+        }
+
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            ActivateItemAsync(new DashboardViewModel());
             LanguageList = Utilities.LanguageList.LIST;
             return Task.CompletedTask;
         }
+        protected override void OnViewReady(object view)
+        {
+            ActivateItemAsync(_accountViewModel);
+        }
         #endregion
+
+        public void RefreshAccount()
+        {
+            new Thread(new ThreadStart(() =>
+            {
+
+            })).Start();
+        }
 
         #region Loading Pages
         public void LoadDashboard()
         {
             if (ActiveItem != _dashboardViewModel)
             {
-                _dashboardViewModel = new DashboardViewModel();
                 ActivateItemAsync(_dashboardViewModel);
             }
 
@@ -39,7 +63,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             if (ActiveItem != _accountViewModel)
             {
-                _accountViewModel = new AccountViewModel();
                 ActivateItemAsync(_accountViewModel);
             }
 
@@ -48,7 +71,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             if (ActiveItem != _billViewModel)
             {
-                _billViewModel = new BillViewModel();
                 ActivateItemAsync(_billViewModel);
             }
 
@@ -57,7 +79,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             if (ActiveItem != _productViewModel)
             {
-                _productViewModel = new ProductViewModel();
                 ActivateItemAsync(_productViewModel);
             }
 
@@ -66,7 +87,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             if (ActiveItem != _personalAccountViewModel)
             {
-                _personalAccountViewModel = new PersonalAccountViewModel();
                 ActivateItemAsync(_personalAccountViewModel);
             }
         }

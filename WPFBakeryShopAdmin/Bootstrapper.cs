@@ -3,6 +3,7 @@ using System.Windows;
 using System.Collections.Generic;
 using WPFBakeryShopAdmin.ViewModels;
 using System;
+using WPFBakeryShopAdmin.Models;
 
 namespace WPFBakeryShopAdmin
 {
@@ -32,6 +33,8 @@ namespace WPFBakeryShopAdmin
 
             _container.Singleton<BillViewModel>();
             _container.Singleton<AccountViewModel>();
+
+            //_container.Singleton<PersonalAccount>();
         }
         protected override void OnStartup(object sender, StartupEventArgs e)
         {

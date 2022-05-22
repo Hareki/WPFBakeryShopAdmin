@@ -13,7 +13,7 @@ namespace WPFBakeryShopAdmin.ViewModels
 {
     public class AccountViewModel : Screen
     {
-        private RestClient _restClient;
+        private RestClient _restClient = RestConnection.ManagementRestClient;
         private Visibility _loadingPageVis = Visibility.Visible;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
         private string _pageIndicator;
@@ -27,7 +27,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region Base
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            this._restClient = RestConnection.ManagementRestClient;
+            _restClient = RestConnection.ManagementRestClient;
             LoadPage();
             return Task.CompletedTask;
         }

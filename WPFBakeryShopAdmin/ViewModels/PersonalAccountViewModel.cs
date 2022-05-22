@@ -29,8 +29,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region Base
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            _restClient = new RestClient(RestConnection.ACCOUNT_BASE_CONNECTION_STRING);
-            _restClient.Authenticator = new JwtAuthenticator(RestConnection.BearerToken);
+            _restClient = RestConnection.AccountRestClient;
             LanguageList = Utilities.LanguageList.LIST;
             LoadPage();
             return Task.CompletedTask;
@@ -69,12 +68,10 @@ namespace WPFBakeryShopAdmin.ViewModels
                 Thread thread1 =
                        new Thread(new ThreadStart(() =>
                        {
-                           PersonalAccount.LangKey = SelectedItemLanguage.LangKey;
                            string result = StringUtils.SerializeObject(PersonalAccount);
-                           var request = new RestRequest("info", Method.Put);
-                           request.AddBody(result, contentType: "application/json");
-                           var respone = _restClient.ExecuteAsync(request);
-                           int statusCode = (int)respone.Result.StatusCode;
+
+                           var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Put, "info", result, "application/json");
+                           int statusCode = (int)response.Result.StatusCode;
                            if (statusCode == 200)
                            {
                                thread1Success = true;
@@ -257,7 +254,21 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => UserImageUrl);
             }
         }
-        public ItemLanguage SelectedItemLanguage { get; set; }
+
+        private ItemLanguage _selectedItemLanguage;
+        public ItemLanguage SelectedItemLanguage
+        {
+            get
+            {
+                return _selectedItemLanguage;
+            }
+            set
+            {
+                _selectedItemLanguage = value;
+                if (value != null)
+                    PersonalAccount.LangKey = value.LangKey;
+            }
+        }
         public bool NotEditing
         {
             get { return !Editing; }

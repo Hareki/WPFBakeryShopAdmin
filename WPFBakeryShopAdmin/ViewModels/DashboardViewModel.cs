@@ -22,7 +22,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region Base
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            this._restClient = RestConnection.ManagementRestClient;
+            _restClient = RestConnection.ManagementRestClient;
             LoadPage();
             return Task.CompletedTask;
         }
