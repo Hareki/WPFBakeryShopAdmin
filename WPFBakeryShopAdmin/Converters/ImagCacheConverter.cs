@@ -13,10 +13,9 @@ namespace WPFBakeryShopAdmin.Converters
             if (url == null) return null;
             BitmapImage source = new BitmapImage();
             source.BeginInit();
-            source.CacheOption = BitmapCacheOption.OnLoad;
-            source.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
             source.UriSource = new Uri(url, UriKind.RelativeOrAbsolute);
-            
+            //source.CacheOption = BitmapCacheOption.None;
+            source.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             //source.UriCachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore); 
             if (parameter != null)
             {

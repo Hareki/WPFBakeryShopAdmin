@@ -32,24 +32,10 @@
 
                 <Grid Grid.Row="0"
                       Grid.ColumnSpan="12">
-
-                    <StackPanel Orientation="Horizontal"
-                                Grid.Row="0"
-                                Grid.ColumnSpan="12">
-                        <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                                   FontWeight="SemiBold"
-                                   Margin="{StaticResource TitleMargin}"
-                                   Text="Tài khoản của bạn" />
-
-                        <Button x:Name="RefreshAccount"
-                                Style="{StaticResource MaterialDesignIconForegroundButton}"
-                                Foreground="{DynamicResource MaterialDesignBody}"
-                                VerticalAlignment="Top"
-                                Margin="5 0 0 0 ">
-                            <materialDesign:PackIcon Kind="Reload" />
-                        </Button>
-                    </StackPanel>
-
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                               FontWeight="SemiBold"
+                               Margin="0 0 0 30"
+                               Text="Tài khoản của bạn" />
                     <materialDesign:Snackbar HorizontalAlignment="Center"
                                              VerticalAlignment="Top"
                                              Grid.ColumnSpan="12"
@@ -131,11 +117,11 @@
                                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                                  Value="0"
                                                  Visibility="{Binding Path=LoadingPageVis}"
-                                                 IsIndeterminate="True"
+                                                 IsIndeterminate="True" 
                                                  Grid.Column="0"
                                                  Grid.ColumnSpan="13"
                                                  Grid.Row="0"
-                                                 Grid.RowSpan="8" />
+                                                 Grid.RowSpan="8"/>
                                     <Grid Grid.Column="0"
                                           Grid.Row="1"
                                           Grid.ColumnSpan="3"
@@ -155,7 +141,7 @@
                                                  Panel.ZIndex="1">
                                             <Ellipse.Fill>
                                                 <ImageBrush x:Name="UserImageUrl"
-                                                            ImageSource="{Binding UserImageUrl,Mode=OneWay,Converter={StaticResource imageConverter}}"
+                                                            ImageSource="{Binding UserImageUrl, Converter={StaticResource imageConverter}}"
                                                             RenderOptions.BitmapScalingMode="HighQuality"
                                                             RenderOptions.EdgeMode="Aliased">
                                                 </ImageBrush>

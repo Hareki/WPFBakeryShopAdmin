@@ -16,7 +16,7 @@ using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class PersonalAccountViewModel : Screen
+    public class PersonalAccountViewModel : Screen, IHandle<PersonalAccount>
     {
         private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
@@ -37,27 +37,18 @@ namespace WPFBakeryShopAdmin.ViewModels
             _restClient = RestConnection.AccountRestClient;
             _eventAggregator.SubscribeOnPublishedThread(this);
             LanguageList = Utilities.LanguageList.LIST;
-
             if (_savedAccount == null)
             {
-                await RefreshAccount();
+                LoadingPageVis = Visibility.Visible;
+                PersonalAccount = await GetPersonalAccountFromDBAsync();
+                _savedAccount = PersonalAccount;
+                LoadingPageVis = Visibility.Hidden;
             }
             else
             {
                 PersonalAccount = _savedAccount;
             }
-            UserImageUrl = PersonalAccount.ImageUrl;
 
-        }
-
-        public async Task RefreshAccount()
-        {
-            LoadingPageVis = Visibility.Visible;
-            PersonalAccount = await GetPersonalAccountFromDBAsync();
-            _savedAccount = PersonalAccount;
-            LoadingPageVis = Visibility.Hidden;
-
-            await _eventAggregator.PublishOnCurrentThreadAsync(PersonalAccount);
         }
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
@@ -77,12 +68,12 @@ namespace WPFBakeryShopAdmin.ViewModels
         public void RequestUpdate()
         {
             Editing = true;
-            _accountBeforeEditing = PersonalAccount.Copy();
+            _accountBeforeEditing = new PersonalAccount(PersonalAccount);
         }
         public void CancelUpdate()
         {
             Editing = false;
-            PersonalAccount = _accountBeforeEditing.Copy();
+            PersonalAccount = new PersonalAccount(_accountBeforeEditing);
         }
         private async Task<bool> UpdateAccountInfoAsync()
         {
@@ -136,7 +127,6 @@ namespace WPFBakeryShopAdmin.ViewModels
 
                 var result1 = await task1;
                 var result2 = await task2;
-
                 if (result1 == false || result2 == false)
                 {
                     PersonalAccount = await GetPersonalAccountFromDBAsync();
@@ -145,7 +135,11 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     ShowSuccessMessage("Cập nhật thông tin thành công");
                 }
+                //  UserImageUrl = PersonalAccount.ImageUrl;
+                //Không cần set lại vì ảnh không đổi, set lại sẽ dẫn đến HandleAsync trong MainViewModel bị lỗi theo, ko set dc hình
+                //Nhưng nếu không để thì ko lỗi
                 await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
+
                 Editing = false;
                 LoadingPageVis = Visibility.Hidden;
             }
@@ -215,6 +209,12 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
+
+        public Task HandleAsync(PersonalAccount account, CancellationToken cancellationToken)
+        {
+            PersonalAccount = account;
+            return Task.CompletedTask;
+        }
         #endregion
 
         #region View Mapping Properties
@@ -240,6 +240,12 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
+                //Nếu có handleAsync thì ko đổi ảnh, vì sẽ dẫn đến lỗi, nhưng HandleAsync trong MainViewModel thì ko lỗi
+                //Trong MainViewModel sẽ lỗi nếu như có set lại UserImageUrl trong UpdatePersonalAccountAsync (dòng 138)
+                //Khó hiểu
+                if (value != null && !Environment.StackTrace.Contains("HandleAsync"))
+                    UserImageUrl = value.ImageUrl;
+
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
         }
@@ -277,6 +283,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             get { return _userImageUrl; }
             set
             {
+                Console.WriteLine(Environment.StackTrace);
                 _userImageUrl = value;
                 NotifyOfPropertyChange(() => UserImageUrl);
             }
