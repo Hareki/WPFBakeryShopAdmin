@@ -67,7 +67,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-
         #region Loading Pages
         public void LoadDashboard()
         {
@@ -109,12 +108,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
         #endregion
-        
-        public Task HandleAsync(PersonalAccount account, CancellationToken cancellationToken)
-        {
-            PersonalAccount = account;
-            return Task.CompletedTask;
-        }
+         
         #region Properties
         public List<ItemLanguage> LanguageList
         {
@@ -135,6 +129,14 @@ namespace WPFBakeryShopAdmin.ViewModels
           //      _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
+        }
+        #endregion
+
+        #region Singleton handler
+        public Task HandleAsync(PersonalAccount account, CancellationToken cancellationToken)
+        {
+            PersonalAccount = account;
+            return Task.CompletedTask;
         }
         #endregion
     }

@@ -30,7 +30,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
 
-
         #region Base
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {

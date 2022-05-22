@@ -28,7 +28,6 @@ namespace WPFBakeryShopAdmin.Models
         public int OrderTotal { get; set; }
         public bool PaidByCash { get; set; }
         public string Note { get; set; }
-
         public string FormattedOrderTotal
         {
             get

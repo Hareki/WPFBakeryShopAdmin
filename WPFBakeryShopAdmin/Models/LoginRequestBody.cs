@@ -15,10 +15,8 @@ namespace WPFBakeryShopAdmin.Models
             Password = password;
             RememberMe = rememberMe;
         }
-
         public string Email { get; set; }
         public string Password { get; set; }
-
         [JsonProperty("remember-me")]
         public bool RememberMe { get; set; }
     }
