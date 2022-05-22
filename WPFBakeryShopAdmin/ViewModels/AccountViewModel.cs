@@ -36,20 +36,22 @@ namespace WPFBakeryShopAdmin.ViewModels
             new Thread(new ThreadStart(() =>
             {
                 if (RowItemAccounts != null)
-                {
                     RowItemAccounts.Clear();
-                }
+
                 LoadingPageVis = Visibility.Visible;
-                var request = new RestRequest("accounts", Method.Get);
 
                 if (_currentPage > _maxPageIndex) _currentPage = 0;
-                request.AddParameter("page", _currentPage).AddParameter("size", _pageSize);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
+                var list = new List<KeyValuePair<string, string>>() {
+                      new KeyValuePair<string, string>("page", _currentPage.ToString()),
+                      new KeyValuePair<string, string>("size", _pageSize.ToString()),
+                };
+                var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Get, "accounts", list);
+
+                if ((int)response.Result.StatusCode == 200)
                 {
-                    var accounts = respone.Result.Content;
+                    var accounts = response.Result.Content;
                     RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
-                    UpdateStatus(respone.Result.Headers);
+                    UpdateStatus(response.Result.Headers);
                 }
                 LoadingPageVis = Visibility.Hidden;
             })).Start();

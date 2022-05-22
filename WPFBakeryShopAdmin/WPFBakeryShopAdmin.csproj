@@ -127,6 +127,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\ImagCacheConverter.cs" />
+    <Compile Include="Converters\NullToVisConvereter.cs" />
     <Compile Include="Converters\ReverseVisibilityToBoolConverter.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Models\RowItemBill.cs" />
     <Compile Include="Models\RowItemProduct.cs" />
     <Compile Include="Models\Token.cs" />
+    <Compile Include="Utilities\ConstValues.cs" />
     <Compile Include="Utilities\LanguageList.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\RestConnection.cs" />

@@ -54,20 +54,18 @@ namespace WPFBakeryShopAdmin.ViewModels
                     ShowFailMessage("Phiên đăng nhập quá hạn");
                     LoadingPageVis = Visibility.Visible;
                 }
-                
+
             }
         }
         public async Task<bool> FetchSession()
         {
             RestConnection.EstablishConnection(BearerToken);
             RestClient auth = RestConnection.AuthRestClient;
-
-            var request = new RestRequest("authenticate", Method.Get);
-            var response = await auth.ExecuteAsync(request);
+            var response = await RestConnection.ExecuteRequestAsync
+                (auth, Method.Get, "authenticate", null, null);
             if (!string.IsNullOrEmpty(response.Content))
-            {
                 return true;
-            }
+
             return false;
         }
 
@@ -77,10 +75,9 @@ namespace WPFBakeryShopAdmin.ViewModels
 
             RestClient client = new RestClient(RestConnection.AUTHENTICATE_BASE_CONNECTION_STRING);
             string requestBody = StringUtils.SerializeObject(LoginInfo);
-            var request = new RestRequest("authenticate", Method.Post);
 
-            request.AddBody(requestBody, contentType: "application/json");
-            var response = await client.ExecuteAsync(request);
+            var response = await RestConnection.ExecuteRequestAsync
+                (client, Method.Post, "authenticate", requestBody, "application/json");
 
             int statusCode = (int)response.StatusCode;
             if (statusCode == 200)

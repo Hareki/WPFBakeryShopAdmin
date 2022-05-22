@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 using RestSharp.Authenticators;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WPFBakeryShopAdmin.Utilities
@@ -64,6 +65,19 @@ namespace WPFBakeryShopAdmin.Utilities
             var request = new RestRequest(requestURl, method);
             if (!string.IsNullOrEmpty(requestBody))
                 request.AddBody(requestBody, contentType);
+            return restClient.ExecuteAsync(request);
+        }
+
+        public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, List<KeyValuePair<string, string>> parameters)
+        {
+            var request = new RestRequest(requestURl, method);
+            if (parameters.Count > 0)
+            {
+                foreach (KeyValuePair<string, string> element in parameters)
+                {
+                    request.AddParameter(element.Key, element.Value);
+                }
+            }
             return restClient.ExecuteAsync(request);
         }
         #endregion

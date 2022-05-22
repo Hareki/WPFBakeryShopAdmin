@@ -13,16 +13,11 @@ namespace WPFBakeryShopAdmin.Views
         public AccountView()
         {
             InitializeComponent();
-            expander.IsEnabled = expander.IsExpanded = false;
-
         }
         private void RowItemAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            expander.IsEnabled = RowItemAccounts.SelectedIndex >= 0;
-            if (expander.IsEnabled == false) expander.IsExpanded = false;
             PBImage.Visibility = Visibility.Visible;
             Console.WriteLine("Vis");
-
         }
 
         private void image_Changed(object sender, EventArgs e)

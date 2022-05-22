@@ -39,11 +39,10 @@ namespace WPFBakeryShopAdmin.ViewModels
             new Thread(new ThreadStart(() =>
             {
                 LoadingPageVis = Visibility.Visible;
-                var request = new RestRequest("home", Method.Get);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
+                var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Get, "home", null, null);
+                if ((int)response.Result.StatusCode == 200)
                 {
-                    var dashboardContent = respone.Result.Content;
+                    var dashboardContent = response.Result.Content;
                     Dashboard = JsonConvert.DeserializeObject<Dashboard>(dashboardContent);
                     UpdatePercent();
                 }
