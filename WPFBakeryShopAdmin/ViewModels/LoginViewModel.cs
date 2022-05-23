@@ -34,13 +34,15 @@ namespace WPFBakeryShopAdmin.ViewModels
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             LanguageList = Utilities.LanguageList.LIST;
-            LoginInfo = new LoginRequestBody("admin@gmail.com", "123456", true);
-          //  _ = LoginWithSessionAsync();
+            LoginInfo = new LoginRequestBody("admin@gmail.com", "123456", false);
+            //Properties.Settings.Default.token = null;
+            //Properties.Settings.Default.Save();
+            _ = LoginWithSessionAsync();
             return Task.CompletedTask;
         }
         public async Task LoginWithSessionAsync()
         {
-            if (!string.IsNullOrEmpty(BearerToken))
+            if (!string.IsNullOrEmpty(RestConnection.BearerToken))
             {
                 LoadingPageVis = Visibility.Visible;
                 var success = await FetchSession();
@@ -59,7 +61,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public async Task<bool> FetchSession()
         {
-            RestConnection.EstablishConnection(BearerToken);
+            RestConnection.EstablishConnection(RestConnection.BearerToken);
             RestClient auth = RestConnection.AuthRestClient;
             var response = await RestConnection.ExecuteRequestAsync
                 (auth, Method.Get, "authenticate", null, null);
@@ -84,7 +86,8 @@ namespace WPFBakeryShopAdmin.ViewModels
                 var tokenJSon = response.Content;
                 Token token = JsonConvert.DeserializeObject<Token>(tokenJSon);
                 RestConnection.EstablishConnection(token.IdToken);
-                BearerToken = token.IdToken;
+                if (LoginInfo.RememberMe)
+                    RestConnection.BearerToken = token.IdToken;
 
                 await this._windowManager.ShowWindowAsync(_mainViewModel);
                 await this.TryCloseAsync();
@@ -188,18 +191,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => LoginInfo);
             }
         }
-        public string BearerToken
-        {
-            get
-            {
-                return Properties.Settings.Default.token;
-            }
-            set
-            {
-                Properties.Settings.Default.token = value;
-                Properties.Settings.Default.Save();
-            }
-        }
+        
         #endregion
 
     }

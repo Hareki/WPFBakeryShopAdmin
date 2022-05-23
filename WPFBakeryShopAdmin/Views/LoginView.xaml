@@ -53,8 +53,8 @@
                                  materialDesign:HintAssist.Hint="Password"
                                  FontWeight="SemiBold"
                                  Margin="4 12 4 12" />
-                    <CheckBox   x:Name="CheckRememberMe"
-                                IsChecked="False"
+                    <CheckBox   x:Name="Login_RememberMe"
+                                IsChecked="{Binding LoginInfo.RememberMe}"
                                 Content="Ghi nhớ đăng nhập"
                                 materialDesign:CheckBoxAssist.CheckBoxSize="20"
                                 Margin="4 12 4 12" />

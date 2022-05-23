@@ -197,7 +197,8 @@
 
                     </Border>
                     <Border Grid.Row="3">
-                        <Button Style="{StaticResource CustomPrimaryButton}"
+                        <Button x:Name="LogOut"
+                                Style="{StaticResource CustomPrimaryButton}"
                                 Content="ĐĂNG XUẤT"
                                 VerticalAlignment="Bottom"
                                 Background="#E63946"

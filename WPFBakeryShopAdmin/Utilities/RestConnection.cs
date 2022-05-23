@@ -12,11 +12,11 @@ namespace WPFBakeryShopAdmin.Utilities
         public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "http://localhost:8080/api/";
         //public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "https://bakeryshop-web-service.herokuapp.com/api/";
 
-        public static string BearerToken;
         private static RestClient _managementRestClient;
         private static RestClient _accountRestClient;
         private static RestClient _authRestClient;
 
+        
         #region Base
         public static void EstablishConnection(string token)
         {
@@ -86,6 +86,18 @@ namespace WPFBakeryShopAdmin.Utilities
             {
                 _authRestClient = value;
                 _authRestClient.Authenticator = new JwtAuthenticator(BearerToken);
+            }
+        }
+        public static string BearerToken
+        {
+            get
+            {
+                return Properties.Settings.Default.token;
+            }
+            set
+            {
+                Properties.Settings.Default.token = value;
+                Properties.Settings.Default.Save();
             }
         }
         #endregion

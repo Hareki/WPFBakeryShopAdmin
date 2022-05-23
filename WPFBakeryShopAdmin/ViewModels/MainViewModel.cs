@@ -4,6 +4,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WPFBakeryShopAdmin.Models;
@@ -25,11 +26,12 @@ namespace WPFBakeryShopAdmin.ViewModels
 
         private PersonalAccount _personalAccount;
         private RestClient _restClient;
+        private IWindowManager _windowManager;
 
         #region Base
         public MainViewModel(DashboardViewModel dashboardViewModel, AccountViewModel accountViewModel,
             BillViewModel billViewModel, ProductViewModel productViewModel,
-            PersonalAccountViewModel personalAccountViewModel, IEventAggregator eventAggregator)
+            PersonalAccountViewModel personalAccountViewModel, IEventAggregator eventAggregator, IWindowManager windowManager)
         {
             _dashboardViewModel = dashboardViewModel;
             _accountViewModel = accountViewModel;
@@ -38,6 +40,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             _personalAccountViewModel = personalAccountViewModel;
 
             _eventAggregator = eventAggregator;
+            _windowManager = windowManager;
             Items.AddRange(new Screen[] { _dashboardViewModel, _accountViewModel, _billViewModel, _productViewModel, _personalAccountViewModel });
         }
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
@@ -70,6 +73,13 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             return null;
         }
+        public void LogOut()
+        {
+            RestConnection.BearerToken = string.Empty;
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
+        }
+
         #endregion
 
         #region Loading Pages
@@ -144,6 +154,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
+        #region Binding Properties
         public MainView View
         {
             get
@@ -151,5 +162,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 return this.GetView() as MainView;
             }
         }
+        #endregion
+
     }
 }
