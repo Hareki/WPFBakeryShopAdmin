@@ -16,12 +16,12 @@
              TextElement.FontSize="15"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <UserControl.Resources>
-        <converter:ImagCacheConverter x:Key="imageConverter"></converter:ImagCacheConverter>
+        <converter:LargeUserImageConverter x:Key="imageConverter"></converter:LargeUserImageConverter>
         <converter:ReverseVisibilityToBoolConverter x:Key="reverseVisConverter"></converter:ReverseVisibilityToBoolConverter>
     </UserControl.Resources>
     <Grid>
         <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
-                                             OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.3}">
+                                             OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.4}">
 
             <Grid>
                 <Grid.RowDefinitions>

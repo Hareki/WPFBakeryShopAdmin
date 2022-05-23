@@ -19,7 +19,7 @@
         Icon="/Images/favicon.ico"
         WindowState="Maximized">
     <Window.Resources>
-        <converter:ImagCacheConverter x:Key="imageConverter"></converter:ImagCacheConverter>
+        <converter:SmallUserImageConverter x:Key="imageConverter"></converter:SmallUserImageConverter>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -113,7 +113,7 @@
                                           Margin="0 0 10 0">
                                     <Ellipse.Fill>
                                         <ImageBrush x:Name="UserImageUrl"
-                                                    ImageSource="{Binding PersonalAccount.ImageUrl, Converter={StaticResource imageConverter}, ConverterParameter=80}"
+                                                    ImageSource="{Binding PersonalAccount.ImageUrl, Converter={StaticResource imageConverter}}"
                                                     RenderOptions.BitmapScalingMode="HighQuality"
                                                     RenderOptions.EdgeMode="Unspecified">
                                         </ImageBrush>

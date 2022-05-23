@@ -4,8 +4,11 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
+using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -51,8 +54,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         protected override void OnViewReady(object view)
         {
-
-            ActivateItemAsync(_accountViewModel);
+            ActivateItemAsync(_dashboardViewModel);
+            View.Dispatcher.Invoke(() =>
+            {
+                View.LoadDashboard.IsChecked = true;
+            });
         }
         public async Task<PersonalAccount> GetPersonalAccountFromDBAsync()
         {
@@ -101,7 +107,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public void LoadPersonalAccount()
         {
-            
             if (ActiveItem != _personalAccountViewModel)
             {
                 ActivateItemAsync(_personalAccountViewModel);
@@ -126,7 +131,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
-                //      _eventAggregator.PublishOnUIThreadAsync(_personalAccount);
                 NotifyOfPropertyChange(() => PersonalAccount);
             }
         }
@@ -139,5 +143,13 @@ namespace WPFBakeryShopAdmin.ViewModels
             return Task.CompletedTask;
         }
         #endregion
+
+        public MainView View
+        {
+            get
+            {
+                return this.GetView() as MainView;
+            }
+        }
     }
 }

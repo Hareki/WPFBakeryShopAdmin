@@ -126,9 +126,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\ImagCacheConverter.cs" />
+    <Compile Include="Converters\LargeUserImageConverter.cs" />
     <Compile Include="Converters\NullToVisConvereter.cs" />
     <Compile Include="Converters\ReverseVisibilityToBoolConverter.cs" />
+    <Compile Include="Converters\SmallUserImageConverter.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />

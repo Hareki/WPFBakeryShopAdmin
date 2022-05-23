@@ -1,27 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-
 namespace WPFBakeryShopAdmin.Converters
 {
-    public class ImagCacheConverter : IValueConverter
+    public class SmallUserImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             string url = value as string;
             if (url == null) return null;
+
             BitmapImage source = new BitmapImage();
             source.BeginInit();
-            source.UriSource = new Uri(url, UriKind.RelativeOrAbsolute);
-            //source.CacheOption = BitmapCacheOption.None;
+            source.CacheOption = BitmapCacheOption.OnLoad;
+
             source.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-            //source.UriCachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore); 
-            if (parameter != null)
-            {
-                int pixel = int.Parse(parameter.ToString());
-                source.DecodePixelHeight = source.DecodePixelWidth = pixel;
-            }
+
+            source.UriSource = new Uri(url, UriKind.RelativeOrAbsolute);
+
+            source.DecodePixelHeight = 80;
+            source.DecodePixelWidth = 80;
             source.EndInit();
             return source;
         }

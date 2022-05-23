@@ -35,7 +35,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             LanguageList = Utilities.LanguageList.LIST;
             LoginInfo = new LoginRequestBody("admin@gmail.com", "123456", true);
-            _ = LoginWithSessionAsync();
+          //  _ = LoginWithSessionAsync();
             return Task.CompletedTask;
         }
         public async Task LoginWithSessionAsync()

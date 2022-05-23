@@ -16,12 +16,11 @@ using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class PersonalAccountViewModel : Screen, IHandle<PersonalAccount>
+    public class PersonalAccountViewModel : Screen
     {
         private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
         private PersonalAccount _personalAccount;
-        private PersonalAccount _savedAccount = null; //Lưu lại để lần sau bấm vào ko cần load lại thông tin account nữa
         private PersonalAccount _accountBeforeEditing = null;
         private List<ItemLanguage> _languageList;
         private bool _editing = false;
@@ -37,18 +36,21 @@ namespace WPFBakeryShopAdmin.ViewModels
             _restClient = RestConnection.AccountRestClient;
             _eventAggregator.SubscribeOnPublishedThread(this);
             LanguageList = Utilities.LanguageList.LIST;
-            if (_savedAccount == null)
-            {
-                LoadingPageVis = Visibility.Visible;
-                PersonalAccount = await GetPersonalAccountFromDBAsync();
-                _savedAccount = PersonalAccount;
-                LoadingPageVis = Visibility.Hidden;
-            }
-            else
-            {
-                PersonalAccount = _savedAccount;
-            }
 
+            if (PersonalAccount == null)
+            {
+                await RefreshAccountInfo();
+            }
+        }
+
+        private async Task RefreshAccountInfo()
+        {
+            LoadingPageVis = Visibility.Visible;
+            PersonalAccount temp = await GetPersonalAccountFromDBAsync();
+            await _eventAggregator.PublishOnUIThreadAsync(temp);
+
+            PersonalAccount = temp;
+            LoadingPageVis = Visibility.Hidden;
         }
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
@@ -129,16 +131,15 @@ namespace WPFBakeryShopAdmin.ViewModels
                 var result2 = await task2;
                 if (result1 == false || result2 == false)
                 {
-                    PersonalAccount = await GetPersonalAccountFromDBAsync();
+                    PersonalAccount temp = await GetPersonalAccountFromDBAsync();
+                    await _eventAggregator.PublishOnUIThreadAsync(temp);
+                    PersonalAccount = temp;
                 }
                 else
                 {
+                    await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
                     ShowSuccessMessage("Cập nhật thông tin thành công");
                 }
-                //  UserImageUrl = PersonalAccount.ImageUrl;
-                //Không cần set lại vì ảnh không đổi, set lại sẽ dẫn đến HandleAsync trong MainViewModel bị lỗi theo, ko set dc hình
-                //Nhưng nếu không để thì ko lỗi
-                await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
 
                 Editing = false;
                 LoadingPageVis = Visibility.Hidden;
@@ -210,11 +211,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             });
         }
 
-        public Task HandleAsync(PersonalAccount account, CancellationToken cancellationToken)
-        {
-            PersonalAccount = account;
-            return Task.CompletedTask;
-        }
         #endregion
 
         #region View Mapping Properties
@@ -240,10 +236,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
-                //Nếu có handleAsync thì ko đổi ảnh, vì sẽ dẫn đến lỗi, nhưng HandleAsync trong MainViewModel thì ko lỗi
-                //Trong MainViewModel sẽ lỗi nếu như có set lại UserImageUrl trong UpdatePersonalAccountAsync (dòng 138)
-                //Khó hiểu
-                if (value != null && !Environment.StackTrace.Contains("HandleAsync"))
+                if (value != null)
                     UserImageUrl = value.ImageUrl;
 
                 NotifyOfPropertyChange(() => PersonalAccount);
@@ -283,15 +276,12 @@ namespace WPFBakeryShopAdmin.ViewModels
             get { return _userImageUrl; }
             set
             {
-                Console.WriteLine(Environment.StackTrace);
                 _userImageUrl = value;
                 NotifyOfPropertyChange(() => UserImageUrl);
             }
         }
 
         private ItemLanguage _selectedItemLanguage;
-
-
 
         public ItemLanguage SelectedItemLanguage
         {
