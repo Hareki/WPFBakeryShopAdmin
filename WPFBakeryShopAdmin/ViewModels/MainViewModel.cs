@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RestSharp;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,7 +28,8 @@ namespace WPFBakeryShopAdmin.ViewModels
         private PersonalAccount _personalAccount;
         private RestClient _restClient;
         private IWindowManager _windowManager;
-
+        private ItemLanguage _selectedLanguage;
+       
         #region Base
         public MainViewModel(DashboardViewModel dashboardViewModel, AccountViewModel accountViewModel,
             BillViewModel billViewModel, ProductViewModel productViewModel,
@@ -141,7 +143,21 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _personalAccount = value;
+                SelectedLanguage = LanguageList.First(s => s.LangKey == value.LangKey);
                 NotifyOfPropertyChange(() => PersonalAccount);
+            }
+        }
+        public ItemLanguage SelectedLanguage
+        {
+            get
+            {
+                return _selectedLanguage;
+            }
+
+            set
+            {
+                _selectedLanguage = value;
+                NotifyOfPropertyChange(() => SelectedLanguage);
             }
         }
         #endregion

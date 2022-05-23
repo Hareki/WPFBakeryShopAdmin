@@ -67,6 +67,7 @@
                                 MinWidth="140">
                             <Grid>
                                 <ComboBox x:Name="LanguageList"
+                                          SelectedItem="{Binding SelectedLanguage}"
                                           materialDesign:HintAssist.Hint="Language"
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Stretch"
