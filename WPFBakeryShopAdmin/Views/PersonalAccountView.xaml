@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WPFBakeryShopAdmin.Views"
              xmlns:validation="clr-namespace:WPFBakeryShopAdmin.LocalValidationRules"
              xmlns:converter="clr-namespace:WPFBakeryShopAdmin.Converters"
+             xmlns:ph="clr-namespace:WPFBakeryShopAdmin.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="1000"
              d:DesignWidth="800"
@@ -117,11 +118,11 @@
                                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                                  Value="0"
                                                  Visibility="{Binding Path=LoadingPageVis}"
-                                                 IsIndeterminate="True" 
+                                                 IsIndeterminate="True"
                                                  Grid.Column="0"
                                                  Grid.ColumnSpan="13"
                                                  Grid.Row="0"
-                                                 Grid.RowSpan="8"/>
+                                                 Grid.RowSpan="8" />
                                     <Grid Grid.Column="0"
                                           Grid.Row="1"
                                           Grid.ColumnSpan="3"
@@ -251,7 +252,6 @@
                                                 <Binding.ValidationRules>
                                                     <validation:NotEmptyValidationRule Message="Vui lòng nhập số điện thoại" />
                                                     <validation:PhoneFormatValidationRule Message="Số điện thoại không đúng định dạng" />
-
                                                 </Binding.ValidationRules>
                                             </Binding>
                                         </TextBox.Text>
@@ -360,28 +360,45 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
+                                    <TextBlock Text="Bạn sẽ cần đăng nhập lại sau khi thay đổi mật khẩu thành công"
+                                               Margin="0 0 0 10"
+                                               FontWeight="Normal"
+                                               Foreground="Red" />
+                                    <PasswordBox ph:PasswordHelper.Attach="True"
+                                                 ph:PasswordHelper.Password="{Binding ChangePasswordBody.CurrentPassword, Mode=TwoWay}"
+                                                 Grid.Column="0"
+                                                 Grid.Row="1"
+                                                 Grid.ColumnSpan="8"
+                                                 Margin="0 15"
+                                                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
+                                                 materialDesign:HintAssist.Hint="Mật khẩu hiện tại*"
+                                                 MaxLength="100" />
 
-                                    <TextBox Grid.Column="0"
-                                             Grid.Row="0"
-                                             Grid.ColumnSpan="8"
-                                             Margin="0 15"
-                                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="Mật khẩu hiện tại*" />
-                                    <TextBox Grid.Column="0"
-                                             Grid.Row="1"
-                                             Grid.ColumnSpan="8"
-                                             Margin="0 15"
-                                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="Mật khẩu mới*" />
-                                    <TextBox Grid.Column="0"
-                                             Grid.Row="2"
-                                             Margin="0 15"
-                                             Grid.ColumnSpan="8"
-                                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="Xác nhận mật khẩu mới*" />
+                                    <PasswordBox ph:PasswordHelper.Attach="True"
+                                                 ph:PasswordHelper.Password="{Binding ChangePasswordBody.NewPassword, Mode=TwoWay}"
+                                                 Grid.Column="0"
+                                                 Grid.Row="2"
+                                                 Grid.ColumnSpan="8"
+                                                 Margin="0 15"
+                                                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
+                                                 materialDesign:HintAssist.Hint="Mật khẩu mới*"
+                                                 MaxLength="100" />
 
-                                    <Button Style="{StaticResource CustomPrimaryButton}"
+                                    <PasswordBox ph:PasswordHelper.Attach="True"
+                                                 ph:PasswordHelper.Password="{Binding ChangePasswordBody.ConfirmNewPassword, Mode=TwoWay}"
+                                                 Grid.Column="0"
+                                                 Grid.Row="3"
+                                                 Margin="0 15"
+                                                 Grid.ColumnSpan="8"
+                                                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
+                                                 materialDesign:HintAssist.Hint="Xác nhận mật khẩu mới*"
+                                                 MaxLength="100" />
+
+                                    <Button x:Name="ChangePassword"
+                                            Style="{StaticResource CustomPrimaryButton}"
                                             materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                             Grid.Column="11"
                                             Grid.Row="5"

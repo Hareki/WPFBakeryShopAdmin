@@ -54,7 +54,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 else
                 {
                     ShowFailMessage("Phiên đăng nhập quá hạn");
-                    LoadingPageVis = Visibility.Visible;
+                    LoadingPageVis = Visibility.Hidden;
                 }
 
             }
@@ -191,7 +191,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => LoginInfo);
             }
         }
-        
+
         #endregion
 
     }

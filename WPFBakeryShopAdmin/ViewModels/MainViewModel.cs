@@ -29,7 +29,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private RestClient _restClient;
         private IWindowManager _windowManager;
         private ItemLanguage _selectedLanguage;
-       
+
         #region Base
         public MainViewModel(DashboardViewModel dashboardViewModel, AccountViewModel accountViewModel,
             BillViewModel billViewModel, ProductViewModel productViewModel,
@@ -77,9 +77,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public void LogOut()
         {
-            RestConnection.BearerToken = string.Empty;
-            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-            Application.Current.Shutdown();
+            Program.Logout();
         }
 
         #endregion

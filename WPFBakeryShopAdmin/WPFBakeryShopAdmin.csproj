@@ -133,6 +133,7 @@
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />
+    <Compile Include="Models\ChangePasswordBody.cs" />
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\DetailItemBill.cs" />
     <Compile Include="Models\ItemLanguage.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Utilities\ConstValues.cs" />
     <Compile Include="Utilities\LanguageList.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
+    <Compile Include="Utilities\Program.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />

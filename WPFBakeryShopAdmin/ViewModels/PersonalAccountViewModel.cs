@@ -25,10 +25,13 @@ namespace WPFBakeryShopAdmin.ViewModels
         private List<ItemLanguage> _languageList;
         private bool _editing = false;
         private string _userImageUrl;
+        private ItemLanguage _selectedItemLanguage;
+        private ChangePasswordBody _changePasswordBody;
         private IEventAggregator _eventAggregator;
         #region Base
         public PersonalAccountViewModel(IEventAggregator eventAggregator)
         {
+            ChangePasswordBody = new ChangePasswordBody();
             _eventAggregator = eventAggregator;
         }
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
@@ -42,18 +45,9 @@ namespace WPFBakeryShopAdmin.ViewModels
                 await RefreshAccountInfo();
             }
         }
-
-        private async Task RefreshAccountInfo()
-        {
-            LoadingPageVis = Visibility.Visible;
-            PersonalAccount temp = await GetPersonalAccountFromDBAsync();
-            await _eventAggregator.PublishOnUIThreadAsync(temp);
-
-            PersonalAccount = temp;
-            LoadingPageVis = Visibility.Hidden;
-        }
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
+            base.OnDeactivateAsync(close, cancellationToken);
             _eventAggregator.Unsubscribe(this);
             return Task.CompletedTask;
         }
@@ -76,6 +70,34 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             Editing = false;
             PersonalAccount = new PersonalAccount(_accountBeforeEditing);
+        }
+        public void UpdatePreviewImage()
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
+            open.Multiselect = false;
+            if ((bool)open.ShowDialog())
+            {
+                FileInfo fi = new FileInfo(open.FileName);
+                float fileSizeInMb = (float)fi.Length / 1000000;
+                if (fileSizeInMb <= 1)
+                {
+                    UserImageUrl = open.FileName;
+                }
+                else
+                {
+                    ShowFailMessage("Vui lòng chọn file có kích thước nhỏ hơn");
+                }
+            }
+        }
+        private async Task RefreshAccountInfo()
+        {
+            LoadingPageVis = Visibility.Visible;
+            PersonalAccount temp = await GetPersonalAccountFromDBAsync();
+            await _eventAggregator.PublishOnUIThreadAsync(temp);
+
+            PersonalAccount = temp;
+            LoadingPageVis = Visibility.Hidden;
         }
         private async Task<bool> UpdateAccountInfoAsync()
         {
@@ -121,51 +143,77 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public async Task UpdatePersonalAccountAsync()
         {
-            if (!HasError())
+            if (UpdateInfoHasErrors()) return;
+
+            LoadingPageVis = Visibility.Visible;
+            var task1 = UpdateAccountInfoAsync();
+            var task2 = UpdateAccountImageAsync();
+
+            var result1 = await task1;
+            var result2 = await task2;
+            if (result1 == false || result2 == false)
             {
-                LoadingPageVis = Visibility.Visible;
-                var task1 = UpdateAccountInfoAsync();
-                var task2 = UpdateAccountImageAsync();
-
-                var result1 = await task1;
-                var result2 = await task2;
-                if (result1 == false || result2 == false)
-                {
-                    PersonalAccount temp = await GetPersonalAccountFromDBAsync();
-                    await _eventAggregator.PublishOnUIThreadAsync(temp);
-                    PersonalAccount = temp;
-                }
-                else
-                {
-                    await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
-                    ShowSuccessMessage("Cập nhật thông tin thành công");
-                }
-
-                Editing = false;
-                LoadingPageVis = Visibility.Hidden;
+                PersonalAccount temp = await GetPersonalAccountFromDBAsync();
+                await _eventAggregator.PublishOnUIThreadAsync(temp);
+                PersonalAccount = temp;
             }
-        }
+            else
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(PersonalAccount);
+                ShowSuccessMessage("Cập nhật thông tin thành công");
+            }
 
-        public void UpdatePreviewImage()
+            Editing = false;
+            LoadingPageVis = Visibility.Hidden;
+
+        }
+        public async Task ChangePassword()
         {
-            OpenFileDialog open = new OpenFileDialog();
-            open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
-            open.Multiselect = false;
-            if ((bool)open.ShowDialog())
+            string errorMessage = GetPasswordErrorMessage();
+            if (!string.IsNullOrEmpty(errorMessage))
             {
-                FileInfo fi = new FileInfo(open.FileName);
-                float fileSizeInMb = (float)fi.Length / 1000000;
-                if (fileSizeInMb <= 1)
-                {
-                    UserImageUrl = open.FileName;
-                }
-                else
-                {
-                    ShowFailMessage("Vui lòng chọn file có kích thước nhỏ hơn");
-                }
+                ShowFailMessage(errorMessage);
+                return;
+            }
+
+            string JsonChangePasswordInfo = StringUtils.SerializeObject(ChangePasswordBody);
+            var response = RestConnection.ExecuteRequestAsync(_restClient, Method.Post, "change-password", JsonChangePasswordInfo, "application/json").Result;
+            int statusCode = (int)response.StatusCode;
+            if (statusCode == 200)
+            {
+                ClearPasswordBox();
+                await ShowLogoutMessage("Đổi mật khẩu thành công, chuẩn bị đăng xuất...");
+                Program.Logout();
+            }
+            else if (statusCode == 400)
+            {
+                ShowFailMessage("Mật khẩu hiện tại không đúng");
             }
         }
-        private bool HasError()
+        private void ClearPasswordBox()
+        {
+            ChangePasswordBody = new ChangePasswordBody();
+        }
+        private string GetPasswordErrorMessage()
+        {
+            if (string.IsNullOrEmpty(ChangePasswordBody.CurrentPassword))
+                return "Mật hiện tại không được để trống";
+            if (string.IsNullOrEmpty(ChangePasswordBody.NewPassword))
+                return "Mật mới không được để trống";
+            if (string.IsNullOrEmpty(ChangePasswordBody.ConfirmNewPassword))
+                return "Xác nhận khẩu mới không được để trống";
+            if (ChangePasswordBody.NewPassword.Length < 4)
+                return "Mật khẩu mới phải tối thiểu 4 ký tự";
+            if (!ChangePasswordBody.NewPassword.Equals(ChangePasswordBody.ConfirmNewPassword))
+            {
+                return "Xác nhận mật khẩu mới không khớp";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+        private bool UpdateInfoHasErrors()
         {
             return !StringUtils.IsValidEmail(PersonalAccount.Email) ||
                    !StringUtils.IsValidPhoneNumber(PersonalAccount.Phone) ||
@@ -194,6 +242,24 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
+        private async Task ShowLogoutMessage(string message)
+        {
+
+            View.Dispatcher.Invoke(() =>
+            {
+                View.GreenMessage.Text = message;
+
+                GreenSB.MessageQueue?.Enqueue(
+                View.GreenContent,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+            await Task.Delay(3000);
+        }
         private void ShowFailMessage(string message)
         {
             View.Dispatcher.Invoke(() =>
@@ -210,7 +276,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
-
         #endregion
 
         #region View Mapping Properties
@@ -280,9 +345,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => UserImageUrl);
             }
         }
-
-        private ItemLanguage _selectedItemLanguage;
-
         public ItemLanguage SelectedItemLanguage
         {
             get
@@ -299,6 +361,15 @@ namespace WPFBakeryShopAdmin.ViewModels
         public bool NotEditing
         {
             get { return !Editing; }
+        }
+        public ChangePasswordBody ChangePasswordBody
+        {
+            get { return _changePasswordBody; }
+            set
+            {
+                _changePasswordBody = value;
+                NotifyOfPropertyChange(() => ChangePasswordBody);
+            }
         }
         #endregion
     }
