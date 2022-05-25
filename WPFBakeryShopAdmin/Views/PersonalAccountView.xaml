@@ -41,7 +41,7 @@
                                              VerticalAlignment="Top"
                                              Grid.ColumnSpan="12"
                                              x:Name="GreenSB"
-                                             Background="MediumSeaGreen"
+                                             Background="#00b4d8"
                                              MessageQueue="{materialDesign:MessageQueue}">
                         <materialDesign:SnackbarMessage>
                             <StackPanel Orientation="Horizontal"
@@ -60,7 +60,7 @@
                                              VerticalAlignment="Top"
                                              Grid.ColumnSpan="12"
                                              x:Name="RedSB"
-                                             Background="Red"
+                                             Background="#e63946"
                                              MessageQueue="{materialDesign:MessageQueue}">
                         <materialDesign:SnackbarMessage>
                             <StackPanel Orientation="Horizontal"
@@ -208,7 +208,7 @@
                                     <TextBox x:Name="txtEmail"
                                              IsReadOnly="{Binding NotEditing}"
                                              Grid.Column="4"
-                                             Grid.Row="2"
+                                             Grid.Row="3"
                                              Grid.ColumnSpan="8"
                                              Margin="0 15"
                                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -229,7 +229,7 @@
                                     <TextBox x:Name="PersonalAccount_Address"
                                              IsReadOnly="{Binding NotEditing}"
                                              Grid.Column="4"
-                                             Grid.Row="3"
+                                             Grid.Row="2"
                                              Grid.ColumnSpan="8"
                                              Margin="0 15"
                                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -365,8 +365,8 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Bạn sẽ cần đăng nhập lại sau khi thay đổi mật khẩu thành công"
                                                Margin="0 0 0 10"
-                                               FontWeight="Normal"
-                                               Foreground="Red" />
+                                               Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="#e63946" />
                                     <PasswordBox ph:PasswordHelper.Attach="True"
                                                  ph:PasswordHelper.Password="{Binding ChangePasswordBody.CurrentPassword, Mode=TwoWay}"
                                                  Grid.Column="0"

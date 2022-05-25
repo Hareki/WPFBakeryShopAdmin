@@ -113,7 +113,7 @@
                                       Grid.Column="0"
                                       Grid.Row="1"
                                       x:Name="GreenSB"
-                                      Background="MediumSeaGreen"
+                                      Background="#00b4d8"
                                       MessageQueue="{materialDesign:MessageQueue}">
                 <materialDesign:SnackbarMessage>
                     <StackPanel Orientation="Horizontal"
@@ -133,7 +133,7 @@
                                      Grid.Column="0"
                                      Grid.Row="1"
                                      x:Name="RedSB"
-                                     Background="Red"
+                                     Background="#e63946"
                                      MessageQueue="{materialDesign:MessageQueue}">
                 <materialDesign:SnackbarMessage>
                     <StackPanel Orientation="Horizontal"

@@ -150,6 +150,7 @@
     <Compile Include="Utilities\RestConnection.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\AddingAccountViewModel.cs" />
     <Compile Include="ViewModels\AddingProductViewModel.cs" />
     <Compile Include="ViewModels\BillViewModel.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
@@ -161,6 +162,9 @@
     <Compile Include="ViewModels\VariantAddEditDialogViewModel.cs" />
     <Compile Include="Views\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddingAccountView.xaml.cs">
+      <DependentUpon>AddingAccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddingProductView.xaml.cs">
       <DependentUpon>AddingProductView.xaml</DependentUpon>
@@ -224,6 +228,10 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="Views\AccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddingAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

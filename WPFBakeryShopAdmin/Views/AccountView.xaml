@@ -40,6 +40,19 @@
                     </Button>
                 </StackPanel>
 
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="{StaticResource TitleMargin}">
+                    <Button x:Name="LoadEditingProduct"
+                            Grid.Row="0"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Style="{StaticResource CustomPrimaryButton}"
+                            Content="THÊM TÀI KHOẢN"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0 0 0 0" />
+                </StackPanel>
+
                 <Border Background="White"
                         Padding="15 0"
                         Grid.Row="1"
@@ -434,7 +447,7 @@
                                 </Grid>
                             </Border>
                         </ScrollViewer>
-                        
+
                     </Expander>
                 </Border>
             </Grid>
