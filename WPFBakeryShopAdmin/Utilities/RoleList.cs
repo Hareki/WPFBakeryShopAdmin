@@ -14,7 +14,7 @@ namespace WPFBakeryShopAdmin.Utilities
         {
             LIST = new List<ItemRole>();
             LIST.Add(new ItemRole(AuthRole.ROLE_ADMIN, "Quản trị viên"));
-            LIST.Add(new ItemRole(AuthRole.ROLE_ADMIN, "Người dùng"));
+            LIST.Add(new ItemRole(AuthRole.ROLE_USER, "Người dùng"));
         }
     }
 }

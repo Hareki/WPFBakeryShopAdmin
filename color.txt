@@ -1,0 +1,24 @@
+
+background: {
+	default: "#F5F5FA",
+	paper: "#fff",
+},
+primary
+: {
+	main: "#ca6702",
+},
+secondary: {
+	main: "#FDF0E6",
+},
+warning: {
+	main: "#e9c46a",
+},
+info: {
+	main: "#3a86ff",
+},
+error: {
+	main: "#e63946",
+},
+success: {
+	main: "#00b4d8",
+},

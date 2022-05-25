@@ -2,6 +2,7 @@
 using RestSharp.Authenticators;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WPFBakeryShopAdmin.Utilities
 {
@@ -16,7 +17,7 @@ namespace WPFBakeryShopAdmin.Utilities
         private static RestClient _accountRestClient;
         private static RestClient _authRestClient;
 
-        
+
         #region Base
         public static void EstablishConnection(string token)
         {
@@ -88,7 +89,23 @@ namespace WPFBakeryShopAdmin.Utilities
                 _authRestClient.Authenticator = new JwtAuthenticator(BearerToken);
             }
         }
+        private static string _bearerToken;
+        public static bool RememberMe { get; set; }
         public static string BearerToken
+        {
+            get
+            {
+                return _bearerToken;
+            }
+            set
+            {
+                _bearerToken = value;
+                if (RememberMe)
+                    SavedBearerToken = value;
+            }
+        }
+
+        public static string SavedBearerToken
         {
             get
             {
@@ -99,6 +116,12 @@ namespace WPFBakeryShopAdmin.Utilities
                 Properties.Settings.Default.token = value;
                 Properties.Settings.Default.Save();
             }
+        }
+        public static void LogOut()
+        {
+            SavedBearerToken = string.Empty;
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
         #endregion
     }

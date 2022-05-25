@@ -9,6 +9,7 @@ namespace WPFBakeryShopAdmin.Models
         public PersonalAccount()
         {
             this.LangKey = "vi";
+            this.Authorities = new List<string>();
         }
         public PersonalAccount(PersonalAccount another)
         {

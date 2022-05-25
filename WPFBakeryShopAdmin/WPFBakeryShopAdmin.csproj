@@ -147,7 +147,6 @@
     <Compile Include="Utilities\ConstValues.cs" />
     <Compile Include="Utilities\LanguageList.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
-    <Compile Include="Utilities\Program.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
     <Compile Include="Utilities\RoleList.cs" />
     <Compile Include="Utilities\StringUtils.cs" />

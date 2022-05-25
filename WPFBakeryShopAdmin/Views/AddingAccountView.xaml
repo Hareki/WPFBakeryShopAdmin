@@ -61,7 +61,11 @@
                                FontWeight="SemiBold"
                                Margin="{StaticResource TitleMargin}"
                                Text="Tạo tài khoản mới" />
+                </StackPanel>
 
+                <Grid Grid.Row="0"
+                      Grid.Column="12"
+                      HorizontalAlignment="Center">
                     <materialDesign:Snackbar HorizontalAlignment="Center"
                                              VerticalAlignment="Top"
                                              Grid.ColumnSpan="12"
@@ -99,7 +103,7 @@
                             </StackPanel>
                         </materialDesign:SnackbarMessage>
                     </materialDesign:Snackbar>
-                </StackPanel>
+                </Grid>
 
                 <TextBox x:Name="txtLastName"
                          Grid.Column="0"
@@ -228,6 +232,21 @@
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}"
+                               BasedOn="{StaticResource MaterialDesignFilterChipPrimaryListBoxItem}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLockedRole}"
+                                             Value="True">
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                    <Setter Property="IsSelected"
+                                            Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                 </ListBox>
 
                 <StackPanel Margin="0 15"

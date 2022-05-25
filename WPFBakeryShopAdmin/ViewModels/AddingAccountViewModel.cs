@@ -25,7 +25,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region Base
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            _restClient = RestConnection.AccountRestClient;
+            _restClient = RestConnection.ManagementRestClient;
             LanguageList = Utilities.LanguageList.LIST;
             RoleList = Utilities.RoleList.LIST;
             PersonalAccount = new PersonalAccount();
@@ -33,12 +33,15 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public async Task AddNewAccount()
         {
+            if (HasErrors()) return;
+
+            SetPersonalAccountAuths();
             string JSonAccountInfo = StringUtils.SerializeObject(PersonalAccount);
             var response = await RestConnection.ExecuteRequestAsync(_restClient, Method.Post, "accounts", JSonAccountInfo, "application/json");
             int statusCode = (int)response.StatusCode;
             if (statusCode == 201)
             {
-                ShowSuccessMessage("Tạo tài khoản thành công, vui lòng kiểm tra email");
+                ShowSuccessMessage("Tạo tài khoản thành công, vui lòng kiểm tra email đã đăng ký");
             }
             else if (statusCode == 400)
             {
@@ -49,9 +52,22 @@ namespace WPFBakeryShopAdmin.ViewModels
                 ShowFailMessage("Xảy ra lỗi khi tạo tài khoản");
             }
         }
+        private bool HasErrors()
+        {
+            return !StringUtils.IsValidEmail(PersonalAccount.Email) ||
+                   !StringUtils.IsValidPhoneNumber(PersonalAccount.Phone) ||
+                   string.IsNullOrEmpty(PersonalAccount.FirstName) ||
+                   string.IsNullOrEmpty(PersonalAccount.LastName) ||
+                   string.IsNullOrEmpty(PersonalAccount.Email) ||
+                   string.IsNullOrEmpty(PersonalAccount.Phone);
+        }
         private void SetPersonalAccountAuths()
         {
-
+            foreach (ItemRole item in View.RoleList.SelectedItems)
+            {
+                PersonalAccount.Authorities.Add(item.RoleCode.ToString());
+            }
+            PersonalAccount.SerializeAuth = true;
         }
         #endregion
 

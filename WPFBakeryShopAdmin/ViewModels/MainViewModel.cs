@@ -77,7 +77,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public void LogOut()
         {
-            Program.Logout();
+            RestConnection.LogOut();
         }
 
         #endregion

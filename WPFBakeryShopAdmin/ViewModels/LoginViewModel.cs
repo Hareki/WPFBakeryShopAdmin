@@ -42,7 +42,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public async Task LoginWithSessionAsync()
         {
-            if (!string.IsNullOrEmpty(RestConnection.BearerToken))
+            if (!string.IsNullOrEmpty(RestConnection.SavedBearerToken))
             {
                 LoadingPageVis = Visibility.Visible;
                 var success = await FetchSession();
@@ -61,6 +61,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public async Task<bool> FetchSession()
         {
+            RestConnection.BearerToken = RestConnection.SavedBearerToken;
             RestConnection.EstablishConnection(RestConnection.BearerToken);
             RestClient auth = RestConnection.AuthRestClient;
             var response = await RestConnection.ExecuteRequestAsync
@@ -87,7 +88,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 Token token = JsonConvert.DeserializeObject<Token>(tokenJSon);
                 RestConnection.EstablishConnection(token.IdToken);
                 if (LoginInfo.RememberMe)
-                    RestConnection.BearerToken = token.IdToken;
+                    RestConnection.SavedBearerToken = token.IdToken;
 
                 await this._windowManager.ShowWindowAsync(_mainViewModel);
                 await this.TryCloseAsync();
