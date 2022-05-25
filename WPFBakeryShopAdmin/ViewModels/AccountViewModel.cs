@@ -23,8 +23,12 @@ namespace WPFBakeryShopAdmin.ViewModels
         private int _currentPage = 0;
         private int _maxPageIndex;
         private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
-
+        private IWindowManager _windowManager;
         #region Base
+        public AccountViewModel(IWindowManager windowManager)
+        {
+            _windowManager = windowManager;
+        }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.ManagementRestClient;
@@ -88,6 +92,11 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
                 if (totalCountDone && linkDone) return;
             }
+        }
+
+        public void ShowAddingAccountDialog()
+        {
+            _windowManager.ShowDialogAsync(new AddingAccountViewModel());
         }
         #endregion
 

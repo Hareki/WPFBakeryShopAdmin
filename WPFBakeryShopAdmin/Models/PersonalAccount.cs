@@ -7,7 +7,9 @@ namespace WPFBakeryShopAdmin.Models
     public class PersonalAccount
     {
         public PersonalAccount()
-        { }
+        {
+            this.LangKey = "vi";
+        }
         public PersonalAccount(PersonalAccount another)
         {
             this.FirstName = another.FirstName;
@@ -32,7 +34,9 @@ namespace WPFBakeryShopAdmin.Models
         public bool Activated { get; set; }
         public bool ShouldSerializeActivated() { return false; }
         public List<string> Authorities { get; set; }
-        public bool ShouldSerializeAuthorities() { return false; }
+        public bool ShouldSerializeAuthorities() { return SerializeAuth; }
+        [JsonIgnore]
+        public bool SerializeAuth { get; set; }
 
         [JsonIgnore]
         public string LanguageName
@@ -76,7 +80,7 @@ namespace WPFBakeryShopAdmin.Models
         {
             get
             {
-                return $"{FirstName} {LastName}";
+                return $"{LastName} {FirstName}";
             }
         }
     }

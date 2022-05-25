@@ -242,6 +242,23 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
+       
+        private void ShowFailMessage(string message)
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                View.RedMessage.Text = message;
+
+                RedSB.MessageQueue?.Enqueue(
+                View.RedContent,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+        }
         private async Task ShowLogoutMessage(string message)
         {
 
@@ -259,22 +276,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
             await Task.Delay(3000);
-        }
-        private void ShowFailMessage(string message)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.RedMessage.Text = message;
-
-                RedSB.MessageQueue?.Enqueue(
-                View.RedContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
         }
         #endregion
 

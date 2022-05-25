@@ -165,7 +165,7 @@
                                         </Button>
                                     </Grid>
 
-                                    <TextBox x:Name="txtFirstName"
+                                    <TextBox x:Name="txtLastName"
                                              IsReadOnly="{Binding NotEditing}"
                                              Grid.Column="4"
                                              Grid.Row="1"
@@ -176,7 +176,7 @@
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="False">
                                         <TextBox.Text>
-                                            <Binding Path="PersonalAccount.FirstName">
+                                            <Binding Path="PersonalAccount.LastName">
                                                 <Binding.ValidationRules>
                                                     <validation:NotEmptyValidationRule Message="Vui lòng nhập họ và tên lót" />
 
@@ -185,7 +185,7 @@
                                         </TextBox.Text>
                                     </TextBox>
 
-                                    <TextBox x:Name="txtLastName"
+                                    <TextBox x:Name="txtFirstName"
                                              IsReadOnly="{Binding NotEditing}"
                                              Grid.Column="8"
                                              Grid.Row="1"
@@ -196,7 +196,7 @@
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="False">
                                         <TextBox.Text>
-                                            <Binding Path="PersonalAccount.LastName">
+                                            <Binding Path="PersonalAccount.FirstName">
                                                 <Binding.ValidationRules>
                                                     <validation:NotEmptyValidationRule Message="Vui lòng nhập tên" />
 

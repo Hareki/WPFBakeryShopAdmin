@@ -43,7 +43,7 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             Margin="{StaticResource TitleMargin}">
-                    <Button x:Name="LoadEditingProduct"
+                    <Button x:Name="ShowAddingAccountDialog"
                             Grid.Row="0"
                             materialDesign:ShadowAssist.ShadowDepth="Depth0"
                             Style="{StaticResource CustomPrimaryButton}"

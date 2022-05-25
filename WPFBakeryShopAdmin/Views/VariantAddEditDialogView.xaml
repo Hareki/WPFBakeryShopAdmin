@@ -6,15 +6,16 @@
         xmlns:local="clr-namespace:WPFBakeryShopAdmin.Views"
         mc:Ignorable="d"
         Title="VariantAddEditDialogView"
-        Height="290"
         Width="800"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Background="#F5F5FA"
         TextElement.FontSize="15"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Icon="/Images/favicon.ico"
-        MaxHeight="290">
-    <Border Padding="20">
+        Height="auto"
+        MaxHeight="300">
+
+    <Border Padding="30">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -35,13 +36,23 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal"
-                        Grid.Column="0"
                         Grid.Row="0"
+                        Grid.ColumnSpan="12">
+                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                           FontWeight="SemiBold"
+                           Margin="{StaticResource TitleMargin}"
+                           Text="Thêm loại sản phẩm" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="0"
+                        Grid.Row="3"
                         Grid.ColumnSpan="12"
-                        Margin="0 0 0 30"
+                        Margin="0 30 0 0"
                         VerticalAlignment="Center">
                 <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
                               ToolTip="MaterialDesignSwitchToggleButton"
@@ -55,8 +66,9 @@
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Grid.Column="0"
+                        Grid.Row="3"
                         Grid.ColumnSpan="12"
-                        Margin="0 0 0 30">
+                        Margin="0 30 0 0">
                 <Button Style="{StaticResource CustomPrimaryButton}"
                         Content="LƯU LOẠI SẢN PHẨM"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
@@ -76,7 +88,7 @@
 
             <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
                       Grid.Column="4"
-                      Grid.ColumnSpan="12"
+                      Grid.ColumnSpan="8"
                       Grid.Row="1"
                       materialDesign:HintAssist.Hint="Loại sản phẩm"
                       Margin="15 0 0 15" />
@@ -96,4 +108,5 @@
                      Margin="15 15 0 0" />
         </Grid>
     </Border>
+
 </Window>
