@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="LoginGreeting1">Welcome back!</sys:String>
+    <sys:String x:Key="LoginGreeting2">Proceed to login</sys:String>
+    <sys:String x:Key="Login">Login</sys:String>
+    <sys:String x:Key="ForgotPassword">Forgot password?</sys:String>
+    <sys:String x:Key="Email">Email</sys:String>
+    <sys:String x:Key="Password">Password</sys:String>
+    <sys:String x:Key="RememberMe">Remember me</sys:String>
+
+    <sys:String x:Key="Dashboard">Dashboard</sys:String>
+    <sys:String x:Key="Products">Products</sys:String>
+    <sys:String x:Key="Orders">Orders</sys:String>
+    <sys:String x:Key="Accounts">Accounts</sys:String>
+    <sys:String x:Key="Logout">Log out</sys:String>
+
+    <sys:String x:Key="PersonalAccount">Your personal account</sys:String>
+    <sys:String x:Key="LastName">Last Name</sys:String>
+    <sys:String x:Key="FirstName">First Name</sys:String>
+    <sys:String x:Key="Address">Address</sys:String>
+    <sys:String x:Key="Phone">Phone number</sys:String>
+    <sys:String x:Key="Language">Language</sys:String>
+    <sys:String x:Key="Update">UPDATE</sys:String>
+    <sys:String x:Key="Cancel">CANCEL</sys:String>
+    <sys:String x:Key="Save">SAVE</sys:String>
+
+    <sys:String x:Key="ChangePassword">CHANGE PASSWORD</sys:String>
+    <sys:String x:Key="CurrentPassword">Current password*</sys:String>
+    <sys:String x:Key="NewPassword">New password*</sys:String>
+    <sys:String x:Key="ConfirmNewPassword">Confirm new password*</sys:String>
+    <sys:String x:Key="ChangePasswordWarning">Changing your password will sign you out</sys:String>
+
+    <sys:String x:Key="TotalOrdersNum">Total orders number</sys:String>
+    <sys:String x:Key="TotalAvailableProductVariantsNum">Total available product variants numer</sys:String>
+    <sys:String x:Key="TotalSoldProductVariantsNum">Total sold product variants number</sys:String>
+    <sys:String x:Key="Pending">Pending</sys:String>
+    <sys:String x:Key="Shipping">Shipping</sys:String>
+    <sys:String x:Key="Shipped">Shipped</sys:String>
+    <sys:String x:Key="Cancelled">Cancelled</sys:String>
+    <sys:String x:Key="FiveMostRecentOrder">5 most recent order</sys:String>
+    <sys:String x:Key="OrderID">Order ID</sys:String>
+    <sys:String x:Key="CustomerName">Cutomer name</sys:String>
+    <sys:String x:Key="Total">Total</sys:String>
+    <sys:String x:Key="Status">Status</sys:String>
+</ResourceDictionary>

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
@@ -115,11 +116,21 @@ namespace WPFBakeryShopAdmin.ViewModels
             LoadingPageVis = Visibility.Hidden;
         }
 
+        public async Task LoginAsync(ActionExecutionContext context)
+        {
+            KeyEventArgs keyArgs = context.EventArgs as KeyEventArgs;
+
+            if (keyArgs != null && keyArgs.Key == Key.Enter)
+            {
+                await LoginAsync();
+            }
+        }
+
         private async Task<bool> IsAdmin(Token token)
         {
             RestClient client = new RestClient(RestConnection.ACCOUNT_BASE_CONNECTION_STRING);
             client.Authenticator = new JwtAuthenticator(token.IdToken);
-            var task = await RestConnection.ExecuteRequestAsync(client, Method.Get, "account", null, null);
+            var task = await RestConnection.ExecuteRequestAsync(client, Method.Get, "", null, null);
             PersonalAccount account = JsonConvert.DeserializeObject<PersonalAccount>(task.Content);
             return account.Authorities.Any(auth => auth == ConstValues.ROLE_ADMIN);
         }

@@ -57,7 +57,7 @@
                     <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                                FontWeight="SemiBold"
                                Margin="{StaticResource TitleMargin}"
-                               Text="Bảng thống kê" />
+                               Text="{DynamicResource Dashboard}" />
                     <Button x:Name="LoadPage"
                             Style="{StaticResource MaterialDesignIconForegroundButton}"
                             ToolTip="MaterialDesignIconForegroundButton"
@@ -86,7 +86,7 @@
                             <TextBlock Margin="0 0 0 15"
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center"
-                                       Text="Tổng số đơn hàng" />
+                                       Text="{DynamicResource TotalOrdersNum}" />
                             <TextBlock x:Name="Dashboard_TotalOrdersNum"
                                        Text="0"
                                        FontWeight="SemiBold" />
@@ -112,7 +112,7 @@
                             <TextBlock Margin="0 0 0 15"
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center"
-                                       Text="Tổng số sản phẩm bày bán" />
+                                       Text="{DynamicResource TotalAvailableProductVariantsNum}" />
                             <TextBlock x:Name="Dashboard_TotalAvailableProductVariantsNum"
                                        Text="0"
                                        FontWeight="SemiBold" />
@@ -138,7 +138,7 @@
                             <TextBlock Margin="0 0 0 15"
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center"
-                                       Text="Tổng số sản phẩm đã bán" />
+                                       Text="{DynamicResource TotalSoldProductVariantsNum}" />
                             <TextBlock x:Name="Dashboard_TotalSoldProductVariantsNum"
                                        Text="0"
                                        FontWeight="SemiBold" />
@@ -184,7 +184,7 @@
                                 <TextBlock Margin="15 0 0 5"
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
-                                           Text="Chờ duyệt" />
+                                           Text="{DynamicResource Pending}" />
                                 <ProgressBar x:Name="PendingPercent"
                                              Value="50"
                                              Margin="15 0 0 0"
@@ -207,7 +207,7 @@
                                 <TextBlock Margin="15 0 0 5"
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
-                                           Text="Đang giao" />
+                                           Text="{DynamicResource Shipping}" />
                                 <ProgressBar x:Name="ShippingPercent"
                                              Value="50"
                                              Margin="15 0 0 0"
@@ -230,7 +230,7 @@
                                 <TextBlock Margin="15 0 0 5"
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
-                                           Text="Đã giao" />
+                                           Text="{DynamicResource Shipped}" />
                                 <ProgressBar x:Name="ShippedPercent"
                                              Value="50"
                                              Margin="15 0 0 0"
@@ -253,7 +253,7 @@
                                 <TextBlock Margin="15 0 0 5"
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
-                                           Text="Đã hủy" />
+                                           Text="{DynamicResource Cancelled}" />
                                 <ProgressBar x:Name="CancelledPercent"
                                              Value="50"
                                              Margin="15 0 0 0"
@@ -274,7 +274,7 @@
                             <StackPanel Margin="0 0 10 0"
                                         Grid.Column="0"
                                         HorizontalAlignment="Center">
-                                <TextBlock Text="Chờ duyệt"
+                                <TextBlock Text="{DynamicResource Pending}"
                                            Margin="0 0 0 5" />
                                 <TextBlock x:Name="Dashboard_TodayProcessingOrdersNum"
                                            Text="4"
@@ -286,7 +286,7 @@
                                         Grid.Column="1"
                                         HorizontalAlignment="Center">
                                 <StackPanel>
-                                    <TextBlock Text="Đang giao"
+                                    <TextBlock Text="{DynamicResource Shipping}"
                                                Margin="0 0 0 5" />
                                     <TextBlock x:Name="Dashboard_TodayDispatchOrdersNum"
                                                Text="5"
@@ -299,7 +299,7 @@
                                         Grid.Column="2"
                                         HorizontalAlignment="Center">
                                 <StackPanel>
-                                    <TextBlock Text="Đã giao"
+                                    <TextBlock Text="{DynamicResource Shipped}"
                                                Margin="0 0 0 5" />
                                     <TextBlock x:Name="Dashboard_TodayShippedOrdersNum"
                                                Text="6"
@@ -312,7 +312,7 @@
                                         Grid.Column="3"
                                         HorizontalAlignment="Center">
                                 <StackPanel>
-                                    <TextBlock Text="Đã hủy"
+                                    <TextBlock Text="{DynamicResource Cancelled}"
                                                Margin="0 0 0 5" />
                                     <TextBlock x:Name="Dashboard_TodayCancelOrdersNum"
                                                Text="7"
@@ -333,7 +333,7 @@
                         Margin="15 15 0 0"
                         CornerRadius="12">
                     <StackPanel>
-                        <TextBlock Text="5 đơn hàng gần nhất"
+                        <TextBlock Text="{DynamicResource FiveMostRecentOrder}"
                                    Margin="0 0 0 15" />
 
                         <DataGrid x:Name="Dashboard_TopRecentOrders"
@@ -344,16 +344,16 @@
                                   SelectionUnit="FullRow"
                                   SelectionMode="Single">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã đơn"
+                                <DataGridTextColumn Header="{DynamicResource OrderID}"
                                                     Width="2*"
                                                     Binding="{Binding Path=OrderId}" />
-                                <DataGridTextColumn Header="Họ tên KH"
+                                <DataGridTextColumn Header="{DynamicResource CustomerName}"
                                                     Width="3*"
                                                     Binding="{Binding Path=UserFullName}" />
-                                <DataGridTextColumn Header="Tổng tiền"
+                                <DataGridTextColumn Header="{DynamicResource Total}"
                                                     Width="3*"
                                                     Binding="{Binding Path=FormattedOrderTotal}" />
-                                <DataGridTextColumn Header="Trạng thái"
+                                <DataGridTextColumn Header="{DynamicResource Status}"
                                                     Width="2*"
                                                     Binding="{Binding Path=StatusName}" />
                             </DataGrid.Columns>

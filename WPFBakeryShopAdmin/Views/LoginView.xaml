@@ -11,6 +11,7 @@
         Width="500"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+        xmlns:cal="http://www.caliburnproject.org"
         xmlns:ph="clr-namespace:WPFBakeryShopAdmin.Utilities"
         d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
         TextElement.FontSize="15"
@@ -34,36 +35,38 @@
                        Margin="0 25 0 0" />
                 <TextBlock Margin="0 25 0 0"
                            HorizontalAlignment="Center"
-                           Text="Xin chào bạn trở lại!"
+                           Text="{DynamicResource LoginGreeting1}"
                            FontSize="28"
                            FontWeight="Bold" />
                 <TextBlock HorizontalAlignment="Center"
-                           Text="Tiến hành đăng nhập"
+                           Text="{DynamicResource LoginGreeting2}"
                            FontWeight="SemiBold" />
                 <StackPanel Width="400"
                             Margin="0 20">
                     <TextBox  x:Name="LoginInfo_Email"
+                              cal:Message.Attach="[Event KeyDown] = [Action LoginAsync($executionContext)]"
                               Style="{StaticResource MaterialDesignOutlinedTextBox}"
                               FontWeight="SemiBold"
-                              materialDesign:HintAssist.Hint="Email"
+                              materialDesign:HintAssist.Hint="{DynamicResource Email}"
                               Margin="4 12 4 12" />
                     <PasswordBox ph:PasswordHelper.Attach="True"
                                  ph:PasswordHelper.Password="{Binding LoginInfo.Password, Mode=TwoWay}"
+                                 cal:Message.Attach="[Event KeyDown] = [Action LoginAsync($executionContext)]"
                                  Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
-                                 materialDesign:HintAssist.Hint="Password"
+                                 materialDesign:HintAssist.Hint="{DynamicResource Password}"
                                  FontWeight="SemiBold"
                                  Margin="4 12 4 12" />
                     <CheckBox   x:Name="Login_RememberMe"
                                 IsChecked="{Binding LoginInfo.RememberMe}"
-                                Content="Ghi nhớ đăng nhập"
+                                Content="{DynamicResource RememberMe}"
                                 materialDesign:CheckBoxAssist.CheckBoxSize="20"
                                 Margin="4 12 4 12" />
                     <Button x:Name="LoginAsync"
                             Style="{StaticResource CustomPrimaryButton}"
-                            Content="ĐĂNG NHẬP"
+                            Content="{DynamicResource Login}"
                             Margin="4 12 4 12" />
                     <Button Style="{StaticResource CustomFlatButton}"
-                            Content="Quên mật khẩu?"
+                            Content="{DynamicResource ForgotPassword}"
                             HorizontalAlignment="Center" />
                 </StackPanel>
 
@@ -86,7 +89,8 @@
                           Foreground="#fd9935"
                           materialDesign:TextFieldAssist.UnderlineBrush="#fd9935"
                           materialDesign:TextFieldAssist.UnderlineCornerRadius="10"
-                          FontWeight="Bold">
+                          FontWeight="Bold"
+                          SelectionChanged="LanguageList_SelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

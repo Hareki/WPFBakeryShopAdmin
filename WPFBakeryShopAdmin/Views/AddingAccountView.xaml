@@ -118,7 +118,6 @@
                         <Binding Path="PersonalAccount.LastName">
                             <Binding.ValidationRules>
                                 <validation:NotEmptyValidationRule Message="Vui lòng nhập họ và tên lót" />
-
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -137,7 +136,6 @@
                         <Binding Path="PersonalAccount.FirstName">
                             <Binding.ValidationRules>
                                 <validation:NotEmptyValidationRule Message="Vui lòng nhập tên" />
-
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -157,7 +155,6 @@
                             <Binding.ValidationRules>
                                 <validation:NotEmptyValidationRule Message="Vui lòng nhập địa chỉ email" />
                                 <validation:EmailFormatValidationRule Message="Email không đúng định dạng" />
-
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>

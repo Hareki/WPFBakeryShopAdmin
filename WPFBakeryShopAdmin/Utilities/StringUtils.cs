@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace WPFBakeryShopAdmin.Utilities
 {
@@ -25,6 +27,5 @@ namespace WPFBakeryShopAdmin.Utilities
         {
             return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
-
     }
 }

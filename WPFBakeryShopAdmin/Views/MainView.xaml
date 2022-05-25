@@ -69,8 +69,7 @@
                                 <ComboBox x:Name="LanguageList"
                                           SelectedItem="{Binding SelectedLanguage}"
                                           materialDesign:HintAssist.Hint="Language"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Bottom"
                                           Grid.Column="0"
                                           FontSize="12"
                                           materialDesign:ComboBoxAssist.ClassicMode="False"
@@ -78,7 +77,7 @@
                                           materialDesign:TextFieldAssist.UnderlineBrush="#fd9935"
                                           materialDesign:TextFieldAssist.UnderlineCornerRadius="10"
                                           FontWeight="Bold"
-                                          Grid.Row="1">
+                                          SelectionChanged="LanguageList_SelectionChanged">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -154,7 +153,7 @@
                                            Source="/Images/dashboard-icon-512.png" />
                                     <TextBlock Margin="15 0 0 0"
                                                VerticalAlignment="Center"
-                                               Text="Bảng thống kê" />
+                                               Text="{DynamicResource Dashboard}" />
                                 </StackPanel>
                             </RadioButton>
                             <RadioButton Style="{StaticResource CustomMenuItem}"
@@ -166,7 +165,7 @@
                                            Source="/Images/product-icon-512.png" />
                                     <TextBlock Margin="15 0 0 0"
                                                VerticalAlignment="Center"
-                                               Text="Sản phẩm" />
+                                               Text="{DynamicResource Products}" />
                                 </StackPanel>
                             </RadioButton>
                             <RadioButton Style="{StaticResource CustomMenuItem}"
@@ -178,7 +177,7 @@
                                            Source="/Images/bill-icon-512.png" />
                                     <TextBlock Margin="15 0 0 0"
                                                VerticalAlignment="Center"
-                                               Text="Đơn hàng" />
+                                               Text="{DynamicResource Orders}" />
                                 </StackPanel>
                             </RadioButton>
                             <RadioButton Style="{StaticResource CustomMenuItem}"
@@ -190,7 +189,7 @@
                                            Source="/Images/account-icon-512.png" />
                                     <TextBlock Margin="15 0 0 0"
                                                VerticalAlignment="Center"
-                                               Text="Tài khoản" />
+                                               Text="{DynamicResource Accounts}"  />
                                 </StackPanel>
                             </RadioButton>
 
@@ -200,7 +199,7 @@
                     <Border Grid.Row="3">
                         <Button x:Name="LogOut"
                                 Style="{StaticResource CustomPrimaryButton}"
-                                Content="ĐĂNG XUẤT"
+                                Content="{DynamicResource Logout}"
                                 VerticalAlignment="Bottom"
                                 Background="#E63946"
                                 Margin="20" />

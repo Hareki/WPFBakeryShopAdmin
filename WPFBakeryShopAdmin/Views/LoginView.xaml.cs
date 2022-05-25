@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.Views
 {
@@ -10,6 +11,12 @@ namespace WPFBakeryShopAdmin.Views
         public LoginView()
         {
             InitializeComponent();
+            LanguageList.SelectedIndex = 0;
+        }
+
+        private void LanguageList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            Utilities.LanguageList.SwitchLanguage(LanguageList.SelectedIndex);
         }
     }
 }
