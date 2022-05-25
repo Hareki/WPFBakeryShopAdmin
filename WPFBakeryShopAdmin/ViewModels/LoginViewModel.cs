@@ -2,8 +2,10 @@
 using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -86,12 +88,20 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 var tokenJSon = response.Content;
                 Token token = JsonConvert.DeserializeObject<Token>(tokenJSon);
-                RestConnection.EstablishConnection(token.IdToken);
-                if (LoginInfo.RememberMe)
-                    RestConnection.SavedBearerToken = token.IdToken;
+                if (await IsAdmin(token))
+                {
+                    RestConnection.EstablishConnection(token.IdToken);
+                    if (LoginInfo.RememberMe)
+                        RestConnection.SavedBearerToken = token.IdToken;
 
-                await this._windowManager.ShowWindowAsync(_mainViewModel);
-                await this.TryCloseAsync();
+                    await this._windowManager.ShowWindowAsync(_mainViewModel);
+                    await this.TryCloseAsync();
+                }
+                else
+                {
+                    ShowFailMessage("Tài khoản không đủ quyền truy cập");
+                }
+
             }
             else if (statusCode == 400 || statusCode == 401)
             {
@@ -103,6 +113,15 @@ namespace WPFBakeryShopAdmin.ViewModels
 
             }
             LoadingPageVis = Visibility.Hidden;
+        }
+
+        private async Task<bool> IsAdmin(Token token)
+        {
+            RestClient client = new RestClient(RestConnection.ACCOUNT_BASE_CONNECTION_STRING);
+            client.Authenticator = new JwtAuthenticator(token.IdToken);
+            var task = await RestConnection.ExecuteRequestAsync(client, Method.Get, "account", null, null);
+            PersonalAccount account = JsonConvert.DeserializeObject<PersonalAccount>(task.Content);
+            return account.Authorities.Any(auth => auth == ConstValues.ROLE_ADMIN);
         }
         #endregion
 
