@@ -43,4 +43,35 @@
     <sys:String x:Key="CustomerName">Cutomer name</sys:String>
     <sys:String x:Key="Total">Total</sys:String>
     <sys:String x:Key="Status">Status</sys:String>
+
+    <sys:String x:Key="CustomerName2">Cutomer name:</sys:String>
+    <sys:String x:Key="Status2">Status:</sys:String>
+    <sys:String x:Key="ProductName">ProductName</sys:String>
+    <sys:String x:Key="Category">Category</sys:String>
+    <sys:String x:Key="Quanity">Quantity</sys:String>
+    <sys:String x:Key="UnitPrice">Unit Price</sys:String>
+    <sys:String x:Key="Subtotal">Subtotal</sys:String>
+    <sys:String x:Key="Total2">Total:</sys:String>
+    <sys:String x:Key="PaymentMethod">Payment Method</sys:String>
+    <sys:String x:Key="PurchaseDate">Purchase Date</sys:String>
+    <sys:String x:Key="ShipmentDetail">Shipment Detail:</sys:String>
+    <sys:String x:Key="OrderDetail">   ORDER DETAIL</sys:String>
+    <sys:String x:Key="Note">Note</sys:String>
+
+    <sys:String x:Key="AccountStatus">Account Status</sys:String>
+    <sys:String x:Key="AccountID">Account ID</sys:String>
+    <sys:String x:Key="AccountID2">ID</sys:String>
+    <sys:String x:Key="FullName">Full Name</sys:String>
+    <sys:String x:Key="Roles">Role(s)</sys:String>
+    <sys:String x:Key="AccountDetail">   ACCOUNT DETAIL</sys:String>
+    <sys:String x:Key="Activated">Activated</sys:String>
+    <sys:String x:Key="NewAccount">New Account</sys:String>
+
+    <sys:String x:Key="CreateNewAccount">Create New Account</sys:String>
+    <sys:String x:Key="CreatAccount">Create account</sys:String>
+
+    <sys:String x:Key="LastName2">Last Name*</sys:String>
+    <sys:String x:Key="Email2">Last Name*</sys:String>
+    <sys:String x:Key="Phone2">Phone*</sys:String>
+    <sys:String x:Key="FirstName2">First Name*</sys:String>
 </ResourceDictionary>

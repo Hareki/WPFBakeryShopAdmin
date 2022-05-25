@@ -172,7 +172,7 @@
                                              Grid.ColumnSpan="4"
                                              Margin="0 30 15 15"
                                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="{DynamicResource LastName}"
+                                             materialDesign:HintAssist.Hint="{DynamicResource LastName2}"
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="False">
                                         <TextBox.Text>
@@ -192,7 +192,7 @@
                                              Grid.ColumnSpan="4"
                                              Margin="15 30 0 15"
                                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="{DynamicResource FirstName}"
+                                             materialDesign:HintAssist.Hint="{DynamicResource FirstName2}"
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="False">
                                         <TextBox.Text>
@@ -212,7 +212,7 @@
                                              Grid.ColumnSpan="8"
                                              Margin="0 15"
                                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="{DynamicResource Email}"
+                                             materialDesign:HintAssist.Hint="{DynamicResource Email2}"
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="False">
                                         <TextBox.Text>
@@ -244,7 +244,7 @@
                                              Grid.ColumnSpan="5"
                                              Margin="0 15 15 15"
                                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             materialDesign:HintAssist.Hint="{DynamicResource Phone}"
+                                             materialDesign:HintAssist.Hint="{DynamicResource Phone2}"
                                              materialDesign:HintAssist.Background="White"
                                              materialDesign:TextFieldAssist.HasClearButton="False">
                                         <TextBox.Text>

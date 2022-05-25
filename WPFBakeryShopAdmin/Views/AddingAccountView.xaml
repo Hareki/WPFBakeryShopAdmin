@@ -60,7 +60,7 @@
                     <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                                FontWeight="SemiBold"
                                Margin="{StaticResource TitleMargin}"
-                               Text="Tạo tài khoản mới" />
+                               Text="{DynamicResource CreateNewAccount}" />
                 </StackPanel>
 
                 <Grid Grid.Row="0"
@@ -111,7 +111,7 @@
                          Grid.ColumnSpan="4"
                          Margin="0 0 15 15"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.Hint="Họ và tên lót*"
+                         materialDesign:HintAssist.Hint="{DynamicResource LastName2}"
                          materialDesign:HintAssist.Background="White"
                          materialDesign:TextFieldAssist.HasClearButton="False">
                     <TextBox.Text>
@@ -129,7 +129,7 @@
                          Grid.ColumnSpan="4"
                          Margin="15 0 0 15"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.Hint="Tên*"
+                         materialDesign:HintAssist.Hint="{DynamicResource FirstName2}"
                          materialDesign:HintAssist.Background="White"
                          materialDesign:TextFieldAssist.HasClearButton="False">
                     <TextBox.Text>
@@ -147,7 +147,7 @@
                          Grid.ColumnSpan="8"
                          Margin="0 15"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.Hint="Email*"
+                         materialDesign:HintAssist.Hint="{DynamicResource Email2}"
                          materialDesign:HintAssist.Background="White"
                          materialDesign:TextFieldAssist.HasClearButton="False">
                     <TextBox.Text>
@@ -168,7 +168,7 @@
                          Grid.ColumnSpan="8"
                          Margin="0 15"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.Hint="Địa chỉ"
+                         materialDesign:HintAssist.Hint="{DynamicResource Address}"
                          materialDesign:HintAssist.Background="White"
                          materialDesign:TextFieldAssist.HasClearButton="False" />
 
@@ -178,7 +178,7 @@
                          Grid.ColumnSpan="5"
                          Margin="0 15 15 15"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.Hint="Số điện thoại*"
+                         materialDesign:HintAssist.Hint="{DynamicResource Phone2}"
                          materialDesign:HintAssist.Background="White"
                          materialDesign:TextFieldAssist.HasClearButton="False">
                     <TextBox.Text>
@@ -200,7 +200,7 @@
                           Grid.ColumnSpan="3"
                           Margin="15 15 0 15"
                           Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                          materialDesign:HintAssist.Hint="Ngôn ngữ">
+                          materialDesign:HintAssist.Hint="{DynamicResource Language}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -242,6 +242,8 @@
                                             Value="True" />
                                 </DataTrigger>
                             </Style.Triggers>
+                            <Setter Property="Margin"
+                                    Value="0 0 15 0" />
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
@@ -256,12 +258,12 @@
                     <Button x:Name="CancelUpdate"
                             Style="{StaticResource CustomSecondaryButton}"
                             materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                            Content="HỦY"
+                            Content="{DynamicResource Cancel}"
                             Margin="0 0 20 0" />
 
                     <Button x:Name="AddNewAccount"
                             Style="{StaticResource CustomPrimaryButton}"
-                            Content="TẠO TÀI KHOẢN"
+                            Content="{DynamicResource CreateAccount}"
                             materialDesign:ShadowAssist.ShadowDepth="Depth0" />
                 </StackPanel>
             </Grid>

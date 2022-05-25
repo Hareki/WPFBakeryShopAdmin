@@ -35,7 +35,7 @@
                         <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                                    FontWeight="SemiBold"
                                    Margin="{StaticResource TitleMargin}"
-                                   Text="Đơn hàng" />
+                                   Text="{DynamicResource Orders}" />
                         <Button x:Name="LoadPage"
                                 Style="{StaticResource MaterialDesignIconForegroundButton}"
                                 ToolTip="MaterialDesignIconForegroundButton"
@@ -105,19 +105,19 @@
                                   SelectedItem="{Binding Path=SelectedBill, Mode=TwoWay}"
                                   cal:Message.Attach="[Event SelectionChanged] = [Action RowItemBills_SelectionChanged]">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã đơn"
+                                <DataGridTextColumn Header="{DynamicResource OrderID}"
                                                     Width="2*"
                                                     Binding="{Binding Path=Id}" />
-                                <DataGridTextColumn Header="Tên KH"
+                                <DataGridTextColumn Header="{DynamicResource CustomerName}"
                                                     Width="4*"
                                                     Binding="{Binding Path=CustomerName}" />
-                                <DataGridTextColumn Header="Trạng thái"
+                                <DataGridTextColumn Header="{DynamicResource Status}"
                                                     Width="3*"
                                                     Binding="{Binding Path=StatusString}" />
-                                <DataGridTextColumn Header="Ngày mua"
+                                <DataGridTextColumn Header="{DynamicResource PurchaseDate}"
                                                     Width="4*"
                                                     Binding="{Binding Path=CreatedAt}" />
-                                <DataGridTextColumn Header="Tổng tiền"
+                                <DataGridTextColumn Header="{DynamicResource Total}"
                                                     Width="4*"
                                                     Binding="{Binding Path=FormattedTotal}" />
                             </DataGrid.Columns>
@@ -184,7 +184,7 @@
                         Padding="15"
                         MaxHeight="350">
 
-                    <Expander Header="   CHI TIẾT THÔNG TIN ĐƠN HÀNG"
+                    <Expander Header="{DynamicResource OrderDetail}"
                               FontWeight="SemiBold"
                               Background="White"
                               ExpandDirection="Up"
@@ -254,25 +254,26 @@
                                     </DataGrid.Resources> 
                                     mất luôn style của material, tuy vậy vẫn giữ lại dưới dạng
                                     comment để tham khảo sau này-->
+                                                <!--Đã fix dc! bằng based on-->
 
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Tên sản phẩm"
+                                                    <DataGridTextColumn Header="{DynamicResource ProductName}"
                                                                         FontWeight="Normal"
                                                                         Width="4*"
                                                                         Binding="{Binding Path=ProductName}" />
-                                                    <DataGridTextColumn Header="Danh mục"
+                                                    <DataGridTextColumn Header="{DynamicResource Category}"
                                                                         FontWeight="Normal"
                                                                         Width="3*"
                                                                         Binding="{Binding Path=TypeName}" />
-                                                    <DataGridTextColumn Header="Số lượng"
+                                                    <DataGridTextColumn Header="{DynamicResource Quantity}"
                                                                         Width="3*"
                                                                         FontWeight="Normal"
                                                                         Binding="{Binding Path=Quantity}" />
-                                                    <DataGridTextColumn Header="Đơn giá"
+                                                    <DataGridTextColumn Header="{DynamicResource UnitPrice}"
                                                                         FontWeight="Normal"
                                                                         Width="4*"
                                                                         Binding="{Binding Path=FormattedUnitPrice}" />
-                                                    <DataGridTextColumn Header="Thành tiền"
+                                                    <DataGridTextColumn Header="{DynamicResource Subtotal}"
                                                                         FontWeight="Normal"
                                                                         Width="4*"
                                                                         Binding="{Binding Path=SubTotal}" />
@@ -281,7 +282,7 @@
                                             <StackPanel Margin="0 10 0 0"
                                                         Orientation="Horizontal"
                                                         HorizontalAlignment="Right">
-                                                <TextBlock Text="Tổng tiền: "
+                                                <TextBlock Text="{DynamicResource Total2}"
                                                            FontWeight="Bold" />
                                                 <TextBlock x:Name="BillDetails_FormattedTotal"
                                                            Text="200,000 đ"
@@ -292,7 +293,7 @@
                                     </Border>
 
 
-                                    <TextBlock Text="Tên khách hàng:"
+                                    <TextBlock Text="{DynamicResource CustomerName2}"
                                                FontWeight="Bold"
                                                Grid.Column="1"
                                                Grid.Row="1"
@@ -306,7 +307,7 @@
                                                Grid.ColumnSpan="3"
                                                Margin="0 0 0 30" />
 
-                                    <TextBlock Text="Trạng thái:"
+                                    <TextBlock Text="{DynamicResource Status2}"
                                                FontWeight="Bold"
                                                Grid.Column="7"
                                                Grid.Row="1"
@@ -347,7 +348,7 @@
                                         </Button>
                                     </StackPanel>
 
-                                    <TextBlock Text="Ngày mua:"
+                                    <TextBlock Text="{DynamicResource PurchaseDate}"
                                                FontWeight="Bold"
                                                Grid.Column="1"
                                                Grid.Row="2"
@@ -362,7 +363,7 @@
                                                FontWeight="Normal"
                                                Margin="0 0 0 30" />
 
-                                    <TextBlock Text="Phương thức thanh toán:"
+                                    <TextBlock Text="{DynamicResource PaymentMethod}"
                                                FontWeight="Bold"
                                                Grid.Column="7"
                                                Grid.Row="2"
@@ -376,7 +377,7 @@
                                                FontWeight="Normal"
                                                Margin="0 0 0 30" />
 
-                                    <TextBlock Text="Thông tin giao hàng:"
+                                    <TextBlock Text="{DynamicResource ShipmentDetail}"
                                                FontWeight="Bold"
                                                Grid.Column="1"
                                                Grid.Row="3"
@@ -402,7 +403,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="2"
-                                                   Text="Địa chỉ"
+                                                   Text="{DynamicResource Address}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
@@ -434,7 +435,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="2"
-                                                   Text="Số điện thoại"
+                                                   Text="{DynamicResource Phone}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
@@ -464,7 +465,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="2"
-                                                   Text="Ghi chú"
+                                                   Text="{DynamicResource Note}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 

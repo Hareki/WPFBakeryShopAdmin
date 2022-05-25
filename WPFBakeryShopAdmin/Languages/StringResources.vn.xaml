@@ -44,5 +44,34 @@
     <sys:String x:Key="Total">Tổng tiền</sys:String>
     <sys:String x:Key="Status">Trạng thái</sys:String>
 
+    <sys:String x:Key="CustomerName2">Tên khách hàng: </sys:String>
+    <sys:String x:Key="Status2">Trạng thái: </sys:String>
+    <sys:String x:Key="ProductName">Tên sản phẩm</sys:String>
+    <sys:String x:Key="Category">Danh mục</sys:String>
+    <sys:String x:Key="Quantity">Số lượng</sys:String>
+    <sys:String x:Key="UnitPrice">Đơn giá</sys:String>
+    <sys:String x:Key="Subtotal">Thành tiền</sys:String>
+    <sys:String x:Key="Total2">Thành tiền: </sys:String>
+    <sys:String x:Key="PaymentMethod">Phương thức thanh toán</sys:String>
+    <sys:String x:Key="PurchaseDate">Ngày mua</sys:String>
+    <sys:String x:Key="ShipmentDetail">Thông tin giao hàng:</sys:String>
+    <sys:String x:Key="OrderDetail">   CHI TIẾT THÔNG TIN ĐƠN HÀNG</sys:String>
+    <sys:String x:Key="Note">Ghi chú</sys:String>
 
+    <sys:String x:Key="AccountStatus">Trạng thái tài khoản</sys:String>
+    <sys:String x:Key="AccountID">Mã tài khoản</sys:String>
+    <sys:String x:Key="AccountID2">Mã TK</sys:String>
+    <sys:String x:Key="FullName">Họ và tên</sys:String>
+    <sys:String x:Key="Roles">Nhóm quyền</sys:String>
+    <sys:String x:Key="AccountDetail">   CHI TIẾT THÔNG TIN TÀI KHOẢN</sys:String>
+    <sys:String x:Key="Activated">Đã kích hoạt</sys:String>
+    <sys:String x:Key="NewAccount">THÊM TÀI KHOẢN</sys:String>
+
+    <sys:String x:Key="CreateNewAccount">Tạo tài khoản mới</sys:String>
+    <sys:String x:Key="CreatAccount">Tạo tài khoản</sys:String>
+
+    <sys:String x:Key="LastName2">Họ và tên lót*</sys:String>
+    <sys:String x:Key="Email2">Email*</sys:String>
+    <sys:String x:Key="Phone2">Phone*</sys:String>
+    <sys:String x:Key="FirstName2">Tên*</sys:String>
 </ResourceDictionary>

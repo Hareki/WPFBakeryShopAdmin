@@ -29,7 +29,7 @@
                     <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                                FontWeight="SemiBold"
                                Margin="{StaticResource TitleMargin}"
-                               Text="Tài khoản" />
+                               Text="{DynamicResource Accounts}" />
                     <Button x:Name="LoadPage"
                             Style="{StaticResource MaterialDesignIconForegroundButton}"
                             ToolTip="MaterialDesignIconForegroundButton"
@@ -47,7 +47,7 @@
                             Grid.Row="0"
                             materialDesign:ShadowAssist.ShadowDepth="Depth0"
                             Style="{StaticResource CustomPrimaryButton}"
-                            Content="THÊM TÀI KHOẢN"
+                            Content="{DynamicResource NewAccount}"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Margin="0 0 0 0" />
@@ -73,19 +73,19 @@
                                   SelectedItem="{Binding Path=SelectedAccount, Mode=OneWayToSource}"
                                   SelectionChanged="RowItemAccounts_SelectionChanged">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã TK"
+                                <DataGridTextColumn Header="{DynamicResource AccountID2}"
                                                     Width="2*"
                                                     Binding="{Binding Path=Id}" />
-                                <DataGridTextColumn Header="Họ tên KH"
+                                <DataGridTextColumn Header="{DynamicResource CustomerName}"
                                                     Width="4*"
                                                     Binding="{Binding Path=FullName}" />
-                                <DataGridTextColumn Header="Email"
+                                <DataGridTextColumn Header="{DynamicResource Email}"
                                                     Width="3*"
                                                     Binding="{Binding Path=Email}" />
-                                <DataGridTextColumn Header="SDT"
+                                <DataGridTextColumn Header="{DynamicResource Phone}"
                                                     Width="3*"
                                                     Binding="{Binding Path=Phone}" />
-                                <DataGridTextColumn Header="Kích hoạt"
+                                <DataGridTextColumn Header="{DynamicResource Activated}"
                                                     Width="3*"
                                                     Binding="{Binding Path=ActivatedString}" />
                             </DataGrid.Columns>
@@ -149,7 +149,7 @@
                         Background="White"
                         MaxHeight="350">
                     <Expander x:Name="expander"
-                              Header="   CHI TIẾT THÔNG TIN TÀI KHOẢN"
+                              Header="{DynamicResource AccountDetail}"
                               FontWeight="SemiBold"
                               Background="White"
                               ExpandDirection="Up"
@@ -231,7 +231,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 15 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Trạng thái tài khoản"
+                                                   Text="{DynamicResource AccountStatus}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
                                         <TextBlock x:Name="SelectedAccount_ActivatedString"
@@ -261,7 +261,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 15 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Mã tài khoản"
+                                                   Text="{DynamicResource AccountID}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
                                         <TextBlock x:Name="SelectedAccount_Id"
@@ -289,7 +289,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Họ và tên"
+                                                   Text="{DynamicResource FullName}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
@@ -318,7 +318,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Email"
+                                                   Text="{DynamicResource Email}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
@@ -347,7 +347,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Số điện thoại"
+                                                   Text="{DynamicResource Phone}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
@@ -375,7 +375,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Ngôn ngữ"
+                                                   Text="{DynamicResource Language}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
@@ -404,7 +404,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Nhóm quyền"
+                                                   Text="{DynamicResource Roles}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
@@ -433,7 +433,7 @@
                                                                  VerticalAlignment="Center"
                                                                  Margin="0 0 5 0" />
                                         <TextBlock Grid.Column="1"
-                                                   Text="Địa chỉ"
+                                                   Text="{DynamicResource Address}"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center" />
 
