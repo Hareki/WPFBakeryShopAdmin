@@ -14,7 +14,7 @@ namespace WPFBakeryShopAdmin.ViewModels
     public class AccountViewModel : Screen
     {
         private RestClient _restClient = RestConnection.ManagementRestClient;
-        private Visibility _loadingPageVis = Visibility.Visible;
+        private Visibility _loadingPageVis = Visibility.Hidden;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
         private string _pageIndicator;
         private int _totalCount;

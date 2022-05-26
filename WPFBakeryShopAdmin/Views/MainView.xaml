@@ -42,7 +42,8 @@
                Panel.ZIndex="3">
             <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3"
                                  UniformCornerRadius="12"
-                                 Background="#fd9935">
+                                 Background="#fda144">
+                <!--#fd9935 orig-->
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="140" />
