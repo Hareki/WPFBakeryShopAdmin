@@ -225,5 +225,12 @@ namespace WPFBakeryShopAdmin.ViewModels
 
         #endregion
 
+        #region Test
+        public void ShowForgotPasswordDialog()
+        {
+            _windowManager.ShowDialogAsync(new ForgotPasswordViewModel());
+        }
+        #endregion
+
     }
 }

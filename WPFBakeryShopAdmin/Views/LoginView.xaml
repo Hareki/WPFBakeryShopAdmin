@@ -34,7 +34,7 @@
                        Height="100"
                        Margin="0 25 0 0"
                        RenderOptions.BitmapScalingMode="HighQuality"
-                       RenderOptions.EdgeMode="Aliased"/>
+                       RenderOptions.EdgeMode="Aliased" />
                 <TextBlock Margin="0 25 0 0"
                            HorizontalAlignment="Center"
                            Text="{DynamicResource LoginGreeting1}"
@@ -67,7 +67,8 @@
                             Style="{StaticResource CustomPrimaryButton}"
                             Content="{DynamicResource Login}"
                             Margin="4 12 4 12" />
-                    <Button Style="{StaticResource CustomFlatButton}"
+                    <Button x:Name="ShowForgotPasswordDialog"
+                            Style="{StaticResource CustomFlatButton}"
                             Content="{DynamicResource ForgotPassword}"
                             HorizontalAlignment="Center" />
                 </StackPanel>

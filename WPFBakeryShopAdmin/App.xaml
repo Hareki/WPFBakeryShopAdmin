@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WPFBakeryShopAdmin"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:clr="clr-namespace:System;assembly=mscorlib"
-             StartupUri="Views/ForgotPasswordView.xaml">
+             xmlns:clr="clr-namespace:System;assembly=mscorlib">
+    <!--StartupUri="Views/ForgotPasswordView.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-               
+
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
@@ -39,7 +39,7 @@
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="SecondaryHueDarkBrush"
                                      Color="#FDF0E6" />
-                    
+
                 </ResourceDictionary>
                 <ResourceDictionary>
                     <clr:String x:Key="PendingColor">#0DA012</clr:String>
@@ -47,10 +47,10 @@
                     <clr:String x:Key="ShippedColor">#AF4C8E</clr:String>
                     <clr:String x:Key="CancelledColor">#E63946</clr:String>
                 </ResourceDictionary>
-                
-                <!--<ResourceDictionary>
+
+                <ResourceDictionary>
                     <local:Bootstrapper x:Key="Bootstrapper" />
-                </ResourceDictionary>-->
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <Thickness x:Key="TitleMargin"
                        Left="0"
