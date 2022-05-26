@@ -17,8 +17,8 @@ namespace WPFBakeryShopAdmin.ViewModels
     public class BillViewModel : Screen
     {
         private RestClient _restClient;
-        private Visibility _loadingPageVis = Visibility.Visible;
-        private Visibility _loadingInfoVis = Visibility.Visible;
+        private Visibility _loadingPageVis = Visibility.Hidden;
+        private Visibility _loadingInfoVis = Visibility.Hidden;
         private BindableCollection<RowItemBill> _rowItemBills;
         private BindingButtonAppearance _bindingButton;
         private RowItemBill _selectedBill;
@@ -79,7 +79,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                     RowItemBills.Clear();
 
                 LoadingPageVis = Visibility.Visible;
-
                 if (_currentPage > _maxPageIndex) _currentPage = 0;
                 var list = new List<KeyValuePair<string, string>>() {
                       new KeyValuePair<string, string>("page", _currentPage.ToString()),
@@ -131,21 +130,11 @@ namespace WPFBakeryShopAdmin.ViewModels
                 ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
             })).Start();
         }
-        //public bool CanCancelOrder()
-        //{
-        //    if (BillDetails != null)
-        //        return BillDetails.CanCancel;
-        //    return false;
-        //}
-        //public bool CanUpdateOrderStatus()
-        //{
-        //    if (BillDetails != null)
-        //        return BillDetails.CanUpdateOrderStatus;
-        //    return false;
-        //}
-        public void CancelOrder()
+        public async Task CancelOrder()
         {
-            new Thread(new ThreadStart(() =>
+            var result = await DialogHost.Show(View.DialogContent);
+            bool confirm = System.Convert.ToBoolean(result);
+            if (confirm)
             {
                 var request = new RestRequest($"orders/{BillDetails.Id}/cancel", Method.Put);
                 var respone = _restClient.ExecuteAsync(request);
@@ -165,7 +154,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                     return;
                 }
                 ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
-            })).Start();
+            }
         }
         #endregion
 

@@ -42,11 +42,42 @@
 
                 </ResourceDictionary>
                 <ResourceDictionary>
+                    <clr:String x:Key="SecondaryColor">#FDF0E6</clr:String>
+                    
                     <clr:String x:Key="PendingColor">#0DA012</clr:String>
                     <clr:String x:Key="ShippingColor">#4C82AF</clr:String>
                     <clr:String x:Key="ShippedColor">#AF4C8E</clr:String>
                     <clr:String x:Key="CancelledColor">#E63946</clr:String>
+
+                    <clr:String x:Key="SuccessColor">#00b4d8</clr:String>
+                    <clr:String x:Key="ErrorColor">#E63946</clr:String>
+                    <clr:String x:Key="InfoColor">#3a86ff</clr:String>
+                    <clr:String x:Key="WarningColor">#e9c46a</clr:String>
                 </ResourceDictionary>
+
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="SecondaryColorBrush"
+                                     Color="#FDF0E6" />
+                    <SolidColorBrush x:Key="PendingColorBrush"
+                                     Color="#0DA012" />
+                    <SolidColorBrush x:Key="ShippingColorBrush"
+                                     Color="#4C82AF" />
+                    <SolidColorBrush x:Key="ShippedColorBrush"
+                                     Color="#AF4C8E" />
+                    <SolidColorBrush x:Key="CancelledColorBrush"
+                                     Color="#E63946" />
+
+                    <SolidColorBrush x:Key="SuccessColorBrush"
+                                     Color="#00b4d8" />
+                    <SolidColorBrush x:Key="ErrorColorBrush"
+                                     Color="#E63946" />
+                    <SolidColorBrush x:Key="InfoColorBrush"
+                                     Color="#3a86ff" />
+                    <SolidColorBrush x:Key="WarningColorBrush"
+                                     Color="#e9c46a" />
+
+                </ResourceDictionary>
+
 
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="Bootstrapper" />

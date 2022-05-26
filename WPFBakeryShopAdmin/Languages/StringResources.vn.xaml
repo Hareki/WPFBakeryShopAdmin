@@ -32,14 +32,14 @@
     <sys:String x:Key="ChangePasswordWarning">Bạn sẽ cần đăng nhập lại sau khi thay đổi mật khẩu thành công</sys:String>
 
     <sys:String x:Key="TotalOrdersNum">Tổng số đơn hàng</sys:String>
-    <sys:String x:Key="TotalAvailableProductVariantsNum">Tổng số sản phẩm bày bán"</sys:String>
+    <sys:String x:Key="TotalAvailableProductVariantsNum">Tổng số sản phẩm bày bán</sys:String>
     <sys:String x:Key="TotalSoldProductVariantsNum">Tổng số sản phẩm đã bán</sys:String>
     <sys:String x:Key="Pending">Chờ duyệt</sys:String>
     <sys:String x:Key="Shipping">Đang giao</sys:String>
     <sys:String x:Key="Shipped">Đã giao</sys:String>
     <sys:String x:Key="Cancelled">Đã hủy</sys:String>
     <sys:String x:Key="FiveMostRecentOrder">5 đơn hàng gần nhất</sys:String>
-    <sys:String x:Key="OrderID">Mật khẩu mới*</sys:String>
+    <sys:String x:Key="OrderID">Mã HĐ</sys:String>
     <sys:String x:Key="CustomerName">Tên KH</sys:String>
     <sys:String x:Key="Total">Tổng tiền</sys:String>
     <sys:String x:Key="Status">Trạng thái</sys:String>

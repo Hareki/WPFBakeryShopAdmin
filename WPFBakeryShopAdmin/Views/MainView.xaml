@@ -190,7 +190,7 @@
                                            Source="/Images/account-icon-512.png" />
                                     <TextBlock Margin="15 0 0 0"
                                                VerticalAlignment="Center"
-                                               Text="{DynamicResource Accounts}"  />
+                                               Text="{DynamicResource Accounts}" />
                                 </StackPanel>
                             </RadioButton>
 
@@ -211,8 +211,11 @@
 
         <ContentControl x:Name="ActiveItem"
                         Grid.Row="1"
+                        Padding="10"
                         Grid.Column="2"
                         Margin="30 0 0 0" />
+
+
 
 
     </Grid>
