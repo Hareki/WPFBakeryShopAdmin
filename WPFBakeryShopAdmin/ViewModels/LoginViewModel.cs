@@ -6,13 +6,10 @@ using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
 using WPFBakeryShopAdmin.Views;
@@ -115,7 +112,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             LoadingPageVis = Visibility.Hidden;
         }
-
         public async Task LoginAsync(ActionExecutionContext context)
         {
             KeyEventArgs keyArgs = context.EventArgs as KeyEventArgs;
@@ -125,7 +121,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 await LoginAsync();
             }
         }
-
         private async Task<bool> IsAdmin(Token token)
         {
             RestClient client = new RestClient(RestConnection.ACCOUNT_BASE_CONNECTION_STRING);
@@ -133,6 +128,11 @@ namespace WPFBakeryShopAdmin.ViewModels
             var task = await RestConnection.ExecuteRequestAsync(client, Method.Get, "", null, null);
             PersonalAccount account = JsonConvert.DeserializeObject<PersonalAccount>(task.Content);
             return account.Authorities.Any(auth => auth == ConstValues.ROLE_ADMIN);
+        }
+        public async Task ShowForgotPasswordDialog()
+        {
+            await this._windowManager.ShowWindowAsync(new ForgotPasswordViewModel(this, _windowManager));
+            await this.DeactivateAsync(true);
         }
         #endregion
 
@@ -223,13 +223,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
 
-        #endregion
-
-        #region Test
-        public void ShowForgotPasswordDialog()
-        {
-            _windowManager.ShowDialogAsync(new ForgotPasswordViewModel());
-        }
         #endregion
 
     }

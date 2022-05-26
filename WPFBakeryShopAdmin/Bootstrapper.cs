@@ -1,9 +1,8 @@
 ﻿using Caliburn.Micro;
-using System.Windows;
-using System.Collections.Generic;
-using WPFBakeryShopAdmin.ViewModels;
 using System;
-using WPFBakeryShopAdmin.Models;
+using System.Collections.Generic;
+using System.Windows;
+using WPFBakeryShopAdmin.ViewModels;
 
 namespace WPFBakeryShopAdmin
 {
@@ -17,7 +16,8 @@ namespace WPFBakeryShopAdmin
 
         protected override void Configure()
         {
-            
+            _container.PerRequest<ForgotPasswordViewModel>();
+
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
 

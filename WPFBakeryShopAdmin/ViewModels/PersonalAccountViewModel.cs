@@ -3,7 +3,6 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -242,7 +241,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 TimeSpan.FromSeconds(3));
             });
         }
-       
+
         private void ShowFailMessage(string message)
         {
             View.Dispatcher.Invoke(() =>

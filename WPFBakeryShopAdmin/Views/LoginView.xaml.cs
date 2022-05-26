@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.Views
 {

@@ -1,9 +1,4 @@
 ﻿using Caliburn.Micro;
-using Newtonsoft.Json;
-using RestSharp;
-using RestSharp.Authenticators;
-using WPFBakeryShopAdmin.Models;
-using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
