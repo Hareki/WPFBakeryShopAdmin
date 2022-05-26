@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WPFBakeryShopAdmin"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:clr="clr-namespace:System;assembly=mscorlib">
+             xmlns:clr="clr-namespace:System;assembly=mscorlib"
+             StartupUri="Views/ForgotPasswordView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -47,9 +48,9 @@
                     <clr:String x:Key="CancelledColor">#E63946</clr:String>
                 </ResourceDictionary>
                 
-                <ResourceDictionary>
+                <!--<ResourceDictionary>
                     <local:Bootstrapper x:Key="Bootstrapper" />
-                </ResourceDictionary>
+                </ResourceDictionary>-->
             </ResourceDictionary.MergedDictionaries>
             <Thickness x:Key="TitleMargin"
                        Left="0"
