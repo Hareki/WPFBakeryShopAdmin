@@ -68,7 +68,7 @@
     <sys:String x:Key="NewAccount">THÊM TÀI KHOẢN</sys:String>
 
     <sys:String x:Key="CreateNewAccount">Tạo tài khoản mới</sys:String>
-    <sys:String x:Key="CreatAccount">Tạo tài khoản</sys:String>
+    <sys:String x:Key="CreateAccount">Tạo tài khoản</sys:String>
 
     <sys:String x:Key="LastName2">Họ và tên lót*</sys:String>
     <sys:String x:Key="Email2">Email*</sys:String>

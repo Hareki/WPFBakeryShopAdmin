@@ -68,7 +68,7 @@
     <sys:String x:Key="NewAccount">New Account</sys:String>
 
     <sys:String x:Key="CreateNewAccount">Create New Account</sys:String>
-    <sys:String x:Key="CreatAccount">Create account</sys:String>
+    <sys:String x:Key="CreateAccount">Create account</sys:String>
 
     <sys:String x:Key="LastName2">Last Name*</sys:String>
     <sys:String x:Key="Email2">Last Name*</sys:String>

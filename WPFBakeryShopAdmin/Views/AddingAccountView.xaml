@@ -255,7 +255,7 @@
                             Orientation="Horizontal"
                             FlowDirection="RightToLeft">
 
-                    <Button x:Name="CancelUpdate"
+                    <Button x:Name="CancelAdding"
                             Style="{StaticResource CustomSecondaryButton}"
                             materialDesign:ShadowAssist.ShadowDepth="Depth0"
                             Content="{DynamicResource Cancel}"

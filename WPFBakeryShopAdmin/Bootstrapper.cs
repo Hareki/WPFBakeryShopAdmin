@@ -17,6 +17,7 @@ namespace WPFBakeryShopAdmin
         protected override void Configure()
         {
             _container.PerRequest<ForgotPasswordViewModel>();
+            _container.PerRequest<AddingAccountViewModel>();
 
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();

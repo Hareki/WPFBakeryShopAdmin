@@ -33,10 +33,22 @@
 
                 <Grid Grid.Row="0"
                       Grid.ColumnSpan="12">
-                    <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                               FontWeight="SemiBold"
-                               Margin="0 0 0 30"
-                               Text="{DynamicResource PersonalAccount}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                                   FontWeight="SemiBold"
+                                   Margin="0 0 0 30"
+                                   Text="{DynamicResource PersonalAccount}" />
+
+                        <Button x:Name="ReloadPage"
+                                Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                ToolTip="MaterialDesignIconForegroundButton"
+                                Foreground="{DynamicResource MaterialDesignBody}"
+                                VerticalAlignment="Top"
+                                Margin="5 0 0 0 ">
+                            <materialDesign:PackIcon Kind="Reload" />
+                        </Button>
+                    </StackPanel>
+
                     <materialDesign:Snackbar HorizontalAlignment="Center"
                                              VerticalAlignment="Top"
                                              Grid.ColumnSpan="12"

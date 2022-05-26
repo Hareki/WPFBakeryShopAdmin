@@ -49,6 +49,10 @@ namespace WPFBakeryShopAdmin.ViewModels
                 ShowFailMessage("Xảy ra lỗi khi tạo tài khoản");
             }
         }
+        public void CancelAdding()
+        {
+            this.TryCloseAsync();
+        }
         private bool HasErrors()
         {
             return !StringUtils.IsValidEmail(PersonalAccount.Email) ||

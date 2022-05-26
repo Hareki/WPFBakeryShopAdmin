@@ -89,6 +89,10 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
             }
         }
+        public void ReloadPage()
+        {
+            _ = RefreshAccountInfo();
+        }
         private async Task RefreshAccountInfo()
         {
             LoadingPageVis = Visibility.Visible;

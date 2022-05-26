@@ -123,6 +123,7 @@
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock x:Name="PersonalAccount_FullName"
                                                    Text="Nguyễn Ngọc Minh Tú"
+                                                   TextWrapping="Wrap"
                                                    DockPanel.Dock="Top"
                                                    FontWeight="Bold"
                                                    HorizontalAlignment="Left"
