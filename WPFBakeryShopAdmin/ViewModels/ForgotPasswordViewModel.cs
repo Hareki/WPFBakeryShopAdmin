@@ -2,6 +2,7 @@
 using MaterialDesignThemes.Wpf;
 using RestSharp;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WPFBakeryShopAdmin.Utilities;
 using WPFBakeryShopAdmin.Views;
 
@@ -14,6 +15,10 @@ namespace WPFBakeryShopAdmin.ViewModels
         private readonly IWindowManager _windowManager;
 
         #region Base
+        public ForgotPasswordViewModel()
+        {
+            Email = "ASDAS";
+        }
         public ForgotPasswordViewModel(LoginViewModel loginViewModel, IWindowManager windowManager)
         {
             _loginViewModel = loginViewModel;
@@ -36,6 +41,15 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 SetContentVisible(Content.FAIL);
                 await DialogHost.Show(View.DialogContent);
+            }
+        }
+        public async Task SendEmail(ActionExecutionContext context)
+        {
+            KeyEventArgs keyArgs = context.EventArgs as KeyEventArgs;
+
+            if (keyArgs != null && keyArgs.Key == Key.Enter)
+            {
+                await SendEmail();
             }
         }
         public async Task Cancel()

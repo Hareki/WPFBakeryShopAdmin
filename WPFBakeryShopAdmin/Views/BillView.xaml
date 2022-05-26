@@ -7,7 +7,7 @@
              xmlns:converter="clr-namespace:WPFBakeryShopAdmin.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="800"
+             d:DesignWidth="1300"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
              xmlns:cal="http://www.caliburnproject.org"
@@ -17,6 +17,7 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <UserControl.Resources>
         <converter:NullToVisConvereter x:Key="nullToVis" />
+        <converter:VisToZIndexConverter x:Key="visToZIndex" />
     </UserControl.Resources>
     <Grid>
         <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
@@ -224,7 +225,7 @@
                                             Grid.ColumnSpan="14"
                                             Grid.RowSpan="6"
                                             Background="White"
-                                            Panel.ZIndex="3"
+                                            Panel.ZIndex="{Binding Path=LoadingInfoVis, Converter={StaticResource visToZIndex}}"
                                             Visibility="{Binding Path=LoadingInfoVis}">
                                         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                                      Value="0"
@@ -317,11 +318,11 @@
                                     <StackPanel Orientation="Horizontal"
                                                 Grid.Column="10"
                                                 Grid.Row="1"
-                                                Grid.ColumnSpan="2">
+                                                Grid.ColumnSpan="3">
                                         <Button Style="{StaticResource CustomPrimaryButton}"
                                                 BorderBrush="{Binding Path=BindingButton.BackgroundColor}"
                                                 Background="{Binding Path=BindingButton.BackgroundColor}"
-                                                MinWidth="125"
+                                                MinWidth="140"
                                                 VerticalAlignment="Top"
                                                 HorizontalAlignment="Left"
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
@@ -339,12 +340,24 @@
                                         <Button Style="{StaticResource MaterialDesignIconButton}"
                                                 Margin="7 -7 0 0"
                                                 Visibility="{Binding Path=BillDetails, Converter={StaticResource nullToVis}}"
-                                                ToolTip="Cập nhật trạng thái"
+                                                ToolTip="Thăng cấp trạng thái đơn hàngaaa"
                                                 VerticalAlignment="Top"
                                                 HorizontalAlignment="Left"
                                                 IsEnabled="{Binding Path=BillDetails.CanUpdateOrderStatus}"
-                                                cal:Message.Attach="[Event MouseEnter] = [Action PreviewStatus];[Event MouseLeave]=[Action ClearPreview];[Event Click] = [Action UpdateOrderStatus]">
+                                                cal:Message.Attach="[Event MouseEnter] = [Action PreviewUpdatedStatus];[Event MouseLeave]=[Action ClearPreview];[Event Click] = [Action UpdateOrderStatus]">
                                             <materialDesign:PackIcon Kind="Upload" />
+                                        </Button>
+
+                                        <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                Margin="7 -7 0 0"
+                                                Visibility="{Binding Path=BillDetails, Converter={StaticResource nullToVis}}"
+                                                ToolTip="Hủy đơn hàng"
+                                                VerticalAlignment="Top"
+                                                Foreground="#e63946"
+                                                HorizontalAlignment="Left"
+                                                IsEnabled="{Binding Path=BillDetails.CanCancel}"
+                                                cal:Message.Attach="[Event MouseEnter] = [Action PreviewCancelledStatus];[Event MouseLeave]=[Action ClearPreview];[Event Click] = [Action CancelOrder]">
+                                            <materialDesign:PackIcon Kind="CloseCircle" />
                                         </Button>
                                     </StackPanel>
 

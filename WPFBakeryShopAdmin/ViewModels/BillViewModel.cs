@@ -123,7 +123,45 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     BillDetails.StatusId++;
                     GridRefresh(BillDetails.StatusId);
+                    BillDetails.CanCancel = false;//Hard code, do nếu muốn cái này thay đổi tự động theo logic của webservice thì phải load lại từ db
+                    NotifyOfPropertyChange(() => BillDetails);
                     ShowSuccessMessage("Cập nhật trạng thái đơn hàng thành công");
+                    return;
+                }
+                ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
+            })).Start();
+        }
+        //public bool CanCancelOrder()
+        //{
+        //    if (BillDetails != null)
+        //        return BillDetails.CanCancel;
+        //    return false;
+        //}
+        //public bool CanUpdateOrderStatus()
+        //{
+        //    if (BillDetails != null)
+        //        return BillDetails.CanUpdateOrderStatus;
+        //    return false;
+        //}
+        public void CancelOrder()
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                var request = new RestRequest($"orders/{BillDetails.Id}/cancel", Method.Put);
+                var respone = _restClient.ExecuteAsync(request);
+                int statusCode = (int)respone.Result.StatusCode;
+                if (statusCode == 200)
+                {
+                    BillDetails.StatusId = 4;
+                    GridRefresh(BillDetails.StatusId);
+                    BillDetails.CanCancel = false;//Hard code, do nếu muốn cái này thay đổi tự động theo logic của webservice thì phải load lại từ db
+                    NotifyOfPropertyChange(() => BillDetails);
+                    ShowSuccessMessage("Hủy đơn hàng thành công");
+                    return;
+                }
+                else if (statusCode == 400)
+                {
+                    ShowFailMessage("Không thể hủy đơn hàng ở trạng thái này");
                     return;
                 }
                 ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
@@ -143,11 +181,19 @@ namespace WPFBakeryShopAdmin.ViewModels
                 Grid.SelectedIndex = selectedRow;
             });
         }
-        public void PreviewStatus()
+        public void PreviewUpdatedStatus()
         {
             if (BillDetails.CanUpdateOrderStatus)
             {
                 int previewId = BillDetails.StatusId + 1;
+                SetBindingButtonAppearance(previewId);
+            }
+        }
+        public void PreviewCancelledStatus()
+        {
+            if (BillDetails.CanCancel)
+            {
+                int previewId = 4;
                 SetBindingButtonAppearance(previewId);
             }
         }
