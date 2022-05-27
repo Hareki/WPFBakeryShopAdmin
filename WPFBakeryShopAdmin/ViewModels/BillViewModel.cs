@@ -23,66 +23,29 @@ namespace WPFBakeryShopAdmin.ViewModels
         private BindingButtonAppearance _bindingButton;
         private RowItemBill _selectedBill;
         private DetailItemBill _billDetails;
-        private string _pageIndicator;
-        private int _totalCount;
-        private readonly int _pageSize = 10;
-        private int _currentPage = 0;
-        private int _maxPageIndex;
-        private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
-
+        private Pagination _pagination;
         #region Base
+        public BillViewModel()
+        {
+            Pagination = new Pagination(10);
+        }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.ManagementRestClient;
-            LoadPage(-1);
+            LoadPage();
             return Task.CompletedTask;
         }
-        private void UpdatePageStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
+        public void LoadPage()
         {
-            bool linkDone = false, totalCountDone = false;
-            foreach (var header in headers)
-            {
-                if (header.Name.Equals("X-Total-Count"))
-                {
-                    _totalCount = (Int32.Parse(header.Value.ToString()));
-                    _maxPageIndex = _totalCount / _pageSize;
-                    UpdatePageIndicator();
-                    totalCountDone = true;
-                }
-
-                if (header.Name.Equals("Link"))
-                {
-                    string value = header.Value.ToString();
-                    if (value.Contains("next")) CouldLoadNextPage = true;
-                    else CouldLoadNextPage = false;
-
-                    if (value.Contains("prev")) CouldLoadPreviousPage = true;
-                    else CouldLoadPreviousPage = false;
-
-                    if (value.Contains("first")) CouldLoadFirstPage = true;
-                    else CouldLoadFirstPage = false;
-
-                    if (value.Contains("last")) CouldLoadLastPage = true;
-                    else CouldLoadLastPage = false;
-
-                    linkDone = true;
-                }
-                if (totalCountDone && linkDone) return;
-            }
-        }
-        public void LoadPage(int page)
-        {
-            if (page != -1) _currentPage = page;
             new Thread(new ThreadStart(() =>
             {
                 if (RowItemBills != null)
                     RowItemBills.Clear();
 
                 LoadingPageVis = Visibility.Visible;
-                if (_currentPage > _maxPageIndex) _currentPage = 0;
                 var list = new List<KeyValuePair<string, string>>() {
-                      new KeyValuePair<string, string>("page", _currentPage.ToString()),
-                      new KeyValuePair<string, string>("size", _pageSize.ToString()),
+                      new KeyValuePair<string, string>("page", Pagination.CurrentPage.ToString()),
+                      new KeyValuePair<string, string>("size", Pagination.PageSize.ToString()),
                 };
                 var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "orders", list);
 
@@ -90,8 +53,9 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     var bills = response.Result.Content;
                     RowItemBills = JsonConvert.DeserializeObject<BindableCollection<RowItemBill>>(bills);
-                    UpdatePageStatus(response.Result.Headers);
+                    Pagination.UpdatePaginationStatus(response.Result.Headers);
                 }
+                NotifyOfPropertyChange(() => Pagination);
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
 
@@ -282,79 +246,39 @@ namespace WPFBakeryShopAdmin.ViewModels
         #endregion
 
         #region Pagination
-        public bool CouldLoadFirstPage
+        public Pagination Pagination
         {
-            get { return _couldLoadFirstPage; }
-            set
+            get
             {
-                _couldLoadFirstPage = value;
-                NotifyOfPropertyChange(() => CouldLoadFirstPage);
+                return _pagination;
             }
-        }
-        public bool CouldLoadPreviousPage
-        {
-            get { return _couldLoadPreviousPage; }
             set
             {
-                _couldLoadPreviousPage = value;
-                NotifyOfPropertyChange(() => CouldLoadPreviousPage);
-            }
-        }
-        public bool CouldLoadNextPage
-        {
-            get { return _couldLoadNextPage; }
-            set
-            {
-                _couldLoadNextPage = value;
-                NotifyOfPropertyChange(() => CouldLoadNextPage);
-            }
-        }
-        public bool CouldLoadLastPage
-        {
-            get { return _couldLoadLastPage; }
-            set
-            {
-                _couldLoadLastPage = value;
-                NotifyOfPropertyChange(() => CouldLoadLastPage);
-            }
-        }
-        public string PageIndicator
-        {
-            get { return _pageIndicator; }
-            set
-            {
-                _pageIndicator = value;
-                NotifyOfPropertyChange(() => PageIndicator);
+                _pagination = value;
+                NotifyOfPropertyChange(() => Pagination);
             }
         }
         public void LoadFirstPage()
         {
-            _currentPage = 0;
-            LoadPage(-1);
+            Pagination.LoadFirstPage();
+            LoadPage();
         }
         public void LoadPreviousPage()
         {
-            _currentPage--;
-            LoadPage(-1);
+            Pagination.LoadPreviousPage();
+            LoadPage();
         }
         public void LoadNextPage()
         {
-            _currentPage++;
-            LoadPage(-1);
+            Pagination.LoadNextPage();
+            LoadPage();
         }
         public void LoadLastPage()
         {
-            _currentPage = _maxPageIndex;
-            LoadPage(-1);
-        }
-        private void UpdatePageIndicator()
-        {
-            int start = _pageSize * _currentPage + 1;
-            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
-            PageIndicator = $"{start} - {end} của {_totalCount}";
+            Pagination.LoadLastPage();
+            LoadPage();
         }
         #endregion
-
         #region Binding Properties
         public BindingButtonAppearance BindingButton
         {
@@ -458,7 +382,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
     }
-    public class BindingButtonAppearance : Screen
+    public class BindingButtonAppearance
     {
         public string Text { get; set; }
         public string ImageUrl { get; set; }

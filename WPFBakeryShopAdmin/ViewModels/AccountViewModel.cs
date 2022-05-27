@@ -17,7 +17,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private Visibility _loadingPageVis = Visibility.Hidden;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
         private RowItemAccount _selectedAccount;
-        public Pagination _pagination;
+        private Pagination _pagination;
 
         private IWindowManager _windowManager;
         #region Base
@@ -53,7 +53,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     var accounts = response.Result.Content;
                     RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
-                    Pagination.UpdateStatus(response.Result.Headers);
+                    Pagination.UpdatePaginationStatus(response.Result.Headers);
                 }
                 NotifyOfPropertyChange(() => Pagination);
                 LoadingPageVis = Visibility.Hidden;
@@ -65,6 +65,10 @@ namespace WPFBakeryShopAdmin.ViewModels
             _windowManager.ShowDialogAsync(new AddingAccountViewModel());
         }
 
+
+        #endregion
+
+        #region Pagination
         public Pagination Pagination
         {
             get
@@ -77,9 +81,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => Pagination);
             }
         }
-        #endregion
-
-        #region Pagination
         public void LoadFirstPage()
         {
             Pagination.LoadFirstPage();
@@ -101,6 +102,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             LoadPage();
         }
         #endregion
+
         #region Binding Properties
         public RowItemAccount SelectedAccount
         {

@@ -22,7 +22,7 @@ namespace WPFBakeryShopAdmin.Utilities
         {
             PageSize = pageSize;
         }
-        public void UpdateStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
+        public void UpdatePaginationStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
         {
             bool linkDone = false, totalCountDone = false;
             foreach (var header in headers)
