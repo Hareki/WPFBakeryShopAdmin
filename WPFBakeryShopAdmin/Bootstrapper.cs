@@ -30,7 +30,6 @@ namespace WPFBakeryShopAdmin
 
             _container.Singleton<ProductViewModel>();
             _container.Singleton<AddingProductViewModel>();
-            _container.Singleton<EditingProductViewModel>();
             _container.Singleton<VariantAddEditDialogViewModel>();
 
             _container.Singleton<BillViewModel>();

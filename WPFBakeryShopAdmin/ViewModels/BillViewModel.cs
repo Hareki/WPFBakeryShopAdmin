@@ -64,7 +64,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         private void LoadDetailItem(int id)
         {
-            Console.WriteLine("Load Detail Item!");
             new Thread(new ThreadStart(() =>
             {
                 LoadingInfoVis = Visibility.Visible;
@@ -313,41 +312,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         #endregion
 
         #region View Mapping Properties
-        public BillView View
-        {
-            get
-            {
-                return (BillView)this.GetView();
-            }
-        }
-        public DataGrid Grid
-        {
-            get
-            {
-                return View.RowItemBills;
-            }
-        }
-        public Expander Expander
-        {
-            get
-            {
-                return View.DetailExpander;
-            }
-        }
-        public Snackbar GreenSB
-        {
-            get
-            {
-                return View.GreenSB;
-            }
-        }
-        public Snackbar RedSB
-        {
-            get
-            {
-                return View.RedSB;
-            }
-        }
+        public BillView View => (BillView)this.GetView();
+        public DataGrid Grid => View.RowItemBills;
+        public Expander Expander => View.DetailExpander;
+        public Snackbar GreenSB => View.GreenSB;
+        public Snackbar RedSB => View.RedSB;
         public Pagination Pagination
         {
             get

@@ -72,6 +72,6 @@
 
     <sys:String x:Key="LastName2">Last Name*</sys:String>
     <sys:String x:Key="Email2">Last Name*</sys:String>
-    <sys:String x:Key="Phone2">Phone*</sys:String>
+    <sys:String x:Key="Phone2">Phone number*</sys:String>
     <sys:String x:Key="FirstName2">First Name*</sys:String>
 </ResourceDictionary>

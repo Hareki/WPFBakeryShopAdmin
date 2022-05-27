@@ -11,11 +11,13 @@ namespace WPFBakeryShopAdmin.Utilities
         public static readonly string ADMIN_BASE_CONNECTION_STRING = "http://localhost:8080/api/admin/";
         public static readonly string ACCOUNT_BASE_CONNECTION_STRING = "http://localhost:8080/api/account/";
         public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "http://localhost:8080/api/";
+        public static readonly string PUBLIC_BASE_CONNECTION_STRING = "http://localhost:8080/api/public";
         //public static readonly string AUTHENTICATE_BASE_CONNECTION_STRING = "https://bakeryshop-web-service.herokuapp.com/api/";
 
         private static RestClient _managementRestClient;
         private static RestClient _accountRestClient;
         private static RestClient _authRestClient;
+        private static RestClient _publicRestClient;
 
 
         #region Base
@@ -26,6 +28,7 @@ namespace WPFBakeryShopAdmin.Utilities
             ManagementRestClient = new RestClient(ADMIN_BASE_CONNECTION_STRING);
             AccountRestClient = new RestClient(ACCOUNT_BASE_CONNECTION_STRING);
             AuthRestClient = new RestClient(AUTHENTICATE_BASE_CONNECTION_STRING);
+            PublicRestClient = new RestClient(PUBLIC_BASE_CONNECTION_STRING);
         }
         public static Task<RestResponse> ExecuteRequestAsync(RestClient restClient, Method method, string requestURl, string requestBody, string contentType)
         {
@@ -87,6 +90,16 @@ namespace WPFBakeryShopAdmin.Utilities
             {
                 _authRestClient = value;
                 _authRestClient.Authenticator = new JwtAuthenticator(BearerToken);
+            }
+        }
+        public static RestClient PublicRestClient
+        {
+            get
+            { return _publicRestClient; }
+            set
+            {
+                _publicRestClient = value;
+                _publicRestClient.Authenticator = new JwtAuthenticator(BearerToken);
             }
         }
         private static string _bearerToken;

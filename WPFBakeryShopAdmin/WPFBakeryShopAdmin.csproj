@@ -138,6 +138,7 @@
     <Compile Include="Models\ChangePasswordBody.cs" />
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\DetailItemBill.cs" />
+    <Compile Include="Models\DetailItemProduct.cs" />
     <Compile Include="Models\ItemLanguage.cs" />
     <Compile Include="Models\LoginRequestBody.cs" />
     <Compile Include="Models\PersonalAccount.cs" />
@@ -158,7 +159,6 @@
     <Compile Include="ViewModels\AddingProductViewModel.cs" />
     <Compile Include="ViewModels\BillViewModel.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
-    <Compile Include="ViewModels\EditingProductViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -179,9 +179,6 @@
     </Compile>
     <Compile Include="Views\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditingProductView.xaml.cs">
-      <DependentUpon>EditingProductView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ForgotPasswordView.xaml.cs">
       <DependentUpon>ForgotPasswordView.xaml</DependentUpon>
@@ -260,10 +257,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DashboardView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditingProductView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

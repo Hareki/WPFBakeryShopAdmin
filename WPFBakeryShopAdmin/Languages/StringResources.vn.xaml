@@ -19,7 +19,7 @@
     <sys:String x:Key="LastName">Họ và tên lót*</sys:String>
     <sys:String x:Key="FirstName">Tên*</sys:String>
     <sys:String x:Key="Address">Địa chỉ</sys:String>
-    <sys:String x:Key="Phone">Số điện thoại*</sys:String>
+    <sys:String x:Key="Phone">Số điện thoại</sys:String>
     <sys:String x:Key="Language">Ngôn ngữ</sys:String>
     <sys:String x:Key="Update">CẬP NHẬT</sys:String>
     <sys:String x:Key="Cancel">HỦY</sys:String>
@@ -72,6 +72,6 @@
 
     <sys:String x:Key="LastName2">Họ và tên lót*</sys:String>
     <sys:String x:Key="Email2">Email*</sys:String>
-    <sys:String x:Key="Phone2">Phone*</sys:String>
+    <sys:String x:Key="Phone2">Số điện thoại*</sys:String>
     <sys:String x:Key="FirstName2">Tên*</sys:String>
 </ResourceDictionary>

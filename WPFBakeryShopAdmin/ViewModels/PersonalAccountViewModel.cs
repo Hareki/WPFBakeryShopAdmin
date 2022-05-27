@@ -185,8 +185,8 @@ namespace WPFBakeryShopAdmin.ViewModels
             if (statusCode == 200)
             {
                 ClearPasswordBox();
-                //await ShowLogoutMessage("Đổi mật khẩu thành công, chuẩn bị đăng xuất...");
-                //RestConnection.LogOut();
+                await ShowLogoutMessage("Đổi mật khẩu thành công, chuẩn bị đăng xuất...");
+                RestConnection.LogOut();
             }
             else if (statusCode == 400)
             {

@@ -53,7 +53,6 @@ D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\AddingProductView.g.cs
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\BillView.g.cs
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\DashboardView.g.cs
-D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\EditingProductView.g.cs
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\ForgotPasswordView.g.cs
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\LoginView.g.cs
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\MainView.g.cs
@@ -70,7 +69,6 @@ D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\AddingProductView.baml
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\BillView.baml
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\DashboardView.baml
-D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\EditingProductView.baml
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\ForgotPasswordView.baml
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\LoginView.baml
 D:\Study\CNTT\4th year\2nd semester\Phat trien phan mem Huong dich vu\Repository\WPFBakeryShopAdmin\WPFBakeryShopAdmin\obj\Debug\Views\MainView.baml

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -6,21 +7,24 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using WPFBakeryShopAdmin.Interfaces;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
+using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
     public class ProductViewModel : Screen, IViewModel
     {
-        private RestClient _restClient = RestConnection.ManagementRestClient;
+        private RestClient _managementRestClient = RestConnection.ManagementRestClient;
+        private RestClient _publicRestClient = RestConnection.PublicRestClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
         private Visibility _loadingInfoVis = Visibility.Hidden;
         private BindableCollection<RowItemProduct> _rowItemProducts;
         private RowItemProduct _selectedProduct;
+        private DetailItemProduct _productDetails;
         private Pagination _pagination;
-
         private IWindowManager _windowManager;
 
         #region Base
@@ -31,7 +35,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            _restClient = RestConnection.ManagementRestClient;
+            _managementRestClient = RestConnection.ManagementRestClient;
             LoadPage();
             return Task.CompletedTask;
         }
@@ -47,7 +51,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                       new KeyValuePair<string, string>("page", Pagination.CurrentPage.ToString()),
                       new KeyValuePair<string, string>("size", Pagination.PageSize.ToString()),
                 };
-                var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "products", list);
+                var response = RestConnection.ExecuteParameterRequestAsync(_managementRestClient, Method.Get, "products", list);
 
                 if ((int)response.Result.StatusCode == 200)
                 {
@@ -60,6 +64,30 @@ namespace WPFBakeryShopAdmin.ViewModels
             })).Start();
 
         }
+        private void LoadDetailItem(int id)
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                LoadingInfoVis = Visibility.Visible;
+                var request = new RestRequest($"products/{id}", Method.Get);
+                var respone = _managementRestClient.ExecuteAsync(request);
+                if ((int)respone.Result.StatusCode == 200)
+                {
+                    var productDetails = respone.Result.Content;
+                    ProductDetails = JsonConvert.DeserializeObject<DetailItemProduct>(productDetails);
+                }
+                LoadingInfoVis = Visibility.Hidden;
+            })).Start();
+        }
+
+        #endregion
+
+        #region Events
+        public void Expander_Expanded()
+        {
+            if (SelectedProduct != null)
+                LoadDetailItem(SelectedProduct.Id);
+        }
         public void RowItemProducts_SelectionChanged()
         {
 
@@ -71,10 +99,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             Pagination.LoadFirstPage();
         }
-        public void LoadPreviousPage()
-        {
-            Pagination.LoadPreviousPage();
-        }
         public void LoadNextPage()
         {
             Pagination.LoadNextPage();
@@ -83,6 +107,14 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             Pagination.LoadLastPage();
         }
+        #endregion
+
+        #region View Mapping Properties
+        public ProductView View => (ProductView)this.GetView();
+        public DataGrid Grid => View.RowItemProducts;
+        public Expander Expander => View.DetailExpander;
+        public Snackbar GreenSB => View.GreenSB;
+        public Snackbar RedSB => View.RedSB;
         #endregion
 
         #region Binding Properties
@@ -122,6 +154,8 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _selectedProduct = value;
+                if (value != null && Expander.IsExpanded)
+                    LoadDetailItem(value.Id);
                 NotifyOfPropertyChange(() => SelectedProduct);
             }
         }
@@ -135,6 +169,15 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 _pagination = value;
                 NotifyOfPropertyChange(() => Pagination);
+            }
+        }
+        public DetailItemProduct ProductDetails
+        {
+            get { return _productDetails; }
+            set
+            {
+                _productDetails = value;
+                NotifyOfPropertyChange(() => ProductDetails);
             }
         }
         #endregion
