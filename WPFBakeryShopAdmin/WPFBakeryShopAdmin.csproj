@@ -147,6 +147,7 @@
     <Compile Include="Models\Token.cs" />
     <Compile Include="Utilities\ConstValues.cs" />
     <Compile Include="Utilities\LanguageList.cs" />
+    <Compile Include="Utilities\Pagination.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
     <Compile Include="Utilities\RoleList.cs" />

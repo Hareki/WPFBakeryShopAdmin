@@ -103,36 +103,35 @@
 
                             <Button  x:Name="LoadLastPage"
                                      Style="{StaticResource MaterialDesignIconForegroundButton}"
-                                     IsEnabled="{Binding Path=CouldLoadLastPage}">
+                                     IsEnabled="{Binding Path=Pagination.CouldLoadLastPage}">
                                 <materialDesign:PackIcon Kind="PageLast" />
                             </Button>
 
 
                             <Button x:Name="LoadNextPage"
                                     Style="{StaticResource MaterialDesignIconForegroundButton}"
-                                    IsEnabled="{Binding Path=CouldLoadNextPage}">
+                                    IsEnabled="{Binding Path=Pagination.CouldLoadNextPage}">
                                 <materialDesign:PackIcon Kind="ChevronRight" />
                             </Button>
 
 
                             <Button x:Name="LoadPreviousPage"
                                     Style="{StaticResource MaterialDesignIconForegroundButton}"
-                                    IsEnabled="{Binding Path=CouldLoadPreviousPage}">
+                                    IsEnabled="{Binding Path=Pagination.CouldLoadPreviousPage}">
                                 <materialDesign:PackIcon Kind="ChevronLeft" />
                             </Button>
 
 
                             <Button x:Name="LoadFirstPage"
                                     Style="{StaticResource MaterialDesignIconForegroundButton}"
-                                    IsEnabled="{Binding Path=CouldLoadFirstPage}">
+                                    IsEnabled="{Binding Path=Pagination.CouldLoadFirstPage}">
                                 <materialDesign:PackIcon Kind="PageFirst" />
                             </Button>
 
                             <StackPanel FlowDirection="LeftToRight"
                                         Orientation="Horizontal"
                                         Margin="10 0 0 0">
-                                <TextBlock x:Name="PageIndicator"
-                                           Text="1 - 11 của 44"
+                                <TextBlock Text="{Binding Path=Pagination.PageIndicator}"
                                            FontWeight="SemiBold"
                                            VerticalAlignment="Center" />
                             </StackPanel>

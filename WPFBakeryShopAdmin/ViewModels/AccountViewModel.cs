@@ -16,19 +16,17 @@ namespace WPFBakeryShopAdmin.ViewModels
         private RestClient _restClient = RestConnection.ManagementRestClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
         private BindableCollection<RowItemAccount> _rowItemAccounts;
-        private string _pageIndicator;
-        private int _totalCount;
         private RowItemAccount _selectedAccount;
-        private readonly int _pageSize = 10;
-        private int _currentPage = 0;
-        private int _maxPageIndex;
-        private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
+        public Pagination _pagination;
+
         private IWindowManager _windowManager;
         #region Base
         public AccountViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
+            Pagination = new Pagination(10);
         }
+
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.ManagementRestClient;
@@ -44,10 +42,10 @@ namespace WPFBakeryShopAdmin.ViewModels
 
                 LoadingPageVis = Visibility.Visible;
 
-                if (_currentPage > _maxPageIndex) _currentPage = 0;
+                //   if (_currentPage > _maxPageIndex) _currentPage = 0;
                 var list = new List<KeyValuePair<string, string>>() {
-                      new KeyValuePair<string, string>("page", _currentPage.ToString()),
-                      new KeyValuePair<string, string>("size", _pageSize.ToString()),
+                      new KeyValuePair<string, string>("page", Pagination.CurrentPage.ToString()),
+                      new KeyValuePair<string, string>("size", 10.ToString()),
                 };
                 var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "accounts", list);
 
@@ -55,127 +53,54 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     var accounts = response.Result.Content;
                     RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<RowItemAccount>>(accounts);
-                    UpdateStatus(response.Result.Headers);
+                    Pagination.UpdateStatus(response.Result.Headers);
                 }
+                NotifyOfPropertyChange(() => Pagination);
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
-        }
-        private void UpdateStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
-        {
-            bool linkDone = false, totalCountDone = false;
-            foreach (var header in headers)
-            {
-                if (header.Name.Equals("X-Total-Count"))
-                {
-                    _totalCount = (Int32.Parse(header.Value.ToString()));
-                    _maxPageIndex = _totalCount / _pageSize;
-                    UpdatePageIndicator();
-                    totalCountDone = true;
-                }
-
-                if (header.Name.Equals("Link"))
-                {
-                    string value = header.Value.ToString();
-                    if (value.Contains("next")) CouldLoadNextPage = true;
-                    else CouldLoadNextPage = false;
-
-                    if (value.Contains("prev")) CouldLoadPreviousPage = true;
-                    else CouldLoadPreviousPage = false;
-
-                    if (value.Contains("first")) CouldLoadFirstPage = true;
-                    else CouldLoadFirstPage = false;
-
-                    if (value.Contains("last")) CouldLoadLastPage = true;
-                    else CouldLoadLastPage = false;
-
-                    linkDone = true;
-                }
-                if (totalCountDone && linkDone) return;
-            }
         }
 
         public void ShowAddingAccountDialog()
         {
             _windowManager.ShowDialogAsync(new AddingAccountViewModel());
         }
+
+        public Pagination Pagination
+        {
+            get
+            {
+                return _pagination;
+            }
+            set
+            {
+                _pagination = value;
+                NotifyOfPropertyChange(() => Pagination);
+            }
+        }
         #endregion
 
         #region Pagination
-        public bool CouldLoadFirstPage
-        {
-            get { return _couldLoadFirstPage; }
-            set
-            {
-                _couldLoadFirstPage = value;
-                NotifyOfPropertyChange(() => CouldLoadFirstPage);
-            }
-        }
-        public bool CouldLoadPreviousPage
-        {
-            get { return _couldLoadPreviousPage; }
-            set
-            {
-                _couldLoadPreviousPage = value;
-                NotifyOfPropertyChange(() => CouldLoadPreviousPage);
-            }
-        }
-        public bool CouldLoadNextPage
-        {
-            get { return _couldLoadNextPage; }
-            set
-            {
-                _couldLoadNextPage = value;
-                NotifyOfPropertyChange(() => CouldLoadNextPage);
-            }
-        }
-        public bool CouldLoadLastPage
-        {
-            get { return _couldLoadLastPage; }
-            set
-            {
-                _couldLoadLastPage = value;
-                NotifyOfPropertyChange(() => CouldLoadLastPage);
-            }
-        }
-        public string PageIndicator
-        {
-            get { return _pageIndicator; }
-            set
-            {
-                _pageIndicator = value;
-                NotifyOfPropertyChange(() => PageIndicator);
-
-            }
-        }
         public void LoadFirstPage()
         {
-            _currentPage = 0;
+            Pagination.LoadFirstPage();
             LoadPage();
         }
         public void LoadPreviousPage()
         {
-            _currentPage--;
+            Pagination.LoadPreviousPage();
             LoadPage();
         }
         public void LoadNextPage()
         {
-            _currentPage++;
+            Pagination.LoadNextPage();
             LoadPage();
         }
         public void LoadLastPage()
         {
-            _currentPage = _maxPageIndex;
+            Pagination.LoadLastPage();
             LoadPage();
         }
-        private void UpdatePageIndicator()
-        {
-            int start = _pageSize * _currentPage + 1;
-            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
-            PageIndicator = $"{start} - {end} của {_totalCount}";
-        }
-
         #endregion
-
         #region Binding Properties
         public RowItemAccount SelectedAccount
         {
