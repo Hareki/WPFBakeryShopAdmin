@@ -132,70 +132,72 @@
     <Compile Include="Converters\SmallUserImageConverter.cs" />
     <Compile Include="Converters\VisToZIndexConverter.cs" />
     <Compile Include="Interfaces\IViewModel.cs" />
+    <Compile Include="Lists\CategoryList.cs" />
+    <Compile Include="Lists\LanguageList.cs" />
+    <Compile Include="Lists\RoleList.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />
-    <Compile Include="Models\ChangePasswordBody.cs" />
-    <Compile Include="Models\Dashboard.cs" />
-    <Compile Include="Models\DetailItemBill.cs" />
-    <Compile Include="Models\DetailItemProduct.cs" />
-    <Compile Include="Models\ItemLanguage.cs" />
-    <Compile Include="Models\LoginRequestBody.cs" />
-    <Compile Include="Models\PersonalAccount.cs" />
-    <Compile Include="Models\ItemRole.cs" />
-    <Compile Include="Models\RowItemAccount.cs" />
-    <Compile Include="Models\RowItemBill.cs" />
-    <Compile Include="Models\RowItemProduct.cs" />
-    <Compile Include="Models\Token.cs" />
+    <Compile Include="MVVM\Models\Category.cs" />
+    <Compile Include="MVVM\Models\Bodies\ChangePasswordBody.cs" />
+    <Compile Include="MVVM\Models\Dashboard.cs" />
+    <Compile Include="MVVM\Models\BillDetails.cs" />
+    <Compile Include="MVVM\Models\ProductDetail.cs" />
+    <Compile Include="MVVM\Models\ItemLanguage.cs" />
+    <Compile Include="MVVM\Models\Bodies\LoginRequestBody.cs" />
+    <Compile Include="MVVM\Models\PersonalAccount.cs" />
+    <Compile Include="MVVM\Models\Role.cs" />
+    <Compile Include="MVVM\Models\AccountRowItem.cs" />
+    <Compile Include="MVVM\Models\BillRowItem.cs" />
+    <Compile Include="MVVM\Models\ProductRowItem.cs" />
+    <Compile Include="MVVM\Models\Token.cs" />
     <Compile Include="Utilities\ConstValues.cs" />
-    <Compile Include="Utilities\LanguageList.cs" />
     <Compile Include="Utilities\Pagination.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
-    <Compile Include="Utilities\RoleList.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
-    <Compile Include="ViewModels\AccountViewModel.cs" />
-    <Compile Include="ViewModels\AddingAccountViewModel.cs" />
-    <Compile Include="ViewModels\AddingProductViewModel.cs" />
-    <Compile Include="ViewModels\BillViewModel.cs" />
-    <Compile Include="ViewModels\DashboardViewModel.cs" />
-    <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\PersonalAccountViewModel.cs" />
-    <Compile Include="ViewModels\ProductViewModel.cs" />
-    <Compile Include="ViewModels\VariantAddEditDialogViewModel.cs" />
-    <Compile Include="Views\AccountView.xaml.cs">
+    <Compile Include="MVVM\ViewModels\AccountViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\AddingAccountViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\AddingProductViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\BillViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\LoginViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\MainViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\PersonalAccountViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ProductViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\VariantAddEditDialogViewModel.cs" />
+    <Compile Include="MVVM\Views\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddingAccountView.xaml.cs">
+    <Compile Include="MVVM\Views\AddingAccountView.xaml.cs">
       <DependentUpon>AddingAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddingProductView.xaml.cs">
+    <Compile Include="MVVM\Views\AddingProductView.xaml.cs">
       <DependentUpon>AddingProductView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BillView.xaml.cs">
+    <Compile Include="MVVM\Views\BillView.xaml.cs">
       <DependentUpon>BillView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DashboardView.xaml.cs">
+    <Compile Include="MVVM\Views\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ForgotPasswordView.xaml.cs">
+    <Compile Include="MVVM\Views\ForgotPasswordView.xaml.cs">
       <DependentUpon>ForgotPasswordView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
+    <Compile Include="MVVM\Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
+    <Compile Include="MVVM\Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PersonalAccountView.xaml.cs">
+    <Compile Include="MVVM\Views\PersonalAccountView.xaml.cs">
       <DependentUpon>PersonalAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProductView.xaml.cs">
+    <Compile Include="MVVM\Views\ProductView.xaml.cs">
       <DependentUpon>ProductView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VariantAddEditDialogView.xaml.cs">
+    <Compile Include="MVVM\Views\VariantAddEditDialogView.xaml.cs">
       <DependentUpon>VariantAddEditDialogView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -232,86 +234,86 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="Languages\StringResources.en.xaml">
+    <Page Include="Resources\Languages\StringResources.en.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Languages\StringResources.vn.xaml">
+    <Page Include="Resources\Languages\StringResources.vn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AccountView.xaml">
+    <Page Include="MVVM\Views\AccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddingAccountView.xaml">
+    <Page Include="MVVM\Views\AddingAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddingProductView.xaml">
+    <Page Include="MVVM\Views\AddingProductView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BillView.xaml">
+    <Page Include="MVVM\Views\BillView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DashboardView.xaml">
+    <Page Include="MVVM\Views\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ForgotPasswordView.xaml">
+    <Page Include="MVVM\Views\ForgotPasswordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="MVVM\Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="MVVM\Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PersonalAccountView.xaml">
+    <Page Include="MVVM\Views\PersonalAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProductView.xaml">
+    <Page Include="MVVM\Views\ProductView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VariantAddEditDialogView.xaml">
+    <Page Include="MVVM\Views\VariantAddEditDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\account-icon-512-brown.png" />
-    <Resource Include="Images\account-icon-512.png" />
-    <Resource Include="Images\bill-icon-512-brown.png" />
-    <Resource Include="Images\bill-icon-512.png" />
-    <Resource Include="Images\cake-icon-512-brown.png" />
-    <Resource Include="Images\cake-icon-512.png" />
-    <Resource Include="Images\cancelled-brown.png" />
-    <Resource Include="Images\dashboard-icon-512-brown.png" />
-    <Resource Include="Images\dashboard-icon-512.png" />
-    <Resource Include="Images\favicon.ico" />
-    <Resource Include="Images\logo-light.png" />
-    <Resource Include="Images\pending-brown.png" />
-    <Resource Include="Images\product-icon-512-brown.png" />
-    <Resource Include="Images\product-icon-512.png" />
-    <Resource Include="Images\shipped-brown.png" />
-    <Resource Include="Images\shipping-brown.png" />
+    <Resource Include="Resources\Images\account-icon-512-brown.png" />
+    <Resource Include="Resources\Images\account-icon-512.png" />
+    <Resource Include="Resources\Images\bill-icon-512-brown.png" />
+    <Resource Include="Resources\Images\bill-icon-512.png" />
+    <Resource Include="Resources\Images\cake-icon-512-brown.png" />
+    <Resource Include="Resources\Images\cake-icon-512.png" />
+    <Resource Include="Resources\Images\cancelled-brown.png" />
+    <Resource Include="Resources\Images\dashboard-icon-512-brown.png" />
+    <Resource Include="Resources\Images\dashboard-icon-512.png" />
+    <Resource Include="Resources\Images\favicon.ico" />
+    <Resource Include="Resources\Images\logo-light.png" />
+    <Resource Include="Resources\Images\pending-brown.png" />
+    <Resource Include="Resources\Images\product-icon-512-brown.png" />
+    <Resource Include="Resources\Images\product-icon-512.png" />
+    <Resource Include="Resources\Images\shipped-brown.png" />
+    <Resource Include="Resources\Images\shipping-brown.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\cancelled-white.png" />
-    <Resource Include="Images\pending-white.png" />
-    <Resource Include="Images\shipped-white.png" />
-    <Resource Include="Images\shipping-white.png" />
+    <Resource Include="Resources\Images\cancelled-white.png" />
+    <Resource Include="Resources\Images\pending-white.png" />
+    <Resource Include="Resources\Images\shipped-white.png" />
+    <Resource Include="Resources\Images\shipping-white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\uk-flag.png" />
-    <Resource Include="Images\vn-flag.png" />
+    <Resource Include="Resources\Images\uk-flag.png" />
+    <Resource Include="Resources\Images\vn-flag.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets')" />
