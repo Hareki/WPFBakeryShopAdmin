@@ -44,6 +44,19 @@
                             <materialDesign:PackIcon Kind="Reload" />
                         </Button>
                     </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="{StaticResource TitleMargin}">
+                        <Button x:Name="ShowAddingProductDialog"
+                                Grid.Row="0"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                Style="{StaticResource CustomPrimaryButton}"
+                                Content="Thêm sản phẩm mới"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0 0 0 0" />
+                    </StackPanel>
                     <materialDesign:Snackbar HorizontalAlignment="Center"
                                              VerticalAlignment="Top"
                                              Grid.ColumnSpan="12"
@@ -79,19 +92,6 @@
                             </StackPanel>
                         </materialDesign:SnackbarMessage>
                     </materialDesign:Snackbar>
-
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Margin="{StaticResource TitleMargin}">
-                        <Button x:Name="ShowAddingAccountDialog"
-                                Grid.Row="0"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                Style="{StaticResource CustomPrimaryButton}"
-                                Content="Thêm sản phẩm mới"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Margin="0 0 0 0" />
-                    </StackPanel>
                 </Grid>
                 <Border Background="White"
                         Padding="15 0"
@@ -179,10 +179,10 @@
                               Background="White"
                               ExpandDirection="Up"
                               x:Name="DetailExpander"
-                              TextElement.FontWeight="Normal"
                               cal:Message.Attach="[Event Expanded] = [Action Expander_Expanded]">
                         <!--<ScrollViewer>-->
-                        <Border Padding="0 0">
+                        <Border Padding="0 0"
+                                TextElement.FontWeight="Normal">
                             <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                                  UniformCornerRadius="12">
                                 <TabControl materialDesign:ColorZoneAssist.Mode="SecondaryDark"
@@ -229,14 +229,17 @@
                                                                     Visibility="{Binding Editing, Converter={StaticResource BoolToVis}}"
                                                                     Margin="0 0 0 30"
                                                                     Grid.ColumnSpan="2">
-                                                            <Button Style="{StaticResource CustomPrimaryButton}"
-                                                                    Content="LƯU"
+
+                                                            <Button x:Name="UpdateProductInfoAsync"
+                                                                    Style="{StaticResource CustomPrimaryButton}"
+                                                                    Content="Lưu"
                                                                     MinWidth="75"
                                                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                                                     Margin="0 0 10 0" />
-                                                            <Button Style="{StaticResource CustomSecondaryButton}"
+                                                            <Button x:Name="CancelUpdate"
+                                                                    Style="{StaticResource CustomSecondaryButton}"
                                                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                                                    Content="HỦY"
+                                                                    Content="Hủy"
                                                                     MinWidth="75"
                                                                     Margin="10 0 0 0" />
                                                         </StackPanel>
@@ -248,17 +251,22 @@
                                                                     VerticalAlignment="Center"
                                                                     Margin="0 0 0 30"
                                                                     Grid.ColumnSpan="2">
-                                                            <Button Style="{StaticResource CustomBorderButton}"
+
+                                                            <Button x:Name="RequestUpdateProductInfo"
+                                                                    Style="{StaticResource CustomBorderButton}"
                                                                     Content="Cập nhật"
                                                                     VerticalAlignment="Top"
+                                                                    Margin="0 0 15 0"
                                                                     materialDesign:ShadowAssist.ShadowDepth="Depth0" />
+
+
                                                         </StackPanel>
                                                         <TextBox x:Name="ProductDetails_Id"
                                                                  Grid.Column="0"
                                                                  Grid.Row="1"
                                                                  materialDesign:HintAssist.Hint="Mã SP"
                                                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                                                 IsEnabled="{Binding Editing}"
+                                                                 IsEnabled="False"
                                                                  Margin="0 0 15 30" />
                                                         <TextBox x:Name="ProductDetails_Name"
                                                                  Grid.Column="1"
@@ -323,10 +331,18 @@
                                                         <ColumnDefinition Width="*" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Row="0"
-                                                               Grid.Column="0"
-                                                               VerticalAlignment="Center"
-                                                               Text="Tất cả có 2 loại sản phẩm" />
+                                                    <StackPanel Orientation="Horizontal"
+                                                                Grid.Row="0"
+                                                                Grid.Column="0">
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Span>
+                                                                <Run Text="Tất cả có" />
+                                                                 <Run Text="{Binding TotalVariants}" />
+                                                                <Run Text="loại sản phẩm" />
+                                                            </Span>
+                                                        </TextBlock>
+                                                    </StackPanel>
+
 
                                                     <StackPanel Orientation="Horizontal"
                                                                 FlowDirection="RightToLeft"
@@ -407,10 +423,17 @@
                                                         <ColumnDefinition Width="*" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Row="0"
-                                                               Grid.Column="0"
-                                                               VerticalAlignment="Center"
-                                                               Text="Tất cả có 2 hình ảnh" />
+                                                    <StackPanel Orientation="Horizontal"
+                                                                Grid.Row="0"
+                                                                Grid.Column="0">
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Span>
+                                                                <Run Text="Tất cả có" />
+                                                                 <Run Text="{Binding TotalImages}" />
+                                                                <Run Text="hình ảnh sản phẩm" />
+                                                            </Span>
+                                                        </TextBlock>
+                                                    </StackPanel>
                                                     <StackPanel Orientation="Horizontal"
                                                                 Grid.Row="0"
                                                                 Grid.Column="1"

@@ -86,7 +86,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             get { return _email; }
             set
             {
-                _email = value;
+                _email = value + ",";
                 NotifyOfPropertyChange(() => Email);
             }
         }

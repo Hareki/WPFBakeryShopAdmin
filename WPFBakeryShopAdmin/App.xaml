@@ -42,7 +42,7 @@
 
                 </ResourceDictionary>
                 <ResourceDictionary>
-                    <clr:String x:Key="SecondaryColor">#FDF0E6</clr:String>
+                    <clr:String x:Key="SecondaryColor">#fda144</clr:String>
                     
                     <clr:String x:Key="PendingColor">#0DA012</clr:String>
                     <clr:String x:Key="ShippingColor">#4C82AF</clr:String>
@@ -57,7 +57,7 @@
 
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="SecondaryColorBrush"
-                                     Color="#FDF0E6" />
+                                     Color="#fda144" />
                     <SolidColorBrush x:Key="PendingColorBrush"
                                      Color="#0DA012" />
                     <SolidColorBrush x:Key="ShippingColorBrush"

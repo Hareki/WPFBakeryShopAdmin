@@ -27,7 +27,8 @@
         <materialDesign:DialogHost.DialogContent>
             <Border Padding="20"
                     MaxWidth="350"
-                    x:Name="DialogContent">
+                    x:Name="DialogContent"
+                    TextElement.Foreground="White">
                 <StackPanel>
                     <StackPanel x:Name="ConfirmContent">
                         <TextBlock Text="Confirm canceling order"
@@ -44,7 +45,7 @@
                         <StackPanel Margin="0 20 0 0"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <Button Style="{StaticResource CustomFlatButton}"
+                            <Button Style="{StaticResource CustomBorderButton}"
                                     Margin="0 0 15 0"
                                     Content="Confirm"
                                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
@@ -54,7 +55,7 @@
                                     </system:Boolean>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{StaticResource CustomFlatButton}"
+                            <Button Style="{StaticResource CustomBorderButton}"
                                     Margin="15 0 0 0"
                                     Content="Cancel"
                                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">

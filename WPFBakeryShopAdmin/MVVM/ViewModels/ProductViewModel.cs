@@ -12,12 +12,13 @@ using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
 using WPFBakeryShopAdmin.Views;
 using WPFBakeryShopAdmin.MVVM.Models;
+using System;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
     public class ProductViewModel : Screen, IViewModel
     {
-        private RestClient _managementRestClient = RestConnection.ManagementRestClient;
+        private RestClient _restClient = RestConnection.ManagementRestClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
         private Visibility _loadingProductInfoVis = Visibility.Hidden;
         private Visibility _loadingVariantVis = Visibility.Hidden;
@@ -35,6 +36,9 @@ namespace WPFBakeryShopAdmin.ViewModels
         private BindableCollection<ProductType> _typeList;
         private Category _selectedCategory;
         private bool _editing = false;
+        private int _totalVariants;
+        private int _totalImages;
+        private ProductDetail _productInfoBeforeEditing;
 
 
         #region Base
@@ -42,10 +46,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             _windowManager = windowManager;
             Pagination = new Pagination(10, this);
+            _productInfoBeforeEditing = new ProductDetail();
         }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            _managementRestClient = RestConnection.ManagementRestClient;
+            _restClient = RestConnection.ManagementRestClient;
             _ = LoadPageAsync();
             return Task.CompletedTask;
         }
@@ -63,7 +68,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                       new KeyValuePair<string, string>("page", Pagination.CurrentPage.ToString()),
                       new KeyValuePair<string, string>("size", Pagination.PageSize.ToString()),
                 };
-            var response = RestConnection.ExecuteParameterRequestAsync(_managementRestClient, Method.Get, "products", list);
+            var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "products", list);
 
             if ((int)response.Result.StatusCode == 200)
             {
@@ -76,13 +81,11 @@ namespace WPFBakeryShopAdmin.ViewModels
             LoadingPageVis = Visibility.Hidden;
             return Task.CompletedTask;
         }
-
         private async Task LoadTypeList()
         {
             var typeList = Lists.TypeList.LoadTypeList();
             TypeList = new BindableCollection<ProductType>((await typeList));
         }
-
         private async Task LoadCategoryList()
         {
             var categoryList = Lists.CategoryList.LoadCategoryList();
@@ -100,11 +103,10 @@ namespace WPFBakeryShopAdmin.ViewModels
 
             return Task.CompletedTask;
         }
-
         private async Task LoadProductInformation(int id)
         {
             var request = new RestRequest($"products/{id}", Method.Get);
-            var respone = await _managementRestClient.ExecuteAsync(request);
+            var respone = await _restClient.ExecuteAsync(request);
             if ((int)respone.StatusCode == 200)
             {
                 var productDetails = respone.Content;
@@ -115,7 +117,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private async Task LoadVariants(int id)
         {
             var request = new RestRequest($"products/variants/{id}", Method.Get);
-            var respone = await _managementRestClient.ExecuteAsync(request);
+            var respone = await _restClient.ExecuteAsync(request);
             if ((int)respone.StatusCode == 200)
             {
                 var variants = respone.Content;
@@ -126,7 +128,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private async Task LoadProductImages(int id)
         {
             var request = new RestRequest($"products/{id}/images", Method.Get);
-            var respone = await _managementRestClient.ExecuteAsync(request);
+            var respone = await _restClient.ExecuteAsync(request);
             if ((int)respone.StatusCode == 200)
             {
                 var productImages = respone.Content;
@@ -134,6 +136,55 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             LoadingProductImages = Visibility.Hidden;
         }
+        public void RequestUpdateProductInfo()
+        {
+            Editing = true;
+            _productInfoBeforeEditing = new ProductDetail(ProductDetails);
+        }
+        public async Task UpdateProductInfoAsync()
+        {
+            LoadingInfoVis = Visibility.Visible;
+
+            string JSonProductInfo = StringUtils.SerializeObject(ProductDetails);
+            var response = await RestConnection.ExecuteRequestAsync(_restClient, Method.Put, $"products/info", JSonProductInfo, "application/json");
+            int statusCode = (int)response.StatusCode;
+            string responseBody = response.Content;
+            switch (statusCode)
+            {
+                case 200:
+                    ShowSuccessMessage("Cập nhật sản phẩm thành công");
+                    Editing = false;
+                    break;
+                case 404 when ProductNotFound(responseBody):
+                    ShowFailMessage("Sản phẩm không còn tồn tài, vui lòng tải lại trang");
+                    break;
+                case 404 when CategoryNotFound(responseBody):
+                    ShowFailMessage("Danh mục không còn tồn tại, vui lòng tải lại trang");
+                    break;
+                case 400:
+                    ShowFailMessage("Tên sản phẩm đã tồn tại, vui lòng chọn tên khác");
+                    break;
+            }
+            LoadingInfoVis = Visibility.Hidden;
+        }
+        private bool ProductNotFound(string responseBody)
+        {
+            return responseBody.Contains("product") && responseBody.Contains("notFoundId");
+        }
+        private bool CategoryNotFound(string responseBody)
+        {
+            return responseBody.Contains("category") && responseBody.Contains("notFoundId");
+        }
+        public void CancelUpdate()
+        {
+            Editing = false;
+            ProductDetails = new ProductDetail(_productInfoBeforeEditing);
+        }
+        public void ShowAddingProductDialog()
+        {
+            _windowManager.ShowDialogAsync(new AddingProductViewModel());
+        }
+
         #endregion
 
         #region Events
@@ -197,6 +248,10 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _rowItemVariants = value;
+                if (value != null)
+                {
+                    TotalVariants = value.Count;
+                }
                 NotifyOfPropertyChange(() => RowItemVariants);
             }
         }
@@ -206,6 +261,10 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _rowItemImages = value;
+                if (value != null)
+                {
+                    TotalImages = value.Count;
+                }
                 NotifyOfPropertyChange(() => RowItemImages);
             }
         }
@@ -337,6 +396,59 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
         public bool NotEditing => !Editing;
+        public int TotalVariants
+        {
+            get => _totalVariants;
+            set
+            {
+                _totalVariants = value;
+                NotifyOfPropertyChange(() => TotalVariants);
+            }
+        }
+        public int TotalImages
+        {
+            get => _totalImages;
+            set
+            {
+                _totalImages = value;
+                NotifyOfPropertyChange(() => TotalImages);
+            }
+        }
+        #endregion
+
+        #region Showing Messages
+        private void ShowSuccessMessage(string message)
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                View.GreenMessage.Text = message;
+
+                GreenSB.MessageQueue?.Enqueue(
+                View.GreenContent,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+        }
+        private void ShowFailMessage(string message)
+        {
+            View.Dispatcher.Invoke(() =>
+            {
+                View.RedMessage.Text = message;
+
+                RedSB.MessageQueue?.Enqueue(
+                RedSB.Message.Content,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+        }
         #endregion
 
 

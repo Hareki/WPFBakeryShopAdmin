@@ -156,6 +156,9 @@
     <Compile Include="MVVM\Models\ProductRowItem.cs" />
     <Compile Include="MVVM\Models\Token.cs" />
     <Compile Include="MVVM\Models\Variant.cs" />
+    <Compile Include="MVVM\Views\AddingProductView.xaml.cs">
+      <DependentUpon>AddingProductView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\ConstValues.cs" />
     <Compile Include="Utilities\Pagination.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
@@ -177,9 +180,6 @@
     </Compile>
     <Compile Include="MVVM\Views\AddingAccountView.xaml.cs">
       <DependentUpon>AddingAccountView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MVVM\Views\AddingProductView.xaml.cs">
-      <DependentUpon>AddingProductView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\BillView.xaml.cs">
       <DependentUpon>BillView.xaml</DependentUpon>
@@ -239,6 +239,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="MVVM\Views\AddingProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Languages\StringResources.en.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -252,10 +256,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\AddingAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MVVM\Views\AddingProductView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

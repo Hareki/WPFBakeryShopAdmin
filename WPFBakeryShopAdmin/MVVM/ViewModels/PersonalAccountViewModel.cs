@@ -27,6 +27,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private ItemLanguage _selectedItemLanguage;
         private ChangePasswordBody _changePasswordBody;
         private IEventAggregator _eventAggregator;
+
         #region Base
         public PersonalAccountViewModel(IEventAggregator eventAggregator)
         {
@@ -376,5 +377,6 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
         }
         #endregion
+
     }
 }
