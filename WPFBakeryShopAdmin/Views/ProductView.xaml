@@ -7,6 +7,9 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ProductViewModel}"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Background="#F5F5FA"
              TextElement.FontSize="15"
@@ -14,68 +17,154 @@
     <Grid>
         <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
                                              OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.3}">
-            <Grid x:Name="MainGrid">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                           Grid.Row="0"
-                           FontWeight="SemiBold"
-                           Text="Sản phẩm"
-                           Margin="{StaticResource TitleMargin}" />
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            Margin="{StaticResource TitleMargin}">
-                    <Button x:Name="LoadEditingProduct"
-                            Visibility="Hidden"
-                            Grid.Row="0"
-                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                            Style="{StaticResource CustomPrimaryButton}"
-                            Content="SỬA SẢN PHẨM"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Margin="0 0 0 0" />
-                    <Button x:Name="LoadAddingProduct"
-                            Grid.Row="0"
-                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                            Style="{StaticResource CustomPrimaryButton}"
-                            Content="THÊM SẢN PHẨM"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Margin="30 0 0 0" />
+                <Grid Grid.Row="0"
+                      Grid.ColumnSpan="12">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                                   FontWeight="SemiBold"
+                                   Margin="{StaticResource TitleMargin}"
+                                   Text="Sản phẩm" />
+                        <Button x:Name="LoadPage"
+                                Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                ToolTip="MaterialDesignIconForegroundButton"
+                                Foreground="{DynamicResource MaterialDesignBody}"
+                                VerticalAlignment="Top"
+                                Margin="5 0 0 0 ">
+                            <materialDesign:PackIcon Kind="Reload" />
+                        </Button>
+                    </StackPanel>
+                    <materialDesign:Snackbar HorizontalAlignment="Center"
+                                             VerticalAlignment="Top"
+                                             Grid.ColumnSpan="12"
+                                             x:Name="GreenSB"
+                                             Background="#00b4d8"
+                                             MessageQueue="{materialDesign:MessageQueue}">
+                        <materialDesign:SnackbarMessage>
+                            <StackPanel Orientation="Horizontal"
+                                        x:Name="GreenContent">
+                                <materialDesign:PackIcon Kind="CheckCircle"
+                                                         Margin="0 3 10 0"
+                                                         VerticalAlignment="Center" />
+                                <TextBlock Text="Cập nhật trạng thái thành công"
+                                           FontWeight="SemiBold"
+                                           x:Name="GreenMessage" />
+                            </StackPanel>
+                        </materialDesign:SnackbarMessage>
+                    </materialDesign:Snackbar>
 
-                </StackPanel>
+                    <materialDesign:Snackbar HorizontalAlignment="Center"
+                                             VerticalAlignment="Top"
+                                             Grid.ColumnSpan="12"
+                                             x:Name="RedSB"
+                                             Background="#e63946"
+                                             MessageQueue="{materialDesign:MessageQueue}">
+                        <materialDesign:SnackbarMessage>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CheckCircle"
+                                                         Margin="0 3 10 0"
+                                                         VerticalAlignment="Center" />
+                                <TextBlock Text="Xảy ra lỗi khi cập nhật"
+                                           FontWeight="Bold"
+                                           x:Name="RedMessage" />
+                            </StackPanel>
+                        </materialDesign:SnackbarMessage>
+                    </materialDesign:Snackbar>
+                </Grid>
+
+
 
                 <Border Background="White"
-                        CornerRadius="12"
-                        Padding="10"
+                        Padding="15 0"
                         Grid.Row="1"
-                        Margin="0 0 0 0">
-                    <DataGrid x:Name="RowItemProducts"
-                              CanUserAddRows="False"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              Background="White"
-                              SelectionUnit="FullRow"
-                              SelectionMode="Single">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mã"
-                                                Width="*"
-                                                Binding="{Binding Path=Id}" />
-                            <DataGridTextColumn Header="Tên sản phẩm"
-                                                Width="3*"
-                                                Binding="{Binding Path=Name}" />
-                            <DataGridTextColumn Header="Danh mục"
-                                                Width="2*"
-                                                Binding="{Binding Path=CategoryName}" />
-                            <DataGridTextColumn Header="Nguyên liệu"
-                                                Width="5*"
-                                                Binding="{Binding Path=Ingredients}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        CornerRadius="12">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="8*" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+                        <DataGrid x:Name="RowItemProducts"
+                                  CanUserAddRows="False"
+                                  ScrollViewer.CanContentScroll="False"
+                                  IsReadOnly="True"
+                                  AutoGenerateColumns="False"
+                                  Background="White"
+                                  SelectionUnit="FullRow"
+                                  SelectionMode="Single"
+                                  SelectedItem="{Binding Path=SelectedProduct, Mode=TwoWay}"
+                                  cal:Message.Attach="[Event SelectionChanged] = [Action RowItemProducts_SelectionChanged]">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã"
+                                                    Width="*"
+                                                    Binding="{Binding Path=Id}" />
+                                <DataGridTextColumn Header="Tên sản phẩm"
+                                                    Width="3*"
+                                                    Binding="{Binding Path=Name}" />
+                                <DataGridTextColumn Header="Danh mục"
+                                                    Width="2*"
+                                                    Binding="{Binding Path=CategoryName}" />
+                                <DataGridTextColumn Header="Nguyên liệu"
+                                                    Width="5*"
+                                                    Binding="{Binding Path=Ingredients}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                     Value="0"
+                                     Visibility="{Binding Path=LoadingPageVis}"
+                                     IsIndeterminate="True" />
+
+                        <StackPanel HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal"
+                                    FlowDirection="RightToLeft"
+                                    Grid.Row="1">
+
+                            <Button  x:Name="LoadLastPage"
+                                     Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                     IsEnabled="{Binding Path=Pagination.CouldLoadLastPage}">
+                                <materialDesign:PackIcon Kind="PageLast" />
+                            </Button>
+
+
+                            <Button x:Name="LoadNextPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=Pagination.CouldLoadNextPage}">
+                                <materialDesign:PackIcon Kind="ChevronRight" />
+                            </Button>
+
+
+                            <Button x:Name="LoadPreviousPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=Pagination.CouldLoadPreviousPage}">
+                                <materialDesign:PackIcon Kind="ChevronLeft" />
+                            </Button>
+
+
+                            <Button x:Name="LoadFirstPage"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    IsEnabled="{Binding Path=Pagination.CouldLoadFirstPage}">
+                                <materialDesign:PackIcon Kind="PageFirst" />
+                            </Button>
+
+                            <StackPanel FlowDirection="LeftToRight"
+                                        Orientation="Horizontal"
+                                        Margin="10 0 0 0">
+                                <TextBlock x:Name="Pagination_PageIndicator"
+                                           Text="1 - 11 của 44"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Grid>
+
                 </Border>
 
 
@@ -84,13 +173,23 @@
                         Grid.Row="2"
                         CornerRadius="12"
                         Background="White"
-                        Padding="10">
-                    <Expander Header="CHI TIẾT THÔNG TIN SẢN PHẨM"
+                        Padding="15"
+                        MaxHeight="350">
+
+                    <Expander Header="CHI TIẾT SẢN PHẢM"
                               FontWeight="SemiBold"
                               Background="White"
-                              ExpandDirection="Up">
-                        <ContentControl x:Name="ActiveItem" />
+                              ExpandDirection="Up"
+                              x:Name="DetailExpander"
+                              cal:Message.Attach="[Event Expanded] = [Action Expander_Expanded]">
+                        <ScrollViewer>
+                            <Border Padding="15 0">
+
+                            </Border>
+
+                        </ScrollViewer>
                     </Expander>
+
                 </Border>
 
             </Grid>

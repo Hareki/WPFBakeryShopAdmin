@@ -73,7 +73,6 @@
         <Grid>
             <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
                                                  OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.3}">
-
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -550,8 +549,6 @@
                     </Border>
 
                 </Grid>
-
-
             </materialDesign:TransitioningContent>
         </Grid>
     </materialDesign:DialogHost>

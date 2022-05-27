@@ -17,38 +17,34 @@ namespace WPFBakeryShopAdmin.ViewModels
         private Visibility _loadingPageVis = Visibility.Hidden;
         private Visibility _loadingInfoVis = Visibility.Hidden;
         private BindableCollection<RowItemProduct> _rowItemProducts;
-        private string _pageIndicator;
-        private int _totalCount;
-        private readonly int _pageSize = 10;
-        private int _currentPage = 0;
-        private int _maxPageIndex;
-        private bool _couldLoadFirstPage = false, _couldLoadPreviousPage = false, _couldLoadNextPage = false, _couldLoadLastPage = false;
+        private RowItemProduct _selectedProduct;
+        private Pagination _pagination;
+
         private IWindowManager _windowManager;
 
         #region Base
         public ProductViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
+            Pagination = new Pagination(10);
         }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.ManagementRestClient;
-            LoadPage(-1);
+            LoadPage();
             return Task.CompletedTask;
         }
-        public void LoadPage(int page)
+        public void LoadPage()
         {
-            if (page != -1) _currentPage = page;
             new Thread(new ThreadStart(() =>
             {
                 if (RowItemProducts != null)
                     RowItemProducts.Clear();
 
                 LoadingPageVis = Visibility.Visible;
-                if (_currentPage > _maxPageIndex) _currentPage = 0;
                 var list = new List<KeyValuePair<string, string>>() {
-                      new KeyValuePair<string, string>("page", _currentPage.ToString()),
-                      new KeyValuePair<string, string>("size", _pageSize.ToString()),
+                      new KeyValuePair<string, string>("page", Pagination.CurrentPage.ToString()),
+                      new KeyValuePair<string, string>("size", Pagination.PageSize.ToString()),
                 };
                 var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "products", list);
 
@@ -56,44 +52,16 @@ namespace WPFBakeryShopAdmin.ViewModels
                 {
                     var products = response.Result.Content;
                     RowItemProducts = JsonConvert.DeserializeObject<BindableCollection<RowItemProduct>>(products);
-                    UpdatePageStatus(response.Result.Headers);
+                    Pagination.UpdatePaginationStatus(response.Result.Headers);
                 }
+                NotifyOfPropertyChange(() => Pagination);
                 LoadingPageVis = Visibility.Hidden;
             })).Start();
 
         }
-        private void UpdatePageStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
+        public void RowItemProducts_SelectionChanged()
         {
-            bool linkDone = false, totalCountDone = false;
-            foreach (var header in headers)
-            {
-                if (header.Name.Equals("X-Total-Count"))
-                {
-                    _totalCount = (Int32.Parse(header.Value.ToString()));
-                    _maxPageIndex = _totalCount / _pageSize;
-                    UpdatePageIndicator();
-                    totalCountDone = true;
-                }
 
-                if (header.Name.Equals("Link"))
-                {
-                    string value = header.Value.ToString();
-                    if (value.Contains("next")) CouldLoadNextPage = true;
-                    else CouldLoadNextPage = false;
-
-                    if (value.Contains("prev")) CouldLoadPreviousPage = true;
-                    else CouldLoadPreviousPage = false;
-
-                    if (value.Contains("first")) CouldLoadFirstPage = true;
-                    else CouldLoadFirstPage = false;
-
-                    if (value.Contains("last")) CouldLoadLastPage = true;
-                    else CouldLoadLastPage = false;
-
-                    linkDone = true;
-                }
-                if (totalCountDone && linkDone) return;
-            }
         }
         #endregion
 
@@ -128,79 +96,49 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => LoadingInfoVis);
             }
         }
+        public RowItemProduct SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set
+            {
+                _selectedProduct = value;
+                NotifyOfPropertyChange(() => SelectedProduct);
+            }
+        }
+        public Pagination Pagination
+        {
+            get
+            {
+                return _pagination;
+            }
+            set
+            {
+                _pagination = value;
+                NotifyOfPropertyChange(() => Pagination);
+            }
+        }
         #endregion
 
         #region Pagination
-        public bool CouldLoadFirstPage
-        {
-            get { return _couldLoadFirstPage; }
-            set
-            {
-                _couldLoadFirstPage = value;
-                NotifyOfPropertyChange(() => CouldLoadFirstPage);
-            }
-        }
-        public bool CouldLoadPreviousPage
-        {
-            get { return _couldLoadPreviousPage; }
-            set
-            {
-                _couldLoadPreviousPage = value;
-                NotifyOfPropertyChange(() => CouldLoadPreviousPage);
-            }
-        }
-        public bool CouldLoadNextPage
-        {
-            get { return _couldLoadNextPage; }
-            set
-            {
-                _couldLoadNextPage = value;
-                NotifyOfPropertyChange(() => CouldLoadNextPage);
-            }
-        }
-        public bool CouldLoadLastPage
-        {
-            get { return _couldLoadLastPage; }
-            set
-            {
-                _couldLoadLastPage = value;
-                NotifyOfPropertyChange(() => CouldLoadLastPage);
-            }
-        }
-        public string PageIndicator
-        {
-            get { return _pageIndicator; }
-            set
-            {
-                _pageIndicator = value;
-                NotifyOfPropertyChange(() => PageIndicator);
-            }
-        }
         public void LoadFirstPage()
         {
-            _currentPage = 0;
-            LoadPage(-1);
+            Pagination.LoadFirstPage();
+            LoadPage();
         }
         public void LoadPreviousPage()
         {
-            _currentPage--;
-            LoadPage(-1);
+            Pagination.LoadPreviousPage();
+            LoadPage();
         }
         public void LoadNextPage()
         {
-            _currentPage++;
-            LoadPage(-1);
+            Pagination.LoadNextPage();
+            LoadPage();
         }
         public void LoadLastPage()
         {
-            _currentPage = _maxPageIndex;
-            LoadPage(-1);
-        }
-        private void UpdatePageIndicator()
-        {
-            int start = _pageSize * _currentPage + 1;
-            int end = _currentPage == _maxPageIndex ? _totalCount : _pageSize * (_currentPage + 1);
-            PageIndicator = $"{start} - {end} của {_totalCount}";
+            Pagination.LoadLastPage();
+            LoadPage();
         }
         #endregion
     }

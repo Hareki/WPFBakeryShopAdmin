@@ -24,6 +24,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         private RowItemBill _selectedBill;
         private DetailItemBill _billDetails;
         private Pagination _pagination;
+
         #region Base
         public BillViewModel()
         {
@@ -246,18 +247,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         #endregion
 
         #region Pagination
-        public Pagination Pagination
-        {
-            get
-            {
-                return _pagination;
-            }
-            set
-            {
-                _pagination = value;
-                NotifyOfPropertyChange(() => Pagination);
-            }
-        }
         public void LoadFirstPage()
         {
             Pagination.LoadFirstPage();
@@ -378,6 +367,18 @@ namespace WPFBakeryShopAdmin.ViewModels
             get
             {
                 return View.RedSB;
+            }
+        }
+        public Pagination Pagination
+        {
+            get
+            {
+                return _pagination;
+            }
+            set
+            {
+                _pagination = value;
+                NotifyOfPropertyChange(() => Pagination);
             }
         }
         #endregion
