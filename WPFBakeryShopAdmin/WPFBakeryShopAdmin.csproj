@@ -129,6 +129,7 @@
     <Compile Include="Converters\LargeUserImageConverter.cs" />
     <Compile Include="Converters\NullToVisConvereter.cs" />
     <Compile Include="Converters\ReverseVisibilityToBoolConverter.cs" />
+    <Compile Include="Converters\SelectedItemToBoolConveter.cs" />
     <Compile Include="Converters\SmallUserImageConverter.cs" />
     <Compile Include="Converters\VisToZIndexConverter.cs" />
     <Compile Include="Interfaces\IViewModel.cs" />

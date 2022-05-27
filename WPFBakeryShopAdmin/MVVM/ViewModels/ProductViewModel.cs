@@ -34,6 +34,8 @@ namespace WPFBakeryShopAdmin.ViewModels
         private BindableCollection<Category> _categoryList;
         private BindableCollection<ProductType> _typeList;
         private Category _selectedCategory;
+        private bool _editing = false;
+
 
         #region Base
         public ProductViewModel(IWindowManager windowManager)
@@ -324,6 +326,17 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => TypeList);
             }
         }
+        public bool Editing
+        {
+            get => _editing;
+            set
+            {
+                _editing = value;
+                NotifyOfPropertyChange(() => Editing);
+                NotifyOfPropertyChange(() => NotEditing);
+            }
+        }
+        public bool NotEditing => !Editing;
         #endregion
 
 
