@@ -8,13 +8,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using WPFBakeryShopAdmin.Interfaces;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
 using WPFBakeryShopAdmin.Views;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class BillViewModel : Screen
+    public class BillViewModel : Screen, IViewModel
     {
         private RestClient _restClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
@@ -28,7 +29,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region Base
         public BillViewModel()
         {
-            Pagination = new Pagination(10);
+            Pagination = new Pagination(10, this);
         }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
@@ -246,28 +247,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-        #region Pagination
-        public void LoadFirstPage()
-        {
-            Pagination.LoadFirstPage();
-            LoadPage();
-        }
-        public void LoadPreviousPage()
-        {
-            Pagination.LoadPreviousPage();
-            LoadPage();
-        }
-        public void LoadNextPage()
-        {
-            Pagination.LoadNextPage();
-            LoadPage();
-        }
-        public void LoadLastPage()
-        {
-            Pagination.LoadLastPage();
-            LoadPage();
-        }
-        #endregion
         #region Binding Properties
         public BindingButtonAppearance BindingButton
         {
@@ -380,6 +359,25 @@ namespace WPFBakeryShopAdmin.ViewModels
                 _pagination = value;
                 NotifyOfPropertyChange(() => Pagination);
             }
+        }
+        #endregion
+
+        #region Pagination
+        public void LoadFirstPage()
+        {
+            Pagination.LoadFirstPage();
+        }
+        public void LoadPreviousPage()
+        {
+            Pagination.LoadPreviousPage();
+        }
+        public void LoadNextPage()
+        {
+            Pagination.LoadNextPage();
+        }
+        public void LoadLastPage()
+        {
+            Pagination.LoadLastPage();
         }
         #endregion
     }

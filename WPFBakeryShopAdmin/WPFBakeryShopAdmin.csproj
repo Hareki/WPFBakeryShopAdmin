@@ -131,6 +131,7 @@
     <Compile Include="Converters\ReverseVisibilityToBoolConverter.cs" />
     <Compile Include="Converters\SmallUserImageConverter.cs" />
     <Compile Include="Converters\VisToZIndexConverter.cs" />
+    <Compile Include="Interfaces\IViewModel.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />

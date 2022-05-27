@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFBakeryShopAdmin.Interfaces;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class AccountViewModel : Screen
+    public class AccountViewModel : Screen, IViewModel
     {
         private RestClient _restClient = RestConnection.ManagementRestClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
@@ -24,7 +25,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         public AccountViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
-            Pagination = new Pagination(10);
+            Pagination = new Pagination(10, this);
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
@@ -64,45 +65,26 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             _windowManager.ShowDialogAsync(new AddingAccountViewModel());
         }
-
-
         #endregion
 
         #region Pagination
-        public Pagination Pagination
-        {
-            get
-            {
-                return _pagination;
-            }
-            set
-            {
-                _pagination = value;
-                NotifyOfPropertyChange(() => Pagination);
-            }
-        }
         public void LoadFirstPage()
         {
             Pagination.LoadFirstPage();
-            LoadPage();
         }
         public void LoadPreviousPage()
         {
             Pagination.LoadPreviousPage();
-            LoadPage();
         }
         public void LoadNextPage()
         {
             Pagination.LoadNextPage();
-            LoadPage();
         }
         public void LoadLastPage()
         {
             Pagination.LoadLastPage();
-            LoadPage();
         }
         #endregion
-
         #region Binding Properties
         public RowItemAccount SelectedAccount
         {
@@ -132,6 +114,18 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 _loadingPageVis = value;
                 NotifyOfPropertyChange(() => LoadingPageVis);
+            }
+        }
+        public Pagination Pagination
+        {
+            get
+            {
+                return _pagination;
+            }
+            set
+            {
+                _pagination = value;
+                NotifyOfPropertyChange(() => Pagination);
             }
         }
         #endregion

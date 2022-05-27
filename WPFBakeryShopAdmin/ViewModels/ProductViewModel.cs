@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFBakeryShopAdmin.Interfaces;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.Utilities;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
-    public class ProductViewModel : Conductor<Screen>.Collection.OneActive
+    public class ProductViewModel : Screen, IViewModel
     {
         private RestClient _restClient = RestConnection.ManagementRestClient;
         private Visibility _loadingPageVis = Visibility.Hidden;
@@ -26,7 +27,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         public ProductViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
-            Pagination = new Pagination(10);
+            Pagination = new Pagination(10, this);
         }
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
@@ -62,6 +63,25 @@ namespace WPFBakeryShopAdmin.ViewModels
         public void RowItemProducts_SelectionChanged()
         {
 
+        }
+        #endregion
+
+        #region Pagination
+        public void LoadFirstPage()
+        {
+            Pagination.LoadFirstPage();
+        }
+        public void LoadPreviousPage()
+        {
+            Pagination.LoadPreviousPage();
+        }
+        public void LoadNextPage()
+        {
+            Pagination.LoadNextPage();
+        }
+        public void LoadLastPage()
+        {
+            Pagination.LoadLastPage();
         }
         #endregion
 
@@ -119,27 +139,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-        #region Pagination
-        public void LoadFirstPage()
-        {
-            Pagination.LoadFirstPage();
-            LoadPage();
-        }
-        public void LoadPreviousPage()
-        {
-            Pagination.LoadPreviousPage();
-            LoadPage();
-        }
-        public void LoadNextPage()
-        {
-            Pagination.LoadNextPage();
-            LoadPage();
-        }
-        public void LoadLastPage()
-        {
-            Pagination.LoadLastPage();
-            LoadPage();
-        }
-        #endregion
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFBakeryShopAdmin.Interfaces;
 
 namespace WPFBakeryShopAdmin.Utilities
 {
@@ -18,9 +19,10 @@ namespace WPFBakeryShopAdmin.Utilities
         public bool CouldLoadNextPage { get; set; } = false;
         public bool CouldLoadLastPage { get; set; } = false;
         public IViewModel ViewModel { get; set; }
-        public Pagination(int pageSize)
+        public Pagination(int pageSize, IViewModel viewModel)
         {
             PageSize = pageSize;
+            ViewModel = viewModel;
         }
         public void UpdatePaginationStatus(IReadOnlyCollection<RestSharp.HeaderParameter> headers)
         {
@@ -64,22 +66,22 @@ namespace WPFBakeryShopAdmin.Utilities
         public void LoadFirstPage()
         {
             CurrentPage = 0;
+            ViewModel.LoadPage();
         }
         public void LoadPreviousPage()
         {
             CurrentPage--;
+            ViewModel.LoadPage();
         }
         public void LoadNextPage()
         {
             CurrentPage++;
+            ViewModel.LoadPage();
         }
         public void LoadLastPage()
         {
             CurrentPage = MaxPageIndex;
-        }
-        public interface IViewModel
-        {
-            void LoadPage(int page);
+            ViewModel.LoadPage();
         }
     }
 }
