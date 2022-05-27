@@ -30,34 +30,31 @@ namespace WPFBakeryShopAdmin.ViewModels
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.ManagementRestClient;
-            LoadPage();
+            _ = LoadPageAsync();
             return Task.CompletedTask;
         }
-        public void LoadPage()
+        public async Task LoadPageAsync()
         {
-            new Thread(new ThreadStart(() =>
-            {
-                if (RowItemAccounts != null)
-                    RowItemAccounts.Clear();
 
-                LoadingPageVis = Visibility.Visible;
+            if (RowItemAccounts != null)
+                RowItemAccounts.Clear();
 
-                //   if (_currentPage > _maxPageIndex) _currentPage = 0;
-                var list = new List<KeyValuePair<string, string>>() {
+            LoadingPageVis = Visibility.Visible;
+
+            var list = new List<KeyValuePair<string, string>>() {
                       new KeyValuePair<string, string>("page", Pagination.CurrentPage.ToString()),
                       new KeyValuePair<string, string>("size", 10.ToString()),
                 };
-                var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "accounts", list);
+            var response = await RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "accounts", list);
 
-                if ((int)response.Result.StatusCode == 200)
-                {
-                    var accounts = response.Result.Content;
-                    RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<AccountRowItem>>(accounts);
-                    Pagination.UpdatePaginationStatus(response.Result.Headers);
-                }
-                NotifyOfPropertyChange(() => Pagination);
-                LoadingPageVis = Visibility.Hidden;
-            })).Start();
+            if ((int)response.StatusCode == 200)
+            {
+                var accounts = response.Content;
+                RowItemAccounts = JsonConvert.DeserializeObject<BindableCollection<AccountRowItem>>(accounts);
+                Pagination.UpdatePaginationStatus(response.Headers);
+            }
+            NotifyOfPropertyChange(() => Pagination);
+            LoadingPageVis = Visibility.Hidden;
         }
 
         public void ShowAddingAccountDialog()
@@ -84,6 +81,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             Pagination.LoadLastPage();
         }
         #endregion
+
         #region Binding Properties
         public AccountRowItem SelectedAccount
         {

@@ -1,7 +1,9 @@
-﻿namespace WPFBakeryShopAdmin.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace WPFBakeryShopAdmin.Interfaces
 {
     public interface IViewModel
     {
-        void LoadPage();
+         Task LoadPageAsync();
     }
 }

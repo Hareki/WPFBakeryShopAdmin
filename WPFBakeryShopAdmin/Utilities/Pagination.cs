@@ -63,22 +63,22 @@ namespace WPFBakeryShopAdmin.Utilities
         public void LoadFirstPage()
         {
             CurrentPage = 0;
-            ViewModel.LoadPage();
+            ViewModel.LoadPageAsync();
         }
         public void LoadPreviousPage()
         {
             CurrentPage--;
-            ViewModel.LoadPage();
+            ViewModel.LoadPageAsync();
         }
         public void LoadNextPage()
         {
             CurrentPage++;
-            ViewModel.LoadPage();
+            ViewModel.LoadPageAsync();
         }
         public void LoadLastPage()
         {
             CurrentPage = MaxPageIndex;
-            ViewModel.LoadPage();
+            ViewModel.LoadPageAsync();
         }
     }
 }

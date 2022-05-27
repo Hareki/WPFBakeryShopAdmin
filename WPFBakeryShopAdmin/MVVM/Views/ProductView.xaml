@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WPFBakeryShopAdmin.Views"
+             xmlns:converter="clr-namespace:WPFBakeryShopAdmin.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -14,6 +15,9 @@
              Background="#F5F5FA"
              TextElement.FontSize="15"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+    <UserControl.Resources>
+        <converter:ReverseVisibilityToBoolConverter x:Key="reverseVisToBool" />
+    </UserControl.Resources>
     <Grid>
         <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide"
                                              OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.3}">
@@ -176,12 +180,13 @@
                         Padding="0 0 0 0"
                         MaxHeight="350">
 
-                    <Expander Header="CHI TIẾT SẢN PHẢM"
+                    <Expander Header="CHI TIẾT SẢN PHẨM"
                               FontWeight="SemiBold"
                               Background="White"
                               ExpandDirection="Up"
                               x:Name="DetailExpander"
-                              TextElement.FontWeight="Normal">
+                              TextElement.FontWeight="Normal"
+                              cal:Message.Attach="[Event Expanded] = [Action Expander_Expanded]">
                         <!--<ScrollViewer>-->
                         <Border Padding="0 0">
                             <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0"
@@ -269,11 +274,22 @@
                                                                  materialDesign:HintAssist.Hint="Tên"
                                                                  Margin="15 0 30 30" />
 
-                                                        <ComboBox Grid.Column="3"
+                                                        <ComboBox x:Name="CategoryList"
+                                                                  SelectedItem="{Binding SelectedCategory}"
+                                                                  IsEnabled="{Binding LoadingPageVis, Converter={StaticResource reverseVisToBool}}"
+                                                                  Grid.Column="3"
                                                                   Grid.Row="1"
                                                                   Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                                                   materialDesign:HintAssist.Hint="Danh mục"
-                                                                  Margin="0 0 0 30" />
+                                                                  Margin="0 0 0 30">
+                                                            <ComboBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding Name}" />
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </ComboBox.ItemTemplate>
+                                                        </ComboBox>
 
 
                                                         <TextBox x:Name="ProductDetails_Ingredients"
@@ -303,122 +319,179 @@
                                     <TabItem Header="Các loại của sản phẩm">
                                         <Border Padding="5"
                                                 CornerRadius="12">
-                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                                <Border Background="White"
-                                                        Padding="20">
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="auto" />
-                                                            <RowDefinition Height="*" />
-                                                        </Grid.RowDefinitions>
+                                            <Border Background="White"
+                                                    Padding="20">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
 
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="*" />
-                                                        </Grid.ColumnDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
 
-                                                        <TextBlock Grid.Row="0"
-                                                                   Grid.Column="0"
-                                                                   VerticalAlignment="Center"
-                                                                   Text="Tất cả có 2 loại sản phẩm" />
+                                                    <TextBlock Grid.Row="0"
+                                                               Grid.Column="0"
+                                                               VerticalAlignment="Center"
+                                                               Text="Tất cả có 2 loại sản phẩm" />
 
-                                                        <Button Grid.Row="0"
-                                                                Grid.Column="1"
-                                                                Style="{StaticResource CustomBorderButton}"
-                                                                Content="Thêm loại"
-                                                                HorizontalAlignment="Right"
-                                                                materialDesign:ShadowAssist.ShadowDepth="Depth0" />
+                                                    <Button Grid.Row="0"
+                                                            Grid.Column="1"
+                                                            Style="{StaticResource CustomBorderButton}"
+                                                            Content="Thêm loại"
+                                                            HorizontalAlignment="Right"
+                                                            materialDesign:ShadowAssist.ShadowDepth="Depth0" />
 
 
-                                                        <Border Background="White"
-                                                                CornerRadius="8"
-                                                                Padding="2"
-                                                                Grid.Row="1"
-                                                                Grid.Column="0"
-                                                                Grid.ColumnSpan="2"
-                                                                Margin="0 15 0 0">
-                                                            <DataGrid CanUserAddRows="False"
-                                                                      IsReadOnly="True"
-                                                                      AutoGenerateColumns="False"
-                                                                      Background="White">
-                                                                <DataGrid.Columns>
-                                                                    <DataGridTextColumn Header="Mã SP"
-                                                                                        Width="2*" />
-                                                                    <DataGridTextColumn Header="Loại"
-                                                                                        Width="3*" />
-                                                                    <DataGridTextColumn Header="Giá gốc"
-                                                                                        Width="3*" />
-                                                                    <DataGridTextColumn Header="Giá bán"
-                                                                                        Width="3*" />
-                                                                    <DataGridTextColumn Header="Tình trạng"
-                                                                                        Width="2*" />
-                                                                    <DataGridTextColumn Header="Hành động"
-                                                                                        Width="2*" />
-                                                                </DataGrid.Columns>
-                                                            </DataGrid>
-                                                        </Border>
+                                                    <Border Background="White"
+                                                            CornerRadius="8"
+                                                            Padding="2"
+                                                            Grid.Row="1"
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="0 15 0 0">
+                                                        <DataGrid x:Name="RowItemVariants"
+                                                                  CanUserAddRows="False"
+                                                                  ScrollViewer.CanContentScroll="False"
+                                                                  IsReadOnly="True"
+                                                                  AutoGenerateColumns="False"
+                                                                  Background="White"
+                                                                  SelectionUnit="FullRow"
+                                                                  SelectionMode="Single"
+                                                                  SelectedItem="{Binding Path=SelectedVariant, Mode=TwoWay}">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Header="Mã SP"
+                                                                                    Width="2*"
+                                                                                    Binding="{Binding Path=Id}" />
+                                                                <DataGridTextColumn Header="Loại"
+                                                                                    Width="3*"
+                                                                                    Binding="{Binding Path=TypeName}" />
+                                                                <DataGridTextColumn Header="Giá gốc"
+                                                                                    Width="3*"
+                                                                                    Binding="{Binding Path=FormattedCost}" />
+                                                                <DataGridTextColumn Header="Giá bán"
+                                                                                    Width="3*"
+                                                                                    Binding="{Binding Path=FormattedPrice}" />
+                                                                <DataGridTextColumn Header="Tình trạng"
+                                                                                    Width="2*"
+                                                                                    Binding="{Binding Path=AvailableName}" />
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </Border>
 
-                                                    </Grid>
-                                                </Border>
-                                            </ScrollViewer>
+                                                </Grid>
+                                            </Border>
                                         </Border>
 
                                     </TabItem>
                                     <TabItem Header="Hình ảnh">
                                         <Border Padding="5"
                                                 CornerRadius="12">
-                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                                <Border Background="White"
-                                                        Padding="20">
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="auto" />
-                                                            <RowDefinition Height="*" />
-                                                        </Grid.RowDefinitions>
 
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="*" />
-                                                        </Grid.ColumnDefinitions>
+                                            <Border Background="White"
+                                                    Padding="20">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
 
-                                                        <TextBlock Grid.Row="0"
-                                                                   Grid.Column="0"
-                                                                   VerticalAlignment="Center"
-                                                                   Text="Tất cả có 2 hình ảnh" />
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
 
-                                                        <Button Grid.Row="0"
-                                                                Grid.Column="1"
-                                                                Style="{StaticResource CustomBorderButton}"
-                                                                Content="Thêm ảnh"
-                                                                HorizontalAlignment="Right"
-                                                                materialDesign:ShadowAssist.ShadowDepth="Depth0" />
+                                                    <TextBlock Grid.Row="0"
+                                                               Grid.Column="0"
+                                                               VerticalAlignment="Center"
+                                                               Text="Tất cả có 2 hình ảnh" />
+
+                                                    <Button Grid.Row="0"
+                                                            Grid.Column="1"
+                                                            Style="{StaticResource CustomBorderButton}"
+                                                            Content="Thêm ảnh"
+                                                            HorizontalAlignment="Right"
+                                                            materialDesign:ShadowAssist.ShadowDepth="Depth0" />
 
 
-                                                        <Border Background="White"
-                                                                CornerRadius="8"
-                                                                Padding="2"
-                                                                Grid.Row="1"
-                                                                Grid.Column="0"
-                                                                Grid.ColumnSpan="2"
-                                                                Margin="0 15 0 0">
-                                                            <DataGrid CanUserAddRows="False"
-                                                                      IsReadOnly="True"
-                                                                      AutoGenerateColumns="False"
-                                                                      Background="White">
-                                                                <DataGrid.Columns>
-                                                                    <DataGridTextColumn Header="Mã ảnh"
-                                                                                        Width="3*" />
-                                                                    <DataGridTextColumn Header="Hình ảnh"
-                                                                                        Width="3*" />
-                                                                    <DataGridTextColumn Header="Hành động"
-                                                                                        Width="3*" />
-                                                                </DataGrid.Columns>
-                                                            </DataGrid>
-                                                        </Border>
+                                                    <Border Background="White"
+                                                            CornerRadius="8"
+                                                            Padding="2"
+                                                            Grid.Row="1"
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="0 15 0 0">
+                                                        <DataGrid x:Name="RowItemImages"
+                                                                  CanUserAddRows="False"
+                                                                  ScrollViewer.CanContentScroll="False"
+                                                                  IsReadOnly="True"
+                                                                  AutoGenerateColumns="False"
+                                                                  Background="White"
+                                                                  SelectionUnit="FullRow"
+                                                                  SelectionMode="Single"
+                                                                  SelectedItem="{Binding Path=SelectedImage, Mode=TwoWay}">
 
-                                                    </Grid>
-                                                </Border>
-                                            </ScrollViewer>
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Header="Mã ảnh"
+                                                                                    Width="1*"
+                                                                                    Binding="{Binding Path=Id}">
+
+                                                                    <DataGridTextColumn.ElementStyle>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="HorizontalAlignment"
+                                                                                    Value="Center" />
+                                                                            <Setter Property="VerticalAlignment"
+                                                                                    Value="Center" />
+                                                                        </Style>
+                                                                    </DataGridTextColumn.ElementStyle>
+
+                                                                    <DataGridTextColumn.HeaderStyle>
+                                                                        <Style TargetType="DataGridColumnHeader"
+                                                                               BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                                                            <Setter Property="HorizontalContentAlignment"
+                                                                                    Value="Center" />
+                                                                        </Style>
+                                                                    </DataGridTextColumn.HeaderStyle>
+                                                                </DataGridTextColumn>
+
+                                                                <DataGridTemplateColumn Header="Hình ảnh"
+                                                                                        Width="4*"
+                                                                                        IsReadOnly="True">
+
+                                                                    <DataGridTemplateColumn.HeaderStyle>
+                                                                        <Style TargetType="DataGridColumnHeader"
+                                                                               BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                                                            <Setter Property="HorizontalContentAlignment"
+                                                                                    Value="Center" />
+                                                                        </Style>
+                                                                    </DataGridTemplateColumn.HeaderStyle>
+
+                                                                    <DataGridTemplateColumn.CellTemplate>
+                                                                        <DataTemplate>
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="4*" />
+                                                                                    <ColumnDefinition Width="3*" />
+                                                                                    <ColumnDefinition Width="4*" />
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <Image Source="{Binding ImagePath}"
+                                                                                       Grid.Column="1" />
+                                                                            </Grid>
+                                                                        </DataTemplate>
+                                                                    </DataGridTemplateColumn.CellTemplate>
+                                                                </DataGridTemplateColumn>
+
+                                                            </DataGrid.Columns>
+
+                                                        </DataGrid>
+                                                    </Border>
+
+                                                </Grid>
+
+                                            </Border>
+
                                         </Border>
                                     </TabItem>
                                 </TabControl>

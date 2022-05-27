@@ -34,48 +34,43 @@ namespace WPFBakeryShopAdmin.ViewModels
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             _restClient = RestConnection.ManagementRestClient;
-            LoadPage();
+            _ = LoadPageAsync();
             return Task.CompletedTask;
         }
-        public void LoadPage()
+        public async Task LoadPageAsync()
         {
-            new Thread(new ThreadStart(() =>
-            {
-                if (RowItemBills != null)
-                    RowItemBills.Clear();
 
-                LoadingPageVis = Visibility.Visible;
-                var list = new List<KeyValuePair<string, string>>() {
+            if (RowItemBills != null)
+                RowItemBills.Clear();
+
+            LoadingPageVis = Visibility.Visible;
+            var list = new List<KeyValuePair<string, string>>() {
                       new KeyValuePair<string, string>("page", Pagination.CurrentPage.ToString()),
                       new KeyValuePair<string, string>("size", Pagination.PageSize.ToString()),
                 };
-                var response = RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "orders", list);
+            var response = await RestConnection.ExecuteParameterRequestAsync(_restClient, Method.Get, "orders", list);
 
-                if ((int)response.Result.StatusCode == 200)
-                {
-                    var bills = response.Result.Content;
-                    RowItemBills = JsonConvert.DeserializeObject<BindableCollection<BillRowItem>>(bills);
-                    Pagination.UpdatePaginationStatus(response.Result.Headers);
-                }
-                NotifyOfPropertyChange(() => Pagination);
-                LoadingPageVis = Visibility.Hidden;
-            })).Start();
+            if ((int)response.StatusCode == 200)
+            {
+                var bills = response.Content;
+                RowItemBills = JsonConvert.DeserializeObject<BindableCollection<BillRowItem>>(bills);
+                Pagination.UpdatePaginationStatus(response.Headers);
+            }
+            NotifyOfPropertyChange(() => Pagination);
+            LoadingPageVis = Visibility.Hidden;
 
         }
-        private void LoadDetailItem(int id)
+        private async Task LoadDetailItem(int id)
         {
-            new Thread(new ThreadStart(() =>
+            LoadingInfoVis = Visibility.Visible;
+            var request = new RestRequest($"orders/{id}", Method.Get);
+            var respone = await _restClient.ExecuteAsync(request);
+            if ((int)respone.StatusCode == 200)
             {
-                LoadingInfoVis = Visibility.Visible;
-                var request = new RestRequest($"orders/{id}", Method.Get);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
-                {
-                    var billDetails = respone.Result.Content;
-                    BillDetails = JsonConvert.DeserializeObject<BillDetails>(billDetails);
-                }
-                LoadingInfoVis = Visibility.Hidden;
-            })).Start();
+                var billDetails = respone.Content;
+                BillDetails = JsonConvert.DeserializeObject<BillDetails>(billDetails);
+            }
+            LoadingInfoVis = Visibility.Hidden;
         }
         public void UpdateOrderStatus()
         {
@@ -195,7 +190,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         #region View Events
         public void RowItemBills_SelectionChanged()
         {
-
             View.Dispatcher.Invoke(() =>
             {
                 if (Grid.SelectedIndex < 0)
@@ -207,7 +201,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         public void Expander_Expanded()
         {
             if (SelectedBill != null)
-                LoadDetailItem(SelectedBill.Id);
+                _ = LoadDetailItem(SelectedBill.Id);
         }
         #endregion
 

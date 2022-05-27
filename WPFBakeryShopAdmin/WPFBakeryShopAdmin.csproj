@@ -135,6 +135,7 @@
     <Compile Include="Lists\CategoryList.cs" />
     <Compile Include="Lists\LanguageList.cs" />
     <Compile Include="Lists\RoleList.cs" />
+    <Compile Include="Lists\TypeList.cs" />
     <Compile Include="LocalValidationRules\EmailFormatValidationRule.cs" />
     <Compile Include="LocalValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="LocalValidationRules\PhoneFormatValidationRule.cs" />
@@ -146,11 +147,14 @@
     <Compile Include="MVVM\Models\ItemLanguage.cs" />
     <Compile Include="MVVM\Models\Bodies\LoginRequestBody.cs" />
     <Compile Include="MVVM\Models\PersonalAccount.cs" />
+    <Compile Include="MVVM\Models\ProductImage.cs" />
+    <Compile Include="MVVM\Models\ProductType.cs" />
     <Compile Include="MVVM\Models\Role.cs" />
     <Compile Include="MVVM\Models\AccountRowItem.cs" />
     <Compile Include="MVVM\Models\BillRowItem.cs" />
     <Compile Include="MVVM\Models\ProductRowItem.cs" />
     <Compile Include="MVVM\Models\Token.cs" />
+    <Compile Include="MVVM\Models\Variant.cs" />
     <Compile Include="Utilities\ConstValues.cs" />
     <Compile Include="Utilities\Pagination.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />

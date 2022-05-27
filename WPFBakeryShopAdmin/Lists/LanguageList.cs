@@ -7,7 +7,7 @@ namespace WPFBakeryShopAdmin.Lists
 {
     public class LanguageList
     {
-        public static List<ItemLanguage> LIST;
+        public static List<ItemLanguage> LIST { get; set; }
         private static ResourceDictionary _enlishDictionary;
         private static ResourceDictionary _vnDictionary;
         static LanguageList()

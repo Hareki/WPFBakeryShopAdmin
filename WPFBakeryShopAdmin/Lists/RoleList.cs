@@ -5,7 +5,7 @@ namespace WPFBakeryShopAdmin.Lists
 {
     public class RoleList
     {
-        public static List<Role> LIST;
+        public static List<Role> LIST { get; set; }
         static RoleList()
         {
             LIST = new List<Role>();

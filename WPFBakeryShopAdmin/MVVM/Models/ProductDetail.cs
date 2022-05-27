@@ -1,4 +1,6 @@
-﻿namespace WPFBakeryShopAdmin.Models
+﻿using Newtonsoft.Json;
+
+namespace WPFBakeryShopAdmin.Models
 {
     public class ProductDetail
     {
@@ -8,5 +10,7 @@
         public string Ingredients { get; set; }
         public string Allergens { get; set; }
         public bool Available { get; set; }
+        [JsonIgnore]
+        public Category Category => Lists.CategoryList.FindCategoryById(CategoryId);
     }
 }
