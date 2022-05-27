@@ -156,6 +156,7 @@
     <Compile Include="MVVM\Models\ProductRowItem.cs" />
     <Compile Include="MVVM\Models\Token.cs" />
     <Compile Include="MVVM\Models\Variant.cs" />
+    <Compile Include="MVVM\ViewModels\AddingProductViewModel.cs" />
     <Compile Include="MVVM\Views\AddingProductView.xaml.cs">
       <DependentUpon>AddingProductView.xaml</DependentUpon>
     </Compile>
@@ -166,7 +167,6 @@
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="MVVM\ViewModels\AccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AddingAccountViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\AddingProductViewModel.cs" />
     <Compile Include="MVVM\ViewModels\BillViewModel.cs" />
     <Compile Include="MVVM\ViewModels\DashboardViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForgotPasswordViewModel.cs" />

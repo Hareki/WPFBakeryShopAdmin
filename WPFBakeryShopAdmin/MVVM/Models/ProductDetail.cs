@@ -6,6 +6,7 @@ namespace WPFBakeryShopAdmin.Models
     {
         public ProductDetail()
         {
+            this.Id = -1;
         }
 
         public ProductDetail(ProductDetail another)
@@ -19,6 +20,7 @@ namespace WPFBakeryShopAdmin.Models
         }
 
         public int Id { get; set; }
+        public bool ShouldSerializeId() { return Id != -1; }
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public string Ingredients { get; set; }

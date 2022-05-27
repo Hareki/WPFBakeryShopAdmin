@@ -13,6 +13,7 @@ using WPFBakeryShopAdmin.Utilities;
 using WPFBakeryShopAdmin.Views;
 using WPFBakeryShopAdmin.MVVM.Models;
 using System;
+using WPFBakeryShopAdmin.MVVM.ViewModels;
 
 namespace WPFBakeryShopAdmin.ViewModels
 {
@@ -39,7 +40,6 @@ namespace WPFBakeryShopAdmin.ViewModels
         private int _totalVariants;
         private int _totalImages;
         private ProductDetail _productInfoBeforeEditing;
-
 
         #region Base
         public ProductViewModel(IWindowManager windowManager)

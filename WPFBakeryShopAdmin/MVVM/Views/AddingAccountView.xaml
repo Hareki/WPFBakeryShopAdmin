@@ -64,7 +64,7 @@
                 </StackPanel>
 
                 <Grid Grid.Row="0"
-                      Grid.Column="12"
+                      Grid.ColumnSpan="12"
                       HorizontalAlignment="Center">
                     <materialDesign:Snackbar HorizontalAlignment="Center"
                                              VerticalAlignment="Top"

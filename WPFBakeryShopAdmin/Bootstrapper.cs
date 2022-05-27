@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using WPFBakeryShopAdmin.MVVM.ViewModels;
 using WPFBakeryShopAdmin.ViewModels;
 
 namespace WPFBakeryShopAdmin
@@ -18,6 +19,8 @@ namespace WPFBakeryShopAdmin
         {
             _container.PerRequest<ForgotPasswordViewModel>();
             _container.PerRequest<AddingAccountViewModel>();
+            _container.PerRequest<AddingProductViewModel>();
+            _container.PerRequest<VariantAddEditDialogViewModel>();
 
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
@@ -29,9 +32,7 @@ namespace WPFBakeryShopAdmin
             _container.Singleton<DashboardViewModel>();
 
             _container.Singleton<ProductViewModel>();
-            _container.Singleton<AddingProductViewModel>();
-            _container.Singleton<VariantAddEditDialogViewModel>();
-
+           
             _container.Singleton<BillViewModel>();
             _container.Singleton<AccountViewModel>();
             _container.Singleton<PersonalAccountViewModel>();

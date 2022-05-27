@@ -38,6 +38,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             int statusCode = (int)response.StatusCode;
             if (statusCode == 201)
             {
+                ResetFields();
                 ShowSuccessMessage("Tạo tài khoản thành công, vui lòng kiểm tra email đã đăng ký");
             }
             else if (statusCode == 400)
@@ -49,6 +50,17 @@ namespace WPFBakeryShopAdmin.ViewModels
                 ShowFailMessage("Xảy ra lỗi khi tạo tài khoản");
             }
         }
+
+        private void ResetFields()
+        {
+            PersonalAccount = new PersonalAccount();
+            View.Dispatcher.Invoke(() =>
+            {
+                View.RoleList.UnselectAll();
+                View.LanguageList.SelectedIndex = 0;
+            });
+        }
+
         public void CancelAdding()
         {
             this.TryCloseAsync();
