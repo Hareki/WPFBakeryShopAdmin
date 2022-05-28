@@ -143,8 +143,9 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         public async Task UpdateProductInfoAsync()
         {
-            LoadingInfoVis = Visibility.Visible;
+            if (ProductInfoHasErrors()) return;
 
+            LoadingInfoVis = Visibility.Visible;
             string JSonProductInfo = StringUtils.SerializeObject(ProductDetails);
             var response = await RestConnection.ExecuteRequestAsync(_restClient, Method.Put, $"products/info", JSonProductInfo, "application/json");
             int statusCode = (int)response.StatusCode;
@@ -167,6 +168,12 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             LoadingInfoVis = Visibility.Hidden;
         }
+
+        private bool ProductInfoHasErrors()
+        {
+            return string.IsNullOrEmpty(ProductDetails.Name);
+        }
+
         private bool ProductNotFound(string responseBody)
         {
             return responseBody.Contains("product") && responseBody.Contains("notFoundId");

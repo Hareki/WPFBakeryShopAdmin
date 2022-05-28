@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WPFBakeryShopAdmin.MVVM.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewmodels="clr-namespace:WPFBakeryShopAdmin.MVVM.ViewModels"
+        xmlns:validation="clr-namespace:WPFBakeryShopAdmin.LocalValidationRules"
         d:DataContext="{d:DesignInstance Type=viewmodels:AddingProductViewModel}"
         mc:Ignorable="d"
         Icon="/Resources/Images/favicon.ico"
@@ -17,34 +18,94 @@
         ShowInTaskbar="False"
         Height="375"
         Width="750">
-    <materialDesign:DialogHost CloseOnClickAway="false"
+    <materialDesign:DialogHost CloseOnClickAway="True"
                                x:Name="DialogContainer"
-                               OverlayBackground="Transparent"
-                               DialogBackground="{StaticResource SecondaryColorBrush}">
+                               OverlayBackground="Transparent">
         <materialDesign:DialogHost.DialogContent>
-            <Border Padding="20"
-                    MaxWidth="350"
-                    x:Name="DialogContent"
-                    TextElement.Foreground="White">
+            <Border x:Name="DialogContent"
+                    Padding="20"
+                    CornerRadius="12"
+                    MaxWidth="400"
+                    TextElement.Foreground="{DynamicResource MaterialDesignBody}">
                 <StackPanel>
                     <StackPanel x:Name="ConfirmContent">
-                        <TextBlock Text="Confirm canceling order"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource ErrorColorBrush}"
-                                   FontSize="18"
-                                   Margin="0 0 0 20" />
-                        <TextBlock TextWrapping="Wrap"
+                        <Grid>
+                            <materialDesign:PackIcon Kind="HelpCircle"
+                                                     HorizontalAlignment="Right"
+                                                     Margin="0 0 0 20"
+                                                     Width="25"
+                                                     Height="25"
+                                                     Foreground="{StaticResource InfoColorBrush}" />
+                            <TextBlock x:Name="ConfirmTitleTB"
+                                       Text="Title confirm"
+                                       FontWeight="Bold"
+                                       FontSize="18"
+                                       Margin="0 0 0 20" />
+                        </Grid>
+
+                        <TextBlock x:Name="ConfirmMessageTB"
+                                   TextWrapping="Wrap"
                                    Padding="0"
                                    Margin="0"
                                    LineHeight="25"
-                                   Text="Xảy ra lỗi khi tìm danh mục sản phẩm, vui lòng thử load lại trang">
+                                   Text="Title message">
                         </TextBlock>
                         <StackPanel Margin="0 20 0 0"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <Button Style="{StaticResource CustomBorderButton}"
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
                                     Margin="0 0 15 0"
-                                    Content="Okay"
+                                    Foreground="{StaticResource InfoColorBrush}"
+                                    Content="{DynamicResource DialogButtoConfirm}"
+                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                <Button.CommandParameter>
+                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                        True
+                                    </system:Boolean>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                    Margin="15 0 0 0"
+                                    Foreground="{StaticResource InfoColorBrush}"
+                                    Content="{DynamicResource DialogButtonCancel}"
+                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                <Button.CommandParameter>
+                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                        False
+                                    </system:Boolean>
+                                </Button.CommandParameter>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel x:Name="ErrorContent">
+                        <Grid>
+                            <materialDesign:PackIcon Kind="AlertCircle"
+                                                     HorizontalAlignment="Right"
+                                                     Margin="0 0 0 20"
+                                                     Width="25"
+                                                     Height="25"
+                                                     Foreground="{StaticResource ErrorColorBrush}" />
+                            <TextBlock x:Name="ErrorTitleTB"
+                                       Text="Title confirm"
+                                       FontWeight="Bold"
+                                       FontSize="18"
+                                       Margin="0 0 0 20" />
+                        </Grid>
+                        <TextBlock x:Name="ErrorMessageTB"
+                                   TextWrapping="Wrap"
+                                   Padding="0"
+                                   Margin="0"
+                                   LineHeight="25"
+                                   Text="Are you sure want to cancel this order? You can't undo this action">
+                        </TextBlock>
+                        <StackPanel Margin="0 20 0 0"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <Button Style="{StaticResource CustomFlatButton}"
+                                    Margin="0 0 15 0"
+                                    Content="{DynamicResource DialogButtonOkay}"
+                                    Foreground="{StaticResource ErrorColorBrush}"
                                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
                             </Button>
                         </StackPanel>
@@ -104,34 +165,22 @@
                                     </StackPanel>
                                 </materialDesign:SnackbarMessage>
                             </materialDesign:Snackbar>
-
-                            <materialDesign:Snackbar HorizontalAlignment="Center"
-                                                     VerticalAlignment="Top"
-                                                     Grid.ColumnSpan="12"
-                                                     x:Name="RedSB"
-                                                     Background="#e63946"
-                                                     MessageQueue="{materialDesign:MessageQueue}">
-                                <materialDesign:SnackbarMessage>
-                                    <StackPanel Orientation="Horizontal"
-                                                x:Name="RedContent">
-                                        <materialDesign:PackIcon Kind="CheckCircle"
-                                                                 Margin="0 3 10 0"
-                                                                 VerticalAlignment="Center" />
-                                        <TextBlock x:Name="RedMessage"
-                                                   Text="Xảy ra lỗi khi cập nhật"
-                                                   FontWeight="Bold" />
-                                    </StackPanel>
-                                </materialDesign:SnackbarMessage>
-                            </materialDesign:Snackbar>
                         </Grid>
 
-                        <TextBox x:Name="ProductDetails_Name"
-                                 Grid.Column="0"
+                        <TextBox Grid.Column="0"
                                  Grid.Row="2"
                                  Grid.ColumnSpan="3"
                                  materialDesign:HintAssist.Hint="Tên sản phẩm*"
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Margin="0 0 15 30" />
+                                 Margin="0 0 15 30">
+                            <TextBox.Text>
+                                <Binding Path="ProductDetails.Name">
+                                    <Binding.ValidationRules>
+                                        <validation:NotEmptyValidationRule Message="Vui lòng nhập tên sản phẩm" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
 
                         <ComboBox x:Name="CategoryList"
                                   SelectedItem="{Binding SelectedCategory}"

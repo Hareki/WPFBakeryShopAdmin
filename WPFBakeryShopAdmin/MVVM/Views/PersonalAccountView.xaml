@@ -25,7 +25,6 @@
                                OverlayBackground="Transparent">
         <materialDesign:DialogHost.DialogContent>
             <Border Padding="20"
-                    CornerRadius="12"
                     MaxWidth="400"
                     x:Name="DialogContent"
                     TextElement.Foreground="{DynamicResource MaterialDesignBody}">

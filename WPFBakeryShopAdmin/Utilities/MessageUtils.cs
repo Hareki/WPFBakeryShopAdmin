@@ -29,6 +29,22 @@ namespace WPFBakeryShopAdmin.Utilities
                 TimeSpan.FromSeconds(3));
             });
         }
+        public static void ShowSuccessMessage(Window view, TextBlock greenMessage, Snackbar greenSB, StackPanel greenContent, string message)
+        {
+            view.Dispatcher.Invoke(() =>
+            {
+                greenMessage.Text = message;
+
+                greenSB.MessageQueue?.Enqueue(
+                greenContent,
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(3));
+            });
+        }
         public static async Task<bool> ShowConfirmMessage(Border dialogContent, TextBlock titleTB, TextBlock messageTB, StackPanel confirmContent
             , StackPanel errorContent, string title, string message)
         {

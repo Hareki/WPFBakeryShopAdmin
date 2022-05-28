@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WPFBakeryShopAdmin.Views"
              xmlns:converter="clr-namespace:WPFBakeryShopAdmin.Converters"
+             xmlns:validation="clr-namespace:WPFBakeryShopAdmin.LocalValidationRules"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -19,6 +20,7 @@
         <converter:ReverseVisibilityToBoolConverter x:Key="reverseVisToBool" />
         <converter:SelectedItemToBoolConveter x:Key="selectedToBoolConverter" />
     </UserControl.Resources>
+    
     <materialDesign:DialogHost CloseOnClickAway="True"
                                x:Name="DialogContainer"
                                OverlayBackground="Transparent">
@@ -196,13 +198,13 @@
                                                         Width="*"
                                                         Binding="{Binding Path=Id}" />
                                     <DataGridTextColumn Header="Tên sản phẩm"
-                                                        Width="3*"
+                                                        Width="4*"
                                                         Binding="{Binding Path=Name}" />
                                     <DataGridTextColumn Header="Danh mục"
                                                         Width="2*"
                                                         Binding="{Binding Path=CategoryName}" />
                                     <DataGridTextColumn Header="Nguyên liệu"
-                                                        Width="5*"
+                                                        Width="3*"
                                                         Binding="{Binding Path=Ingredients}" />
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -347,21 +349,30 @@
                                                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                                                      IsEnabled="False"
                                                                      Margin="0 0 15 30" />
-                                                            <TextBox x:Name="ProductDetails_Name"
-                                                                     Grid.Column="1"
+                                                            <TextBox Grid.Column="1"
                                                                      Grid.Row="1"
                                                                      Grid.ColumnSpan="2"
                                                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                                                     materialDesign:HintAssist.Hint="Tên"
-                                                                     IsEnabled="{Binding Editing}"
-                                                                     Margin="15 0 30 30" />
+                                                                     materialDesign:HintAssist.Hint="Tên sản phẩm*"
+                                                                     IsReadOnly="{Binding NotEditing}"
+                                                                     Margin="15 0 30 30">
+                                                                <TextBox.Text>
+                                                                    <Binding Path="ProductDetails.Name">
+                                                                        <Binding.ValidationRules>
+                                                                            <validation:NotEmptyValidationRule Message="Vui lòng nhập tên sản phẩm" />
+                                                                        </Binding.ValidationRules>
+                                                                    </Binding>
+                                                                </TextBox.Text>
+                                                            </TextBox>
                                                             <ComboBox x:Name="CategoryList"
                                                                       SelectedItem="{Binding SelectedCategory}"
                                                                       Grid.Column="3"
                                                                       Grid.Row="1"
                                                                       Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                                                       materialDesign:HintAssist.Hint="Danh mục"
-                                                                      IsEnabled="{Binding Editing}"
+                                                                      IsHitTestVisible="{Binding Editing}"
+                                                                      Focusable="{Binding Editing}"
+                                                                      IsTabStop="{Binding Editing}"
                                                                       Margin="0 0 0 30">
                                                                 <ComboBox.ItemTemplate>
                                                                     <DataTemplate>
@@ -378,7 +389,7 @@
                                                                      AcceptsReturn="True"
                                                                      TextWrapping="Wrap"
                                                                      materialDesign:HintAssist.Hint="Nguyên liệu"
-                                                                     IsEnabled="{Binding Editing}"
+                                                                     IsReadOnly="{Binding NotEditing}"
                                                                      Grid.ColumnSpan="2"
                                                                      Margin="0 0 15 0" />
                                                             <TextBox x:Name="ProductDetails_Allergens"
@@ -388,7 +399,7 @@
                                                                      AcceptsReturn="True"
                                                                      TextWrapping="Wrap"
                                                                      materialDesign:HintAssist.Hint="Chất gây dị ứng"
-                                                                     IsEnabled="{Binding Editing}"
+                                                                     IsReadOnly="{Binding NotEditing}"
                                                                      Grid.ColumnSpan="2"
                                                                      Margin="15 0 0 0" />
                                                         </Grid>

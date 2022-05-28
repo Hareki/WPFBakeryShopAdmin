@@ -8,9 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using WPFBakeryShopAdmin.Models;
 using WPFBakeryShopAdmin.MVVM.Views;
 using WPFBakeryShopAdmin.Utilities;
+using WPFBakeryShopAdmin.ViewModels;
 
 namespace WPFBakeryShopAdmin.MVVM.ViewModels
 {
@@ -47,6 +50,8 @@ namespace WPFBakeryShopAdmin.MVVM.ViewModels
                 CancelAdding();
                 return;
             }
+            if (ProductInfoHasErrors()) return;
+
             string JSonAccountInfo = StringUtils.SerializeObject(ProductDetails);
             var response = await RestConnection.ExecuteRequestAsync(_restClient, Method.Post, "products", JSonAccountInfo, "application/json");
             int statusCode = (int)response.StatusCode;
@@ -57,12 +62,17 @@ namespace WPFBakeryShopAdmin.MVVM.ViewModels
             }
             else if (statusCode == 400)
             {
-                ShowFailMessage("Tên sản phẩm đã tồn tại");
+                await ShowErrorMessage("Xảy ra lỗi", "Tên sản phẩm đã tồn tại");
             }
             else if (statusCode == 404)
             {
-                ShowFailMessage("Danh mục không còn tồn tại, vui lòng tải lại trang");
+                await ShowErrorMessage("Xảy ra lỗi", "Danh mục không còn tồn tại, vui lòng khởi động lại hộp thoại này để nhận thông tin danh mục mới nhất");
             }
+        }
+
+        private bool ProductInfoHasErrors()
+        {
+            return string.IsNullOrEmpty(ProductDetails.Name);
         }
 
         private void ResetFields()
@@ -113,46 +123,24 @@ namespace WPFBakeryShopAdmin.MVVM.ViewModels
                 NotifyOfPropertyChange(() => ProductDetails);
             }
         }
+        public AddingProductView View => (AddingProductView)this.GetView();
         #endregion
 
-        #region Mapping Region
-        public AddingProductView View => (AddingProductView)this.GetView();
-        public Snackbar GreenSB => View.GreenSB;
-        public Snackbar RedSB => View.RedSB;
-        #endregion
+
         #region Show Messages
+        private async Task ShowErrorMessage(string title, string message)
+        {
+            await MessageUtils.ShowErrorMessage(View.DialogContent, View.ErrorTitleTB, View.ErrorMessageTB,
+                   View.ConfirmContent, View.ErrorContent, title, message);
+        }
+        private async Task<bool> ShowConfirmMessage(string title, string message)
+        {
+            return await MessageUtils.ShowConfirmMessage(View.DialogContent, View.ConfirmTitleTB, View.ConfirmMessageTB, View.ConfirmContent, View.ErrorContent,
+               title, message);
+        }
         private void ShowSuccessMessage(string message)
         {
-
-            View.Dispatcher.Invoke(() =>
-            {
-                View.GreenMessage.Text = message;
-                GreenSB.MessageQueue?.Enqueue(
-                View.GreenContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
-        }
-
-        private void ShowFailMessage(string message)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.RedMessage.Text = message;
-
-                RedSB.MessageQueue?.Enqueue(
-                View.RedContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
+            MessageUtils.ShowSuccessMessage(View, View.GreenMessage, View.GreenSB, View.GreenContent, message);
         }
         #endregion
     }
