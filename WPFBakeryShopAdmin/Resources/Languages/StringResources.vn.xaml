@@ -74,4 +74,8 @@
     <sys:String x:Key="Email2">Email*</sys:String>
     <sys:String x:Key="Phone2">Số điện thoại*</sys:String>
     <sys:String x:Key="FirstName2">Tên*</sys:String>
+
+    <sys:String x:Key="DialogButtonConfirm">XÁC NHẬN</sys:String>
+    <sys:String x:Key="DialogButtonCancel">HỦY</sys:String>
+    <sys:String x:Key="DialogButtonOkay">ĐÃ HIỂU</sys:String>
 </ResourceDictionary>

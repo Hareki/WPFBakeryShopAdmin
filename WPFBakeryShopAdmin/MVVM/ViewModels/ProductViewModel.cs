@@ -156,13 +156,13 @@ namespace WPFBakeryShopAdmin.ViewModels
                     Editing = false;
                     break;
                 case 404 when ProductNotFound(responseBody):
-                    ShowFailMessage("Sản phẩm không còn tồn tài, vui lòng tải lại trang");
+                    await ShowErrorMessage("Lỗi cập nhật", "Sản phẩm không còn tồn tài, vui lòng tải lại trang");
                     break;
                 case 404 when CategoryNotFound(responseBody):
-                    ShowFailMessage("Danh mục không còn tồn tại, vui lòng tải lại trang");
+                    await ShowErrorMessage("Lỗi cập nhật", "Danh mục không còn tồn tại, vui lòng tải lại trang");
                     break;
                 case 400:
-                    ShowFailMessage("Tên sản phẩm đã tồn tại, vui lòng chọn tên khác");
+                    await ShowErrorMessage("Lỗi cập nhật", "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác");
                     break;
             }
             LoadingInfoVis = Visibility.Hidden;
@@ -197,7 +197,7 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             View.Dispatcher.Invoke(() =>
             {
-                if (Grid.SelectedIndex < 0)
+                if (View.RowItemProducts.SelectedIndex < 0)
                 {
                     ProductDetails = null;
                 }
@@ -220,16 +220,8 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-        #region View Mapping Properties
-        public ProductView View => (ProductView)this.GetView();
-        public DataGrid Grid => View.RowItemProducts;
-        public Expander Expander => View.DetailExpander;
-        public Snackbar GreenSB => View.GreenSB;
-        public Snackbar RedSB => View.RedSB;
-        public ComboBox CBCategoryList => View.CategoryList;
-        #endregion
-
         #region Binding Properties
+        public ProductView View => (ProductView)this.GetView();
         public BindableCollection<ProductRowItem> RowItemProducts
         {
             get
@@ -310,7 +302,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _selectedProduct = value;
-                if (value != null && Expander.IsExpanded)
+                if (value != null && View.DetailExpander.IsExpanded)
                     _ = LoadDetailItemAsync(value.Id);
                 NotifyOfPropertyChange(() => SelectedProduct);
             }
@@ -416,41 +408,22 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-        #region Showing Messages
+        #region Show Messages
+        private async Task ShowErrorMessage(string title, string message)
+        {
+            await MessageUtils.ShowErrorMessage(View.DialogContent, View.ErrorTitleTB, View.ErrorMessageTB,
+                   View.ConfirmContent, View.ErrorContent, title, message);
+        }
+        private async Task<bool> ShowConfirmMessage(string title, string message)
+        {
+            return await MessageUtils.ShowConfirmMessage(View.DialogContent, View.ConfirmTitleTB, View.ConfirmMessageTB, View.ConfirmContent, View.ErrorContent,
+               title, message);
+        }
         private void ShowSuccessMessage(string message)
         {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.GreenMessage.Text = message;
-
-                GreenSB.MessageQueue?.Enqueue(
-                View.GreenContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
-        }
-        private void ShowFailMessage(string message)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.RedMessage.Text = message;
-
-                RedSB.MessageQueue?.Enqueue(
-                RedSB.Message.Content,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
+            MessageUtils.ShowSuccessMessage(View, View.GreenMessage, View.GreenSB, View.GreenContent, message);
         }
         #endregion
-
 
 
     }

@@ -74,4 +74,8 @@
     <sys:String x:Key="Email2">Last Name*</sys:String>
     <sys:String x:Key="Phone2">Phone number*</sys:String>
     <sys:String x:Key="FirstName2">First Name*</sys:String>
+
+    <sys:String x:Key="DialogButtonConfirm">CONFIRM</sys:String>
+    <sys:String x:Key="DialogButtonCancel">CANCEL</sys:String>
+    <sys:String x:Key="DialogButtonOkay">OKAY</sys:String>
 </ResourceDictionary>

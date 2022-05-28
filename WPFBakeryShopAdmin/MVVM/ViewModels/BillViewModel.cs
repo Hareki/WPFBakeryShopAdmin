@@ -72,28 +72,25 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             LoadingInfoVis = Visibility.Hidden;
         }
-        public void UpdateOrderStatus()
+        public async Task UpdateOrderStatus()
         {
-            new Thread(new ThreadStart(() =>
+
+            var request = new RestRequest($"orders/{BillDetails.Id}/status/update", Method.Put);
+            var respone = _restClient.ExecuteAsync(request);
+            if ((int)respone.Result.StatusCode == 200)
             {
-                var request = new RestRequest($"orders/{BillDetails.Id}/status/update", Method.Put);
-                var respone = _restClient.ExecuteAsync(request);
-                if ((int)respone.Result.StatusCode == 200)
-                {
-                    BillDetails.StatusId++;
-                    GridRefresh(BillDetails.StatusId);
-                    BillDetails.CanCancel = false;//Hard code, do nếu muốn cái này thay đổi tự động theo logic của webservice thì phải load lại từ db
-                    NotifyOfPropertyChange(() => BillDetails);
-                    ShowSuccessMessage("Cập nhật trạng thái đơn hàng thành công");
-                    return;
-                }
-                ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
-            })).Start();
+                BillDetails.StatusId++;
+                GridRefresh(BillDetails.StatusId);
+                BillDetails.CanCancel = false;//Hard code, do nếu muốn cái này thay đổi tự động theo logic của webservice thì phải load lại từ db
+                NotifyOfPropertyChange(() => BillDetails);
+                MessageUtils.ShowSuccessMessage(View, View.GreenMessage, View.GreenSB, View.GreenContent, "Cập nhật trạng thái đơn hàng thành công");
+                return;
+            }
+            await ShowErrorMessage("Lỗi cập nhật", "Đã xảy ra lỗi không xác định trong quá trình cập nhật trạng thái đơn hàng");
         }
         public async Task CancelOrder()
         {
-            var result = await DialogHost.Show(View.DialogContent);
-            bool confirm = System.Convert.ToBoolean(result);
+            bool confirm = await ShowConfirmMessage("Xác nhận hủy đơn", "Bạn có chắc muốn hủy đơn hàng này? Quá trình này không thể đảo ngược");
             if (confirm)
             {
                 var request = new RestRequest($"orders/{BillDetails.Id}/cancel", Method.Put);
@@ -106,16 +103,19 @@ namespace WPFBakeryShopAdmin.ViewModels
                     BillDetails.CanCancel = false;//Hard code, do nếu muốn cái này thay đổi tự động theo logic của webservice thì phải load lại từ db
                     NotifyOfPropertyChange(() => BillDetails);
                     ShowSuccessMessage("Hủy đơn hàng thành công");
+
                     return;
                 }
                 else if (statusCode == 400)
                 {
-                    ShowFailMessage("Không thể hủy đơn hàng ở trạng thái này");
+                    await ShowErrorMessage("Lỗi hủy đơn", "Không thể hủy đơn hàng ở trạng thái này");
                     return;
                 }
-                ShowFailMessage("Xảy ra lỗi trong quá trình cập nhật");
+                await ShowErrorMessage("Lỗi hủy đơn", "Đã xảy ra lỗi không xác định trong quá trình hủy đơn hàng");
             }
         }
+
+
         #endregion
 
         #region Updating View Methods
@@ -123,11 +123,11 @@ namespace WPFBakeryShopAdmin.ViewModels
         {
             View.Dispatcher.Invoke(() =>
             {
-                int selectedRow = Grid.SelectedIndex;
+                int selectedRow = View.RowItemBills.SelectedIndex;
 
                 RowItemBills[selectedRow].StatusId = newStatusId;
-                Grid.Items.Refresh();
-                Grid.SelectedIndex = selectedRow;
+                View.RowItemBills.Items.Refresh();
+                View.RowItemBills.SelectedIndex = selectedRow;
             });
         }
         public void PreviewUpdatedStatus()
@@ -187,12 +187,12 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-        #region View Events
+        #region Events
         public void RowItemBills_SelectionChanged()
         {
             View.Dispatcher.Invoke(() =>
             {
-                if (Grid.SelectedIndex < 0)
+                if (View.RowItemBills.SelectedIndex < 0)
                 {
                     BillDetails = null;
                 }
@@ -205,41 +205,22 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-        #region Showing Messages
+        #region Show Messages
+        private async Task ShowErrorMessage(string title, string message)
+        {
+            await MessageUtils.ShowErrorMessage(View.DialogContent, View.ErrorTitleTB, View.ErrorMessageTB,
+                   View.ConfirmContent, View.ErrorContent, title, message);
+        }
+        private async Task<bool> ShowConfirmMessage(string title, string message)
+        {
+            return await MessageUtils.ShowConfirmMessage(View.DialogContent, View.ConfirmTitleTB, View.ConfirmMessageTB, View.ConfirmContent, View.ErrorContent,
+               title, message);
+        }
         private void ShowSuccessMessage(string message)
         {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.GreenMessage.Text = message;
-
-                GreenSB.MessageQueue?.Enqueue(
-                View.GreenContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
-        }
-        private void ShowFailMessage(string message)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.RedMessage.Text = message;
-
-                RedSB.MessageQueue?.Enqueue(
-                RedSB.Message.Content,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
+            MessageUtils.ShowSuccessMessage(View, View.GreenMessage, View.GreenSB, View.GreenContent, message);
         }
         #endregion
-
         #region Binding Properties
         public BindingButtonAppearance BindingButton
         {
@@ -279,8 +260,8 @@ namespace WPFBakeryShopAdmin.ViewModels
             set
             {
                 _selectedBill = value;
-                if (value != null && Expander.IsExpanded)
-                    LoadDetailItem(value.Id);
+                if (value != null && View.DetailExpander.IsExpanded)
+                    _ = LoadDetailItem(value.Id);
 
                 NotifyOfPropertyChange(() => SelectedBill);
             }
@@ -303,14 +284,6 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => LoadingInfoVis);
             }
         }
-        #endregion
-
-        #region View Mapping Properties
-        public BillView View => (BillView)this.GetView();
-        public DataGrid Grid => View.RowItemBills;
-        public Expander Expander => View.DetailExpander;
-        public Snackbar GreenSB => View.GreenSB;
-        public Snackbar RedSB => View.RedSB;
         public Pagination Pagination
         {
             get
@@ -323,6 +296,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 NotifyOfPropertyChange(() => Pagination);
             }
         }
+        public BillView View => (BillView)this.GetView();
         #endregion
 
         #region Pagination

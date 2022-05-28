@@ -71,7 +71,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             Editing = false;
             PersonalAccount = new PersonalAccount(_accountBeforeEditing);
         }
-        public void UpdatePreviewImage()
+        public async Task UpdatePreviewImage()
         {
             OpenFileDialog open = new OpenFileDialog();
             open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
@@ -86,7 +86,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
                 else
                 {
-                    ShowFailMessage("Vui lòng chọn file có kích thước nhỏ hơn");
+                    await ShowErrorMessage("Lỗi cập nhật ảnh","Vui lòng chọn file có kích thước nhỏ hơn");
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             else if (statusCode == 400)
             {
-                ShowFailMessage("Địa chỉ email đã được sử dụng");
+                await ShowErrorMessage("Lỗi cập nhật thông tin", "Địa chỉ email đã được sử dụng");
                 return false;
             }
             return false;
@@ -135,7 +135,7 @@ namespace WPFBakeryShopAdmin.ViewModels
                 }
                 else if (statusCode == 400)
                 {
-                    ShowFailMessage("Cập nhật ảnh thất bại");
+                    await ShowErrorMessage("Lỗi cập nhật ảnh", "Cập nhật ảnh thất bại");
                     return false;
                 }
                 return false;
@@ -176,7 +176,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             string errorMessage = GetPasswordErrorMessage();
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                ShowFailMessage(errorMessage);
+                await ShowErrorMessage("Lỗi đổi mật khẩu", errorMessage);
                 return;
             }
 
@@ -191,7 +191,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             }
             else if (statusCode == 400)
             {
-                ShowFailMessage("Mật khẩu hiện tại không đúng");
+                await ShowErrorMessage("Lỗi đổi mật khẩu", "Mật khẩu hiện tại không đúng");
             }
         }
         private void ClearPasswordBox()
@@ -229,39 +229,19 @@ namespace WPFBakeryShopAdmin.ViewModels
         #endregion
 
         #region Show Messages
+        private async Task ShowErrorMessage(string title, string message)
+        {
+            await MessageUtils.ShowErrorMessage(View.DialogContent, View.ErrorTitleTB, View.ErrorMessageTB,
+                   View.ConfirmContent, View.ErrorContent, title, message);
+        }
+        private async Task<bool> ShowConfirmMessage(string title, string message)
+        {
+            return await MessageUtils.ShowConfirmMessage(View.DialogContent, View.ConfirmTitleTB, View.ConfirmMessageTB, View.ConfirmContent, View.ErrorContent,
+               title, message);
+        }
         private void ShowSuccessMessage(string message)
         {
-
-            View.Dispatcher.Invoke(() =>
-            {
-                View.GreenMessage.Text = message;
-
-                GreenSB.MessageQueue?.Enqueue(
-                View.GreenContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
-        }
-
-        private void ShowFailMessage(string message)
-        {
-            View.Dispatcher.Invoke(() =>
-            {
-                View.RedMessage.Text = message;
-
-                RedSB.MessageQueue?.Enqueue(
-                View.RedContent,
-                null,
-                null,
-                null,
-                false,
-                true,
-                TimeSpan.FromSeconds(3));
-            });
+            MessageUtils.ShowSuccessMessage(View, View.GreenMessage, View.GreenSB, View.GreenContent, message);
         }
         private async Task ShowLogoutMessage(string message)
         {
@@ -270,7 +250,7 @@ namespace WPFBakeryShopAdmin.ViewModels
             {
                 View.GreenMessage.Text = message;
 
-                GreenSB.MessageQueue?.Enqueue(
+                View.GreenSB.MessageQueue?.Enqueue(
                 View.GreenContent,
                 null,
                 null,
@@ -283,23 +263,12 @@ namespace WPFBakeryShopAdmin.ViewModels
         }
         #endregion
 
-        #region View Mapping Properties
+        #region Binding Properties
         public PersonalAccountView View
         {
             get
             { return (PersonalAccountView)this.GetView(); }
         }
-        public Snackbar GreenSB
-        {
-            get { return View.GreenSB; }
-        }
-        public Snackbar RedSB
-        {
-            get { return View.RedSB; }
-        }
-        #endregion
-
-        #region Binding Properties
         public PersonalAccount PersonalAccount
         {
             get { return _personalAccount; }

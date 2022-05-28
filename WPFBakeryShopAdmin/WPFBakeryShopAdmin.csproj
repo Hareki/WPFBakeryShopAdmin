@@ -161,6 +161,7 @@
       <DependentUpon>AddingProductView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\ConstValues.cs" />
+    <Compile Include="Utilities\MessageUtils.cs" />
     <Compile Include="Utilities\Pagination.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\RestConnection.cs" />
